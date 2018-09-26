@@ -20,8 +20,10 @@ foto
 naam
 uitleg
 
+https://github.com/AP-Elektronica-ICT/iot1819--iot18bs/issues/new
 smartphone
 Op dit moment worden de foto’s vaak met een smartphone gemaakt omdat de meeste studenten een smartphone op zak hebben.
+
 
 Spiegelreflex camera
 Het afstellen van de foto via lenzen zoals in een spiegel reflex camera is een techniek die we kunnen toepassen bij ons project.
