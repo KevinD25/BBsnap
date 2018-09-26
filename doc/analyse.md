@@ -16,45 +16,63 @@ Voor de server gaan we een server gebruiken die de foto’s ontvangt en opslaat 
 
 ### Marktonderzoek 
 
-foto
-naam
-uitleg
+![image1](https://user-images.githubusercontent.com/33574705/46103729-dde68d80-c1d1-11e8-9ddd-3d2535698df8.png)
 
 smartphone
 Op dit moment worden de foto’s vaak met een smartphone gemaakt omdat de meeste studenten een smartphone op zak hebben.
 
+
+![image2](https://user-images.githubusercontent.com/33574705/46103838-19815780-c1d2-11e8-96a9-291795df0c37.png)
+
 Spiegelreflex camera
 Het afstellen van de foto via lenzen zoals in een spiegel reflex camera is een techniek die we kunnen toepassen bij ons project.
+
+![image3](https://user-images.githubusercontent.com/33574705/46103810-0a9aa500-c1d2-11e8-8ed0-c8451dc46133.png)
 
 IP Security Camera
 Deze toestellen verzenden hun beelden over een netwerk. Dit is iets wat wij ook gaan moeten toepassen.
 
+![image4](https://user-images.githubusercontent.com/33574705/46103811-0b333b80-c1d2-11e8-8682-733f23de7298.png)
+
 Bluetooth camera controller
 Dit toestel verbindt via bluetooth met een smartphone om een foto te maken. Dit is een techniek die we ook gaan moeten toepassen voor de afstandsbediening van de leerkracht.
+
+![image5](https://user-images.githubusercontent.com/33574705/46103812-0b333b80-c1d2-11e8-9cd9-e9cacda0f0f7.jpg)
 
 Capture
 Deze app verbind via wifi met een GoPro camera om zo een foto te kunnen maken via deze Gopro camera. Dit gaan wij ook moeten toepassen op de app van de leerlingen. Ook kunnen alle foto’s bekeken worden via deze app. Dit is een functionaliteit die wij ook willen toepassen.
 
+![image6](https://user-images.githubusercontent.com/33574705/46103813-0b333b80-c1d2-11e8-9862-a5ec4813be96.jpg)
+
 Infrarood camera controller
 Deze controller bedient een camera van Nikon draadloos via infrarood. Dit is een techniek die we kunnen gebruiken voor de communicatie van onze afstandsbediening naar de camera.
+
+![image7](https://user-images.githubusercontent.com/33574705/46103814-0b333b80-c1d2-11e8-8e68-0dbcad2763c1.png)
 
 Smart WIFI Remote
 Deze afstandsbediening verbind via wifi met een GoPro om zo foto’s te kunnen maken. Dit is een techniek die we ook kunnen gebruiken voor de communicatie van onze afstandsbediening naar de camera.
 
+![image8](https://user-images.githubusercontent.com/33574705/46103801-0a020e80-c1d2-11e8-8d67-6ae62a15c720.png)
+
 HD Security Camera with Solar Panel supply
 Deze HD beveiligingscamera wordt van stroom voorzien via een zonnepaneel die een batterij oplaad. Dit willen wij ook inbouwen in onze camera.
+
+![image9](https://user-images.githubusercontent.com/33574705/46103802-0a020e80-c1d2-11e8-8093-6e32a3022d53.png)
 
 Window Mounted Solar Charger
 Dit zonnepaneel wordt via een zuignap aan een venster bevestigd om zo een toestel op te laden. We kunnen ook een zonnepaneel maken die via zuignappen aan een venster wordt bevestigd om zo meer lichtinval te krijgen op het zonnepanneel.
 
 ### Diagrammen
-
+![image10](https://user-images.githubusercontent.com/33574705/46103803-0a020e80-c1d2-11e8-9493-2fb0c38bd786.png)
 #### Algemene architectuur
 
 #### Gedetailleerde diagrammen
-
+![image11](https://user-images.githubusercontent.com/33574705/46103804-0a020e80-c1d2-11e8-824f-94ed3cdda417.jpg)
+![image12](https://user-images.githubusercontent.com/33574705/46103806-0a9aa500-c1d2-11e8-8e2c-7fe3a5099be0.jpg)
+![image13](https://user-images.githubusercontent.com/33574705/46103807-0a9aa500-c1d2-11e8-9616-c1bfcfa6b758.jpg)
 #### Schema's van het product
-
+![image14](https://user-images.githubusercontent.com/33574705/46103808-0a9aa500-c1d2-11e8-9bd9-31afeb9068c2.jpg)
+![image15](https://user-images.githubusercontent.com/33574705/46103809-0a9aa500-c1d2-11e8-807b-26621c64f76f.png)
 #### Fysiek design (Optioneel)
 
 #### Niet functionele analyse 
@@ -93,7 +111,6 @@ Button (as reset button)
 zonnepaneel / solar cell plaat
     Antratek
 Step up converter
-    
 Battery regulator
 Batterij
 Behuizing 
@@ -103,6 +120,7 @@ Controller:
 Infrarood zender
 behuizing
 Batterijvoeding
+ATTiny
 
 Server:
 Voorlopig raspberry pi
@@ -111,7 +129,7 @@ Voorlopig raspberry pi
 App: React Native / Java
 Web framework: React
 Servers: Express.js en Node.js
-Database: MongoDB
+Database: MySQL
 
 ## Test document
 Testen voor het maken van een foto:
