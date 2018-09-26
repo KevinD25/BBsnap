@@ -93,7 +93,6 @@ Button (as reset button)
 zonnepaneel / solar cell plaat
     Antratek
 Step up converter
-    
 Battery regulator
 Batterij
 Behuizing 
@@ -103,6 +102,7 @@ Controller:
 Infrarood zender
 behuizing
 Batterijvoeding
+ATTiny
 
 Server:
 Voorlopig raspberry pi
@@ -111,7 +111,7 @@ Voorlopig raspberry pi
 App: React Native / Java
 Web framework: React
 Servers: Express.js en Node.js
-Database: MongoDB
+Database: MySQL
 
 ## Test document
 Testen voor het maken van een foto:
