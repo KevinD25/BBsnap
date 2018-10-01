@@ -91,6 +91,20 @@ Het systeem heeft een hoge response time. Vanaf het moment dat er op de knop of 
 ## Functionaliteit
 
 ## Release Plan 
+M1W1 analyse
+
+M1W4 Eerste versie camera, remote, server, app
+    Cam: fotos via wifi versturen
+    Remote: basic IR
+    Server: geen untis, basic DB, fotos opslaan en opvragen
+    App: lelijke UI, basis functionaliteit, fotos nemen en terugkrijgen
+
+M1EX:
+    Camera op solar, eerste PCB ontwerp
+    Remote PCB “af”
+    Server: untis interactie, authenticatie, volledige DB
+    App: website, filtering fotos, management voor leerkrachten
+
 
 ## Inventarisatie Hardware
 Device:
