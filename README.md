@@ -1,7 +1,11 @@
-# Internet of Things - Naam Project
+# Internet of Things - Blackboard Snapshot
 
 ## Groepsleden
 Naam - Verantwoordelijkheid
+Joren Jamar - Dashboard app + Docenten Interface
+Kevin Davis - Dashboard app + Docenten Interface
+Joeri Temmerman - Hardware + Project Manager
+Viktor Segers - Hardware
 
 ## Documentatie
 
