@@ -1,13 +1,8 @@
 #include <IRremote.h>
 #include <IRremoteInt.h>
 IRsend irsend;
-
-
-int lastpress1 = 0;
-int lastpress2 = 0;
-int debounce = 15;
-boolean isEnabled = false;
-boolean takeShot = false;
+volatile int sendcode = 0;
+uint8_t count = 0;
 
 
 
@@ -15,63 +10,56 @@ boolean takeShot = false;
 void setup()
 {
   //adc_disable();          // adc disable for low power consumption
-
-  DDRB =  0b00001000;    // pin 5 as output for the infrared
+  DDRB = 0b00010000;
   GIMSK = 0b00100000;    // turns on pin change interrupts
   PCMSK = 0b00000110;    // turn on interrupts on pins 6 and 7
   sei();
 }
 void loop() {
-  if (isEnabled)
-  {
-    irsend.sendNEC(0xFF30CF, 32); // button1 code
-    isEnabled = false;
-  }
 
-  if (takeShot)
-  {
-    irsend.sendNEC(0xFF18E7, 23);  // button2 code
-    takeShot = false;
-  }
-}
-//interrupt on enable button
-ISR(PCINT1_vect)
-{
-  if (lastpress1 < millis())
-  {
-    lastpress1 = millis() + debounce;
-
-                 if (isEnabled = false)
-                 {
-      isEnabled = true;
-    }
-
-    else
-    {
-      isEnabled = false;
-    }
+  if (sendcode == 1) {
+ //   irsend.sendNEC(0xFF30CF, 32); // button1 cod   
+      PORTB = 0b00010000;
 
   }
+
+  else if (sendcode == 2) {
+    // irsend.sendNEC(0x1FE40BF, 32); // button2 code
+      PORTB = 0b00000000;
+
+  }
+
+
+  sendcode = 0;
+
 }
 
-
-//interrupt on shot button
-ISR(PCINT2_vect)
+ISR(PCINT0_vect)
 {
-  if (lastpress2 < millis())
+
+
+  static uint8_t prev = 0x00;
+  uint8_t current, changed;
+  count++;
+  current = PINB; // get input state of portB as it has now changed
+  changed = current ^ prev; // use XOR to find out which bit(s) have changed
+  if (changed & (1 << PB1))
   {
-    lastpress2 = millis() + debounce;
+    //if (count >= 2) {
+      sendcode = 1;
 
-                 if (takeShot = false)
-    {
-      takeShot = true;
-    }
-
-    else
-    {
-      takeShot = true;
-    }
-
+      count = 0;
+    //}
   }
+
+  if (changed & (1 << PB2)) {
+    //if (count >= 2) {
+
+      // handle change on PB5
+      sendcode = 2;
+      count = 0;
+   // }
+  }
+
 }
 
