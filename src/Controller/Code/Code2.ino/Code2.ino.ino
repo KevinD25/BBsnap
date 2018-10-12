@@ -1,9 +1,6 @@
-
 volatile int sendcode = 0;
 uint8_t count = 0;
 int ledpin = 1;
-
-
 
 void setup()
 {
@@ -40,24 +37,20 @@ ISR(PCINT0_vect)
   count++;
   current = PINB; // get input state of portB as it has now changed
   changed = current ^ prev; // use XOR to find out which bit(s) have changed
-  if (changed & (1 << PB0))
+  if (count >= 2) 
   {
-    //if (count >= 2) {
-    sendcode = 1;
-  
-    count = 0;
-    //}
+
+    if (changed & (1 << PB0))
+    {
+      sendcode = 1;   
+    }
+     
+    if (changed & (1 << PB2)) 
+    {
+      sendcode = 2;
+    }
+
   }
-
-  if (changed & (1 << PB2)) {
-    //if (count >= 2) {
-
-    // handle change on PB5
-    sendcode = 2;
-    count = 0;
-    // }
-  }
-
 }
 
 void IR(long microsecs) {
