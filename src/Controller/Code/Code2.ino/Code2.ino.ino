@@ -31,6 +31,9 @@ void loop() {
 
   }
 
+  SendIRCodeEnable();
+
+
 
   sendcode = 0;
 
@@ -63,38 +66,27 @@ ISR(PCINT0_vect)
   }
 }
 
-void IR(long microsecs) {
 
-  while (microsecs > 0) {
+
+void SendIRCodeEnable() 
+{
+  for (i = 0; i > 3; i++)
+  {
     digitalWrite(IRpin, HIGH);
-    delayMicroseconds(10);
+    delayMicroseconds(50);
     digitalWrite(IRpin, LOW);
-    delayMicroseconds(10);
-    microsecs -= 26;
+    delayMicroseconds(50);
   }
-
 }
 
-void SendIRCodeEnable() {
-  IR(500);
-  delayMicroseconds(1500);
-  IR(1500);
-  delayMicroseconds(500);
-  delay(65);
-  IR(500);
-  delayMicroseconds(1500);
-  IR(1500);
-  delayMicroseconds(500);
+void SendIRCodeShot() 
+{
+  for (i = 0; i > 2; i++)
+  {
+    digitalWrite(IRpin, HIGH);
+    delayMicroseconds(100);
+    digitalWrite(IRpin, LOW);
+    delayMicroseconds(100);
+  }
 }
 
-void SendIRCodeShot() {
-  IR(1500);
-  delayMicroseconds(500);
-  IR(500);
-  delayMicroseconds(1500);
-  delay(65);
-  IR(1500);
-  delayMicroseconds(500);
-  IR(500);
-  delayMicroseconds(1500);
-}
