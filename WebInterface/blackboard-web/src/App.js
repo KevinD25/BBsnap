@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import Photo from "./components/photo";
 
 class App extends Component {
   render() {
@@ -26,36 +27,84 @@ class App extends Component {
               <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                   <li class="nav-item">
-                    <a class="nav-link active" href="#">
-                      <span data-feather="home" />
-                      Klas <span class="sr-only">(current)</span>
+                    <a class="nav-link" href="#">
+                      Klas
                     </a>
+                  </li>
+                  <li>
+                    <div class="dropdown">
+                      <select class="btn btn-secondary dropdown-toggle dropdowns">
+                        <option value="volvo">Volvo</option>
+                        <option value="saab">Saab</option>
+                        <option value="mercedes">Mercedes</option>
+                        <option value="audi">Audi</option>
+                      </select>
+                    </div>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">
-                      <span data-feather="file" />
                       Datum
                     </a>
                   </li>
+                  <li>
+                    <div class="dropdown">
+                      <select class="btn btn-secondary dropdown-toggle dropdowns">
+                        <option value="volvo">Volvo</option>
+                        <option value="saab">Saab</option>
+                        <option value="mercedes">Mercedes</option>
+                        <option value="audi">Audi</option>
+                      </select>
+                    </div>
+                  </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">
-                      <span data-feather="shopping-cart" />
                       Prof
                     </a>
                   </li>
+                  <li>
+                    <div class="dropdown">
+                      <select class="btn btn-secondary dropdown-toggle dropdowns">
+                        <option value="volvo">Volvo</option>
+                        <option value="saab">Saab</option>
+                        <option value="mercedes">Mercedes</option>
+                        <option value="audi">Audi</option>
+                      </select>
+                    </div>
+                  </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">
-                      <span data-feather="users" />
                       Les
                     </a>
                   </li>
+                  <li>
+                    <div class="dropdown">
+                      <select class="btn btn-secondary dropdown-toggle dropdowns">
+                        <option value="volvo">Volvo</option>
+                        <option value="saab">Saab</option>
+                        <option value="mercedes">Mercedes</option>
+                        <option value="audi">Audi</option>
+                      </select>
+                    </div>
+                  </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">
-                      <span data-feather="bar-chart-2" />
                       Lokaal
                     </a>
                   </li>
+                  <li class="dropdownList">
+                    <div class="dropdown">
+                      <select class="btn btn-secondary dropdown-toggle dropdowns">
+                        <option value="volvo">Volvo</option>
+                        <option value="saab">Saab</option>
+                        <option value="mercedes">Tesla Model S</option>
+                        <option value="audi">Audi</option>
+                      </select>
+                    </div>
+                  </li>
                 </ul>
+                <div class="button">
+                  <button class="snapbutton btn-secondary btn">SNAP</button>
+                </div>
               </div>
             </nav>
 
@@ -75,6 +124,32 @@ class App extends Component {
                     <span data-feather="calendar" />
                     This week
                   </button>
+                </div>
+              </div>
+              <div className="photos">
+                <div className="photo">
+                  <Photo />
+                </div>
+                <div className="photo">
+                  <Photo />
+                </div>
+                <div className="photo">
+                  <Photo />
+                </div>
+                <div className="photo">
+                  <Photo />
+                </div>
+                <div className="photo">
+                  <Photo />
+                </div>
+                <div className="photo">
+                  <Photo />
+                </div>
+                <div className="photo">
+                  <Photo />
+                </div>
+                <div className="photo">
+                  <Photo />
                 </div>
               </div>
               <canvas
