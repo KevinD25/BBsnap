@@ -15,12 +15,12 @@ void setup() {
 
 void loop() {
   if (sendcode == 1) {
-    irsend.sendNEC(0xFF30CF, 32); // button1 code
+    irsend.sendNEC(0xFF30, 16); // button1 code
     delay(200);
   }
 
   else if (sendcode == 2) {
-    irsend.sendNEC(0x1FE40BF, 32); // button2 code
+    irsend.sendNEC(0xFF40, 16); // button2 code
     delay(200);
   }
 
