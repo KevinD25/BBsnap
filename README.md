@@ -13,4 +13,5 @@ Viktor Segers - Hardware
 
 ## Documentatie
 
-Leg hier de link naar de nuttige documentatie
+[Mockups](./doc/mockups)
+[]
