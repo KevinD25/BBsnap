@@ -1,5 +1,6 @@
 package be.eaict.blackboardsnapshotapp
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -17,6 +18,11 @@ class SnapActivity : AppCompatActivity() {
         setContentView(R.layout.activity_snap)
         val type = Typeface.createFromAsset(assets, "fonts/SigmarOne.ttf")
         btnSeePictures.typeface = type
+    }
+
+    fun OpenPictures(view:View){
+        val intent = Intent(this, PictureActivity::class.java)
+        startActivity(intent)
     }
 
 }
