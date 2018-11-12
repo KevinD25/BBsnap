@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="be.eaict.blackboardsnapshotapp.PictureActivity"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/colorPrimaryDark"
+    android:id="@+id/root_layout">
 
     <ListView
         android:id="@+id/ListviewPictures"
