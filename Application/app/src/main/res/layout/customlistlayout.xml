@@ -7,7 +7,7 @@
     android:background="@color/colorPrimary"
     tools:layout_editor_absoluteY="25dp">
 
-    <ImageView
+    <ImageButton
         android:id="@+id/imagePicture"
         android:layout_width="426px"
         android:layout_height="240px"
@@ -15,6 +15,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="7dp"
         android:layout_marginBottom="8dp"
+        android:adjustViewBounds="true"
+        android:background="@color/colorPrimary"
+        android:onClick="onClickImage"
         android:scaleType="fitCenter"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,9 +31,10 @@
         android:id="@+id/btnDownload"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="14dp"
         android:layout_marginBottom="8dp"
+        android:adjustViewBounds="true"
         android:background="@color/colorPrimary"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -59,29 +63,29 @@
         android:id="@+id/txtDatum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="148dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="32dp"
         android:text="Datum"
         android:textColor="@color/colorAccent"
         android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.994"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imagePicture"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtUur"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Uur"
         android:textColor="@color/colorAccent"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnInfo"
+        app:layout_constraintHorizontal_bias="0.518"
+        app:layout_constraintStart_toEndOf="@+id/imagePicture"
         app:layout_constraintTop_toBottomOf="@+id/txtDatum"
-        app:layout_constraintVertical_bias="0.214" />
+        app:layout_constraintVertical_bias="0.0" />
 </android.support.constraint.ConstraintLayout>

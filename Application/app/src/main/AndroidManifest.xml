@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".SnapActivity" />
-        <activity android:name=".PictureActivity"></activity>
+        <activity android:name=".PictureActivity" />
+        <activity android:name=".PictureviewActivity"></activity>
     </application>
 
 </manifest>

@@ -1,8 +1,8 @@
 package be.eaict.blackboardsnapshotapp
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -16,6 +16,8 @@ import be.eaict.blackboardsnapshotapp.Adapters.MyAdapter
 import kotlinx.android.synthetic.main.activity_picture.*
 
 class PictureActivity : AppCompatActivity() {
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,75 +35,79 @@ class PictureActivity : AppCompatActivity() {
         val adapter = MyAdapter(this, pictureList)
         ListviewPictures.adapter = adapter
 
+    }
+
+    fun createPopUp( view: View){
+
+
+        // Initialize a new instance of detailpopup window
+        val popupWindow = PopupWindow(
+                view, // Custom view to show in detailpopup window
+                LinearLayout.LayoutParams.WRAP_CONTENT, // Width of detailpopup window
+                LinearLayout.LayoutParams.WRAP_CONTENT // Window height
+        )
+
+        // Set an elevation for the detailpopup window
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            popupWindow.elevation = 10.0F
+        }
+
+
+        // If API level 23 or higher then execute the code
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            // Create a new slide animation for detailpopup window enter transition
+            val slideIn = Slide()
+            slideIn.slideEdge = Gravity.TOP
+            popupWindow.enterTransition = slideIn
+
+            // Slide animation for detailpopup window exit transition
+            val slideOut = Slide()
+            slideOut.slideEdge = Gravity.RIGHT
+            popupWindow.exitTransition = slideOut
+
+        }
 
 
 
+
+
+
+        popupWindow.isFocusable = true
+
+        // Set a dismiss listener for detailpopup window
+        popupWindow.setOnDismissListener {
+            Toast.makeText(applicationContext,"Popup closed",Toast.LENGTH_SHORT).show()
+            this.setRequestedOrientation(
+                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        }
+
+        // Finally, show the detailpopup window on app
+        TransitionManager.beginDelayedTransition(root_layout)
+        popupWindow.showAtLocation(
+                root_layout, // Location to display detailpopup window
+                Gravity.CENTER, // Exact position of layout to display detailpopup
+                0, // X offset
+                0 // Y offset
+        )
     }
 
     fun onClickInfo(view: View) {
+        val inflater:LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val layoutfile : View = inflater.inflate(R.layout.detailpopup,null)
+        val view2 = layoutfile
+        createPopUp(view2)
 
-            // Initialize a new layout inflater instance
-            val inflater:LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    }
 
-            // Inflate a custom view using layout inflater
-            val view = inflater.inflate(R.layout.popup,null)
+    fun onClickImage(view:View) {
+        /*val inflater:LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val layoutfile : View = inflater.inflate(R.layout.imagepopup,null)
+        val view2 : View = layoutfile
 
-            // Initialize a new instance of popup window
-            val popupWindow = PopupWindow(
-                    view, // Custom view to show in popup window
-                    LinearLayout.LayoutParams.WRAP_CONTENT, // Width of popup window
-                    LinearLayout.LayoutParams.WRAP_CONTENT // Window height
-            )
+        createPopUp(view, view2)*/
 
-            // Set an elevation for the popup window
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                popupWindow.elevation = 10.0F
-            }
-
-
-            // If API level 23 or higher then execute the code
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                // Create a new slide animation for popup window enter transition
-                val slideIn = Slide()
-                slideIn.slideEdge = Gravity.TOP
-                popupWindow.enterTransition = slideIn
-
-                // Slide animation for popup window exit transition
-                val slideOut = Slide()
-                slideOut.slideEdge = Gravity.RIGHT
-                popupWindow.exitTransition = slideOut
-
-            }
-
-            // Get the widgets reference from custom view
-            val tv = view.findViewById<TextView>(R.id.text_view)
-            val buttonPopup = view.findViewById<Button>(R.id.button_popup)
-
-            // Set click listener for popup window's text view
-            tv.setOnClickListener{
-                // Change the text color of popup window's text view
-                tv.setTextColor(Color.RED)
-            }
-
-            // Set a click listener for popup's button widget
-            buttonPopup.setOnClickListener{
-                // Dismiss the popup window
-                popupWindow.dismiss()
-            }
-
-            // Set a dismiss listener for popup window
-            popupWindow.setOnDismissListener {
-                Toast.makeText(applicationContext,"Popup closed",Toast.LENGTH_SHORT).show()
-            }
-
-            // Finally, show the popup window on app
-            TransitionManager.beginDelayedTransition(root_layout)
-            popupWindow.showAtLocation(
-                    root_layout, // Location to display popup window
-                    Gravity.CENTER, // Exact position of layout to display popup
-                    0, // X offset
-                    0 // Y offset
-            )
+        val intent = Intent(this, PictureviewActivity::class.java)
+        startActivity(intent)
 
     }
 }
