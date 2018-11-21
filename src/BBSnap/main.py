@@ -41,6 +41,11 @@ if __name__ == "__main__":
     pi.set_mode(INPUT, pigpio.INPUT);
     conn = connection.Connection()
 
+    ####### test for full stack
+    filename = cam.take_pic()
+    conn.upload_file(filename, UNIT_ID)
+    #######
+
     while (False):
         # wait for activity
         if pi.wait_for_edge(INPUT, pigpio.RISING_EDGE, 10):
