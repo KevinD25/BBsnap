@@ -1,8 +1,8 @@
 import requests
 
 class Connection:
-    #URL = "http://brabo2.ddns.net:555/photo"
-    URL = "http://localhost:5000/photo"
+    URL = "http://brabo2.ddns.net:555/photo"
+    #URL = "http://localhost:5000/photo"
 
     def upload_file(self, filename, id):
         files = {'file': (filename, open(filename, 'rb'))}

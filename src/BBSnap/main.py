@@ -7,6 +7,7 @@ import time
 import camera
 import connection
 
+UNIT_ID = 10
 
 # measure wavelength of square signal on pin gpio
 # input: gpio   number of input pin
@@ -34,13 +35,12 @@ def measure_W_length(gpio):
 
 if __name__ == "__main__":
     #TODO uncomment
-    #cam = camera.Cam()
+    cam = camera.Cam()
     pi = pigpio.pi()
     INPUT = 18
     pi.set_mode(INPUT, pigpio.INPUT);
     conn = connection.Connection()
 
-    conn.upload_file("./img/181112-140400.jpg")
     while (False):
         # wait for activity
         if pi.wait_for_edge(INPUT, pigpio.RISING_EDGE, 10):
@@ -50,7 +50,7 @@ if __name__ == "__main__":
             if ((length > 3100) and (length < 4100)):
                 #take photo
                 filename = cam.take_pic()
-                upload_file(filename)
+                conn.upload_file(filename, UNIT_ID)
             #close enough to 1200ms
             elif ((length > 1000) and (length < 1500)):
             #toggle disable
