@@ -7,44 +7,111 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://iot:jorenjamar@localhost/IOT'
 db = SQLAlchemy(app)
 
-class Photo(db.Model):
+class Foto(db.Model):
 	__tablename__ = 'Foto'
 	id = db.Column('id', db.Integer, primary_key = True)
-	lesid = db.Column('lesid', db.Integer)
+	naam = db.Column('naam', db.Unicode)
+	lesid = db.Column('lesid', db.Integer, db.ForeignKey('Les.id'))
+
+class Les(db.Model):
+	__tablename__ = 'Les'
+	id = db.Column('id', db.Integer, primary_key = True)
+	lokaalid = db.Column('lokaalid', db.Integer)
+	vakid = db.Column('vakid', db.Integer)
+	klasid = db.Column('vakid', db.Integer)
+	starttijd = db.Column('starttijd', db.DateTime)
+	eindtijd = db.Column('eindtijd', db.DateTime)
+	fotos = db.relationship('Foto', backref='foto', lazy=True)
+
+class Klas(db.Model):
+	__tablename__ = 'Klas'
+	id = db.Column('id', db.Integer, primary_key = True)
+	richtingid = db.Column('richtingid', db.Integer)
+	naam = db.Column('naam', db.Integer)
+
+class Lokaal(db.Model):
+	__tablename__ = 'Lokaal'
+	id = db.Column('id', db.Integer, primary_key = True)
+	naam = db.Column('naam', db.Unicode)
+	gebouw = db.Column('gebouw', db.Unicode)
+
+class Prof(db.Model):
+	__tablename__ = 'Prof'
+	id = db.Column('id', db.Integer, primary_key = True)
+	naam = db.Column('naam', db.Unicode)
+
+class Richting(db.Model):
+	__tablename__ = 'Richting'
+	id = db.Column('id', db.Integer, primary_key = True)
+	naam = db.Column('naam', db.Unicode)
+
+class Vak(db.Model):
+	__tablename__ = 'Vak'
+	id = db.Column('id', db.Integer, primary_key = True)
+	profid = db.Column('profid', db.Integer)
 	naam = db.Column('naam', db.Unicode)
 
 @app.route('/test')
 def test():
-	examples = Photo.query.all()
+	fotos = Foto.query.all()
+	lessen = Les.query.all()
+	klassen = Klas.query.all()
+	lokalen = Lokaal.query.all()
+	proffen = Prof.query.all()
+	richtingen = Richting.query.all()
+	vakken = Vak.query.all()
 
 	output = []
 
-	for ex in examples:
-		ex_data = {}
-		ex_data['id'] = ex.id
-		ex_data['lesid'] = ex.lesid
-		ex_data['naam'] = ex.naam
-		output.append(ex_data)
+	for foto in fotos:
+		foto_data = {}
+		foto_data['id'] = foto.id
+		foto_data['naam'] = foto.naam
+		foto_data['lesStartTijd'] = lessen[0].starttijd
+		foto_data['lesEindTijd'] = lessen[0].eindtijd
+		foto_data['lokaal'] = lokalen[0].naam
+		foto_data['lokaalGebouw'] = lokalen[0].gebouw
+		foto_data['vak'] = vakken[0].naam
+		foto_data['klas'] = klassen[0].naam
+		foto_data['prof'] = proffen[0].naam
+		foto_data['richting'] = richtingen[0].naam
 
-	return jsonify({'examples' : output})
+		output.append(foto_data)
+
+	return jsonify({'fotos' : output})
 
 @app.route('/photoInfo', methods=['GET'])
 def get_all_photosInfo():
-	examples = Photo.query.all()
+	fotos = Foto.query.all()
+	lessen = Les.query.all()
+	klassen = Klas.query.all()
+	lokalen = Lokaal.query.all()
+	proffen = Prof.query.all()
+	richtingen = Richting.query.all()
+	vakken = Vak.query.all()
+
 	output = []
 
-	for ex in examples:
-		ex_data = {}
-		ex_data['id'] = ex.id
-		ex_data['lesid'] = ex.lesid
-		ex_data['naam'] = ex.naam
-		output.append(ex_data)
+	for foto in fotos:
+		foto_data = {}
+		foto_data['id'] = foto.id
+		foto_data['naam'] = foto.naam
+		foto_data['lesStartTijd'] = lessen[0].starttijd
+		foto_data['lesEindTijd'] = lessen[0].eindtijd
+		foto_data['lokaal'] = lokalen[0].naam
+		foto_data['lokaalGebouw'] = lokalen[0].gebouw
+		foto_data['vak'] = vakken[0].naam
+		foto_data['klas'] = klassen[0].naam
+		foto_data['prof'] = proffen[0].naam
+		foto_data['richting'] = richtingen[0].naam
 
-	return jsonify({'examples' : output})
+		output.append(foto_data)
+
+	return jsonify({'fotos' : output})
 
 @app.route('/photoInfo/<photo_id>', methods=['GET'])
 def get_photoInfo():
-	examples = Photo.query.all()
+	examples = Foto.query.all()
 
 	output = []
 
