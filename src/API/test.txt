@@ -1,2 +1,0 @@
-testing git sparse checkout
-pull works, does push work?

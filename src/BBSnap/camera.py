@@ -1,18 +1,23 @@
 from picamera import PiCamera
-from time import sleep
+import time
 
 class Cam :
-    camera  #refference to picamera camera
-
     def __init__(self):
-        camera = PiCamera()
-        camera.resolution = (1920, 1080)
-        camera.framerate = 5
+        self.camera = PiCamera()
+        self.camera.resolution = (1920, 1080)
+        self.camera.framerate = 5
 
-    def takepic():
-        camera.start_preview()
-        sleep(3)
-        camera.capture("./test.jpg")
-        camera.stop_preview()
+    # takes a picture and writes it away to a file named yymmdd-HHMMSS.jpg
+    # returns: file name
+    def take_pic(self):
+        self.camera.start_preview()
+        time.sleep(3)
+        filename = time.strftime("./img/%y%m%d-%H%M%S.jpg");
+        self.camera.capture(filename)
+        self.camera.stop_preview()
+        return filename
 
+if( __name__ == "__main__"):
+    cam = Cam()
+    print("file written to " + cam.take_pic())
 
