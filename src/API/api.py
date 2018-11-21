@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
+
+PHOTO_ROOT = "./images/"
 
 app = Flask(__name__)
 
@@ -59,6 +62,19 @@ def get_photoInfo():
 
 @app.route('/photo', methods=['POST'])
 def create_photo():
+	print("create photo")
+	# get picture
+	print(request.files)
+	if ('' not in request.files):
+		# return error
+		print("file not in files")
+	file = request.files['']
+	filename = secure_filename(file.filename)
+
+	# save picture
+	file.save(PHOTO_ROOT + filename)
+
+	# return confirmation
 	return jsonify({'message': 'New photo added!'})
 
 @app.route('/photo/<photo_id>', methods=['DELETE'])
