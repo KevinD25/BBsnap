@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
+import os
 
 PHOTO_ROOT = "./images/"
 
@@ -65,14 +66,17 @@ def create_photo():
 	print("create photo")
 	# get picture
 	print(request.files)
-	if ('' not in request.files):
+	if not ('file' in request.files):
 		# return error
 		print("file not in files")
-	file = request.files['']
+		response = jsonify({'error': 'no file found'})
+	file = request.files['file']
 	filename = secure_filename(file.filename)
-
+	id = request.values['id']
+	id = secure_filename(id)
+	os.mkdir(PHOTO_ROOT + id)
 	# save picture
-	file.save(PHOTO_ROOT + filename)
+	file.save(PHOTO_ROOT + id + '/' + filename)
 
 	# return confirmation
 	return jsonify({'message': 'New photo added!'})
