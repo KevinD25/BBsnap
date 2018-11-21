@@ -13,5 +13,6 @@ Viktor Segers - Hardware
 
 ## Documentatie
 
-[Mockups](./doc/mockups)
-[]
+- [Mockups](./doc/mockups)
+- [Unused Arduino IR remote](./src/Controller)
+- [Mobile App]()
