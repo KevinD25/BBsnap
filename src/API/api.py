@@ -33,51 +33,106 @@ class Les(db.Model):
 	id = db.Column('id', db.Integer, primary_key = True)
 	lokaalid = db.Column('lokaalid', db.Integer, db.ForeignKey('Lokaal.id'))
 	vakid = db.Column('vakid', db.Integer, db.ForeignKey('Vak.id'))
-	klasid = db.Column('vakid', db.Integer, db.ForeignKey('Klas.id'))
+	klasid = db.Column('klasid', db.Integer, db.ForeignKey('Klas.id'))
 	starttijd = db.Column('starttijd', db.DateTime)
 	eindtijd = db.Column('eindtijd', db.DateTime)
 	fotos = db.relationship('Foto', back_populates='les', lazy='joined')
+	vak = db.relationship('Vak', back_populates='lessen')
+	klas = db.relationship('Klas', back_populates='lessen')
+	lokaal = db.relationship('Lokaal', back_populates='lessen')
 
 	def toDict(self, skip = ''):
 		ret = {}
 		ret['id'] = self.id
-		ret['lokaal'] = self.lokaalid
-		#ret['vak'] = self.vakid
-		ret['klas'] = self.klasid 
+		if not (skip == 'lokaal'):
+			ret['lokaal'] = self.lokaal.toDict()
+		else:
+			ret['lokaalid'] = self.lokaalid
+		if not (skip == 'vak'):
+			ret['vak'] = self.vak.toDict()
+		else:
+			ret['vakid'] = self.vakid
+		if not (skip == 'klas'):
+			ret['klas'] = self.klas.toDict()
+		else:
+			ret['klasid'] = self.klasid
 		ret['starttijd'] = self.starttijd
 		ret['eindtijd'] = self.eindtijd
-		#if not (skip == 'fotos'):
-		#	ret[''] = self.les.toDict('foto')
-		#else:
 		return ret
 
 class Klas(db.Model):
 	__tablename__ = 'Klas'
 	id = db.Column('id', db.Integer, primary_key = True)
-	richtingid = db.Column('richtingid', db.Integer)
+	richtingid = db.Column('richtingid', db.Integer, db.ForeignKey('Richting.id'))
 	naam = db.Column('naam', db.Integer)
+	lessen = db.relationship('Les', back_populates='klas', lazy="joined")
+	richting = db.relationship('Richting', back_populates='klassen')
+
+	def toDict(self, skip = ''):
+		ret = {}
+		ret['id'] = self.id
+		ret['naam'] = self.naam
+		if not (skip == "richting"):
+			ret['richting'] = self.richting.toDict()
+		else:
+			ret['richtingid'] = self.richtingid
+		return ret
 
 class Lokaal(db.Model):
 	__tablename__ = 'Lokaal'
 	id = db.Column('id', db.Integer, primary_key = True)
 	naam = db.Column('naam', db.Unicode)
 	gebouw = db.Column('gebouw', db.Unicode)
+	lessen = db.relationship('Les', back_populates='lokaal', lazy='joined')
+
+	def toDict(self, skip = ''):
+		ret = {}
+		ret['id'] = self.id
+		ret['naam'] = self.naam
+		ret['gebouw'] = self.gebouw
+		return ret
 
 class Prof(db.Model):
 	__tablename__ = 'Prof'
 	id = db.Column('id', db.Integer, primary_key = True)
 	naam = db.Column('naam', db.Unicode)
+	vakken = db.relationship('Vak', back_populates='prof', lazy = 'joined')
+
+	def toDict(self, skip = ''):
+		ret = {}
+		ret['id'] = self.id
+		ret['naam'] = self.naam
+		return ret
 
 class Richting(db.Model):
 	__tablename__ = 'Richting'
 	id = db.Column('id', db.Integer, primary_key = True)
 	naam = db.Column('naam', db.Unicode)
+	klassen = db.relationship('Klas', back_populates='richting', lazy = 'joined')
+
+	def toDict(self, skip = ''):
+		ret = {}
+		ret['id'] = self.id
+		ret['naam'] = self.naam
+		return ret
 
 class Vak(db.Model):
 	__tablename__ = 'Vak'
 	id = db.Column('id', db.Integer, primary_key = True)
-	profid = db.Column('profid', db.Integer)
+	profid = db.Column('profid', db.Integer, db.ForeignKey('Prof.id'))
 	naam = db.Column('naam', db.Unicode)
+	lessen = db.relationship('Les', back_populates='vak', lazy='joined')
+	prof = db.relationship('Prof', back_populates = 'vakken')
+
+	def toDict(self, skip = ''):
+		ret = {}
+		ret['id'] = self.id
+		ret['naam'] = self.naam
+		if not (skip == 'prof'):
+			ret['prof'] = self.prof.toDict()
+		else:
+			ret['profid'] = self.profid
+		return ret
 
 @app.route('/test')
 def test():
