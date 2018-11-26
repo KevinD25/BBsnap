@@ -33,14 +33,12 @@ def measure_W_length(gpio):
 
 
 if __name__ == "__main__":
-    #TODO uncomment
-    #cam = camera.Cam()
+    cam = camera.Cam()
     pi = pigpio.pi()
     INPUT = 18
     pi.set_mode(INPUT, pigpio.INPUT);
     conn = connection.Connection()
 
-    conn.upload_file("./img/181112-140400.jpg")
     while (False):
         # wait for activity
         if pi.wait_for_edge(INPUT, pigpio.RISING_EDGE, 10):
