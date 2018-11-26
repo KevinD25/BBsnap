@@ -16,16 +16,40 @@ class Foto(db.Model):
 	id = db.Column('id', db.Integer, primary_key = True)
 	naam = db.Column('naam', db.Unicode)
 	lesid = db.Column('lesid', db.Integer, db.ForeignKey('Les.id'))
+	les = db.relationship('Les', back_populates='fotos')
+
+	def toDict(self, skip = ''):
+		ret = {}
+		ret['id'] = self.id
+		ret['naam'] = self.naam
+		if not (skip == 'les'):
+			ret['les'] = self.les.toDict('fotos')
+		else:
+			ret['lesid'] = self.lesid
+		return ret
 
 class Les(db.Model):
 	__tablename__ = 'Les'
 	id = db.Column('id', db.Integer, primary_key = True)
-	lokaalid = db.Column('lokaalid', db.Integer)
-	vakid = db.Column('vakid', db.Integer)
-	klasid = db.Column('vakid', db.Integer)
+	lokaalid = db.Column('lokaalid', db.Integer, db.ForeignKey('Lokaal.id'))
+	vakid = db.Column('vakid', db.Integer, db.ForeignKey('Vak.id'))
+	klasid = db.Column('vakid', db.Integer, db.ForeignKey('Klas.id'))
 	starttijd = db.Column('starttijd', db.DateTime)
 	eindtijd = db.Column('eindtijd', db.DateTime)
-	fotos = db.relationship('Foto', backref='foto', lazy=True)
+	fotos = db.relationship('Foto', back_populates='les', lazy='joined')
+
+	def toDict(self, skip = ''):
+		ret = {}
+		ret['id'] = self.id
+		ret['lokaal'] = self.lokaalid
+		#ret['vak'] = self.vakid
+		ret['klas'] = self.klasid 
+		ret['starttijd'] = self.starttijd
+		ret['eindtijd'] = self.eindtijd
+		#if not (skip == 'fotos'):
+		#	ret[''] = self.les.toDict('foto')
+		#else:
+		return ret
 
 class Klas(db.Model):
 	__tablename__ = 'Klas'
@@ -65,22 +89,12 @@ def test():
 	richtingen = Richting.query.all()
 	vakken = Vak.query.all()
 
+	test = db.session.query(Foto, Les).filter(Foto.lesid == Les.id).all()
+
 	output = []
 
 	for foto in fotos:
-		foto_data = {}
-		foto_data['id'] = foto.id
-		foto_data['naam'] = foto.naam
-		foto_data['lesStartTijd'] = lessen[0].starttijd
-		foto_data['lesEindTijd'] = lessen[0].eindtijd
-		foto_data['lokaal'] = lokalen[0].naam
-		foto_data['lokaalGebouw'] = lokalen[0].gebouw
-		foto_data['vak'] = vakken[0].naam
-		foto_data['klas'] = klassen[0].naam
-		foto_data['prof'] = proffen[0].naam
-		foto_data['richting'] = richtingen[0].naam
-
-		output.append(foto_data)
+		output.append(foto.toDict())
 
 	return jsonify({'fotos' : output})
 
@@ -141,7 +155,7 @@ def create_photo():
 	filename = secure_filename(file.filename)
 	id = request.values['id']
 	id = secure_filename(id)
-	os.mkdir(PHOTO_ROOT + id)
+	#os.mkdir(PHOTO_ROOT + id)
 	# save picture
 	file.save(PHOTO_ROOT + id + '/' + filename)
 
