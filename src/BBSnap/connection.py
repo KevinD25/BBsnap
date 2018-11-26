@@ -5,7 +5,7 @@ class Connection:
     #URL = "http://localhost:5000/photo"
 
     def upload_file(self, filename, id):
-        files = {'file': (filename, open(filename, 'rb'))}
+        files = {'file': (filename, open('./img/' + filename, 'rb'))}
         req = requests.post(self.URL, files=files, data={'id': id})
 
 if (__name__ == "__main__"):

@@ -34,7 +34,6 @@ def measure_W_length(gpio):
 
 
 if __name__ == "__main__":
-    #TODO uncomment
     cam = camera.Cam()
     pi = pigpio.pi()
     INPUT = 18
