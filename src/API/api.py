@@ -145,20 +145,33 @@ def get_photoInfo():
 @app.route('/photo', methods=['POST'])
 def create_photo():
 	print("create photo")
-	# get picture
+
+	# get picture from request
 	print(request.files)
-	if not ('file' in request.files):
+	if not ('file' in request.files):	# incorrect naming
 		# return error
 		print("file not in files")
-		response = jsonify({'error': 'no file found'})
+		resp = jsonify({'error': 'no file found'})
+                resp.status_code = 400
+                return resp
 	file = request.files['file']
+
 	filename = secure_filename(file.filename)
 	id = request.values['id']
-	id = secure_filename(id)
-	#os.mkdir(PHOTO_ROOT + id)
+	id = secure_filename(id)		# id should be a number, but just to be sure
+	folder = PHOTO_ROOT + id
+	if not os.path.isdir(folder):		# if folder doesn't exist, make new
+		os.mkdir(PHOTO_ROOT + id)
+
 	# save picture
 	file.save(PHOTO_ROOT + id + '/' + filename)
 
+	#insert info into DB
+	foto = Foto()
+	foto.naam = filename
+	foto.cameraid = id
+	db.session.add(foto)
+	db.session.commit()
 	# return confirmation
 	return jsonify({'message': 'New photo added!'})
 
