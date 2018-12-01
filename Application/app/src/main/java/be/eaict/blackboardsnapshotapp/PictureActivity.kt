@@ -8,22 +8,35 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.transition.Slide
 import android.transition.TransitionManager
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import be.eaict.blackboardsnapshotapp.Adapters.MyAdapter
 import kotlinx.android.synthetic.main.activity_picture.*
+import okhttp3.*
+import org.jetbrains.anko.custom.async
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.longToast
+import org.jetbrains.anko.uiThread
+import java.io.IOException
+import java.net.URL
 
 class PictureActivity : AppCompatActivity() {
 
-
+    private val client = OkHttpClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_picture)
         this.setRequestedOrientation(
                 ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
+
+        // Two ways of calling API
+        // callAPI()
+        // run("APILINK")
 
         val pictureList : MutableList<String> = mutableListOf()
         pictureList.add(0, "item1")
@@ -109,5 +122,27 @@ class PictureActivity : AppCompatActivity() {
         val intent = Intent(this, PictureviewActivity::class.java)
         startActivity(intent)
 
+    }
+
+    fun callAPI(){  //Asynchronous
+        doAsync{
+            val result = URL("<api call>").readText()
+            uiThread{
+                Log.d("Request", result)
+                longToast("Request performed")
+            }
+        }
+
+    }
+
+    fun run(url: String) {
+        val request = Request.Builder()
+                .url(url)
+                .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {}
+            override fun onResponse(call: Call, response: Response) = println(response.body()?.string())
+        })
     }
 }

@@ -25,4 +25,9 @@ class SnapActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+
+    fun SendSnapCommand(){
+
+    }
+
 }
