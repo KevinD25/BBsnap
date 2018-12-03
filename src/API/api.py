@@ -17,15 +17,21 @@ class Foto(db.Model):
 	naam = db.Column('naam', db.Unicode)
 	lesid = db.Column('lesid', db.Integer, db.ForeignKey('Les.id'))
 	les = db.relationship('Les', back_populates='fotos')
+	cameraid = db.Column('cameraid', db.Integer, db.ForeignKey('Camera.id'))
+	camera = db.relationship('Camera', back_populates = 'fotos')
 
-	def toDict(self, skip = ''):
+	def toDict(self, skipLes = False, skipCamera = False):
 		ret = {}
 		ret['id'] = self.id
 		ret['naam'] = self.naam
-		if not (skip == 'les'):
-			ret['les'] = self.les.toDict('fotos')
+		if (skipLes == False):
+			ret['les'] = self.les.toDict()
 		else:
 			ret['lesid'] = self.lesid
+		if (skipCamera == False):
+			ret['camera'] = self.camera.toDict()
+		else:
+			ret['cameraid'] = self.cameraid
 		return ret
 
 class Les(db.Model):
@@ -41,18 +47,18 @@ class Les(db.Model):
 	klas = db.relationship('Klas', back_populates='lessen')
 	lokaal = db.relationship('Lokaal', back_populates='lessen')
 
-	def toDict(self, skip = ''):
+	def toDict(self, skipLokaal = False, skipVak = False, skipKlas = False):
 		ret = {}
 		ret['id'] = self.id
-		if not (skip == 'lokaal'):
+		if (skipLokaal == False):
 			ret['lokaal'] = self.lokaal.toDict()
 		else:
 			ret['lokaalid'] = self.lokaalid
-		if not (skip == 'vak'):
+		if (skipVak == False):
 			ret['vak'] = self.vak.toDict()
 		else:
 			ret['vakid'] = self.vakid
-		if not (skip == 'klas'):
+		if (skipKlas == False):
 			ret['klas'] = self.klas.toDict()
 		else:
 			ret['klasid'] = self.klasid
@@ -68,11 +74,11 @@ class Klas(db.Model):
 	lessen = db.relationship('Les', back_populates='klas', lazy="joined")
 	richting = db.relationship('Richting', back_populates='klassen')
 
-	def toDict(self, skip = ''):
+	def toDict(self, skipRichting = False):
 		ret = {}
 		ret['id'] = self.id
 		ret['naam'] = self.naam
-		if not (skip == "richting"):
+		if (skipRichting == False):
 			ret['richting'] = self.richting.toDict()
 		else:
 			ret['richtingid'] = self.richtingid
@@ -84,8 +90,9 @@ class Lokaal(db.Model):
 	naam = db.Column('naam', db.Unicode)
 	gebouw = db.Column('gebouw', db.Unicode)
 	lessen = db.relationship('Les', back_populates='lokaal', lazy='joined')
+	cameras = db.relationship('Camera', back_populates='lokaal', lazy='joined')
 
-	def toDict(self, skip = ''):
+	def toDict(self):
 		ret = {}
 		ret['id'] = self.id
 		ret['naam'] = self.naam
@@ -98,7 +105,7 @@ class Prof(db.Model):
 	naam = db.Column('naam', db.Unicode)
 	vakken = db.relationship('Vak', back_populates='prof', lazy = 'joined')
 
-	def toDict(self, skip = ''):
+	def toDict(self):
 		ret = {}
 		ret['id'] = self.id
 		ret['naam'] = self.naam
@@ -110,7 +117,7 @@ class Richting(db.Model):
 	naam = db.Column('naam', db.Unicode)
 	klassen = db.relationship('Klas', back_populates='richting', lazy = 'joined')
 
-	def toDict(self, skip = ''):
+	def toDict(self):
 		ret = {}
 		ret['id'] = self.id
 		ret['naam'] = self.naam
@@ -124,14 +131,32 @@ class Vak(db.Model):
 	lessen = db.relationship('Les', back_populates='vak', lazy='joined')
 	prof = db.relationship('Prof', back_populates = 'vakken')
 
-	def toDict(self, skip = ''):
+	def toDict(self, skipProf = False):
 		ret = {}
 		ret['id'] = self.id
 		ret['naam'] = self.naam
-		if not (skip == 'prof'):
+		if (skipProf == False):
 			ret['prof'] = self.prof.toDict()
 		else:
 			ret['profid'] = self.profid
+		return ret
+
+class Camera(db.Model):
+	__tablename__ = 'Camera'
+	id = db.Column('id', db.Integer, primary_key=True)
+	lokaalid = db.Column('lokaalid', db.Integer, db.ForeignKey('Lokaal.id'))
+	ip = db.Column('ip', db.Unicode)
+	lokaal = db.relationship('Lokaal', back_populates = 'cameras')
+	fotos = db.relationship('Foto', back_populates = 'camera', lazy='joined')
+
+	def toDict(self, skipLokaal = False):
+		ret = {}
+		ret['id'] = self.id
+		if (skipLokaal == False):
+			ret['lokaal'] = self.lokaal.toDict()
+		else:
+			ret['lokaalid'] = self.lokaalid
+		ret['ip'] = self.ip
 		return ret
 
 @app.route('/test')
@@ -156,44 +181,22 @@ def test():
 @app.route('/photoInfo', methods=['GET'])
 def get_all_photosInfo():
 	fotos = Foto.query.all()
-	lessen = Les.query.all()
-	klassen = Klas.query.all()
-	lokalen = Lokaal.query.all()
-	proffen = Prof.query.all()
-	richtingen = Richting.query.all()
-	vakken = Vak.query.all()
 
 	output = []
 
 	for foto in fotos:
-		foto_data = {}
-		foto_data['id'] = foto.id
-		foto_data['naam'] = foto.naam
-		foto_data['lesStartTijd'] = lessen[0].starttijd
-		foto_data['lesEindTijd'] = lessen[0].eindtijd
-		foto_data['lokaal'] = lokalen[0].naam
-		foto_data['lokaalGebouw'] = lokalen[0].gebouw
-		foto_data['vak'] = vakken[0].naam
-		foto_data['klas'] = klassen[0].naam
-		foto_data['prof'] = proffen[0].naam
-		foto_data['richting'] = richtingen[0].naam
-
-		output.append(foto_data)
+		output.append(foto.toDict())
 
 	return jsonify({'fotos' : output})
 
 @app.route('/photoInfo/<photo_id>', methods=['GET'])
-def get_photoInfo():
-	examples = Foto.query.all()
+def get_photoInfo(photo_id):
+	foto = Foto.query.filter_by(id = photo_id).first()
 
-	output = []
+	if not foto:
+		return jsonify({'message' : 'no photo found'})
 
-	for ex in examples:
-		ex_data = {}
-		ex_data['id'] = ex.id
-		ex_data['lesid'] = ex.lesid
-		ex_data['naam'] = ex.naam
-		output.append(ex_data)
+	output = foto.toDict()
 
 	return jsonify({'examples' : output})
 
@@ -207,8 +210,8 @@ def create_photo():
 		# return error
 		print("file not in files")
 		resp = jsonify({'error': 'no file found'})
-                resp.status_code = 400
-                return resp
+		resp.status_code = 400
+		return resp
 	file = request.files['file']
 
 	filename = secure_filename(file.filename)
@@ -224,7 +227,8 @@ def create_photo():
 	#insert info into DB
 	foto = Foto()
 	foto.naam = filename
-	foto.cameraid = id
+	foto.id = id
+	foto.lesid = 1
 	db.session.add(foto)
 	db.session.commit()
 	# return confirmation
