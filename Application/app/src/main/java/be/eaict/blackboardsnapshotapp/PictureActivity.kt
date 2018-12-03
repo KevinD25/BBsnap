@@ -12,20 +12,22 @@ import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.*
+import android.widget.LinearLayout
+import android.widget.PopupWindow
+import android.widget.Toast
 import be.eaict.blackboardsnapshotapp.Adapters.MyAdapter
+import com.beust.klaxon.JsonObject
+import com.beust.klaxon.Parser
 import kotlinx.android.synthetic.main.activity_picture.*
-import okhttp3.*
-import org.jetbrains.anko.custom.async
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.uiThread
-import java.io.IOException
 import java.net.URL
 
 class PictureActivity : AppCompatActivity() {
 
-    private val client = OkHttpClient()
+    private lateinit var result: String
+    private lateinit  var json: JsonObject
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +37,8 @@ class PictureActivity : AppCompatActivity() {
 
 
         // Two ways of calling API
-        // callAPI()
-        // run("APILINK")
+        callAPI()
+        //run("http://brabo2.ddns.net:555/photoInfo")
 
         val pictureList : MutableList<String> = mutableListOf()
         pictureList.add(0, "item1")
@@ -109,6 +111,7 @@ class PictureActivity : AppCompatActivity() {
         val layoutfile : View = inflater.inflate(R.layout.detailpopup,null)
         val view2 = layoutfile
         createPopUp(view2)
+        callAPI()
 
     }
 
@@ -124,25 +127,30 @@ class PictureActivity : AppCompatActivity() {
 
     }
 
+    fun fillObject(){
+        
+    }
+
     fun callAPI(){  //Asynchronous
+
+        //result = URL("http://brabo2.ddns.net:555/photoInfo").readText()
+
+
         doAsync{
-            val result = URL("<api call>").readText()
+            result = URL("http://brabo2.ddns.net:555/photoInfo").readText()
+
             uiThread{
                 Log.d("Request", result)
                 longToast("Request performed")
+
+                val parser: Parser = Parser()
+                val stringBuilder: StringBuilder = StringBuilder(result)
+                json = parser.parse(stringBuilder) as JsonObject
+
+                Log.d("JSONDATA", json.toString())
+
             }
         }
 
-    }
-
-    fun run(url: String) {
-        val request = Request.Builder()
-                .url(url)
-                .build()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {}
-            override fun onResponse(call: Call, response: Response) = println(response.body()?.string())
-        })
     }
 }

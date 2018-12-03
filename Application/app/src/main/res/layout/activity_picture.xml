@@ -8,6 +8,7 @@
     android:background="@color/colorPrimaryDark"
     android:id="@+id/root_layout">
 
+
     <ListView
         android:id="@+id/ListviewPictures"
         android:layout_width="match_parent"
