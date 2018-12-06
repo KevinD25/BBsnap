@@ -22,27 +22,6 @@ class Dashboard extends Component {
           <div className="photo">
             <Photo />
           </div>
-          <div className="photo">
-            <Photo />
-          </div>
-          <div className="photo">
-            <Photo />
-          </div>
-          <div className="photo">
-            <Photo />
-          </div>
-          <div className="photo">
-            <Photo />
-          </div>
-          <div className="photo">
-            <Photo />
-          </div>
-          <div className="photo">
-            <Photo />
-          </div>
-          <div className="photo">
-            <Photo />
-          </div>
         </div>
         <canvas class="my-4 w-100" id="myChart" width="900" height="380" />
       </main>
