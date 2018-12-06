@@ -16,15 +16,18 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.Toast
 import be.eaict.blackboardsnapshotapp.Adapters.MyAdapter
+import be.eaict.blackboardsnapshotapp.Objects.*
 import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Parser
+import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_picture.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.uiThread
 import java.net.URL
 
-class PictureActivity : AppCompatActivity() {
+
+abstract class PictureActivity : AppCompatActivity() {
 
     private lateinit var result: String
     private lateinit  var json: JsonObject
@@ -128,7 +131,15 @@ class PictureActivity : AppCompatActivity() {
     }
 
     fun fillObject(){
-        
+        var lijst : DataFile
+        var foto : Foto
+        var camera : Camera
+        var les : Les
+        var klas : Klas
+        var vak : Vak
+        var richting : Richting
+        var prof : Prof
+
     }
 
     fun callAPI(){  //Asynchronous
@@ -137,7 +148,7 @@ class PictureActivity : AppCompatActivity() {
 
 
         doAsync{
-            result = URL("http://brabo2.ddns.net:555/photoInfo").readText()
+            result = URL("http://brabo2.ddns.net:555/photo").readText()
 
             uiThread{
                 Log.d("Request", result)
@@ -147,7 +158,10 @@ class PictureActivity : AppCompatActivity() {
                 val stringBuilder: StringBuilder = StringBuilder(result)
                 json = parser.parse(stringBuilder) as JsonObject
 
+                val gson = GsonBuilder().create()
+                val dataFile = gson.fromJson(result, DataFile::class.java)
                 Log.d("JSONDATA", json.toString())
+                println(dataFile.toString())
 
             }
         }
