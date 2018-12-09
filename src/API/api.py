@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 import os
+import paho.mqtt.publish as publish
 
 PHOTO_ROOT = "./images/"
 
@@ -276,6 +277,8 @@ def take_photo():
 
 	if studnr is None:
 		resp = jsonify({'error': 'no student number'})
+		resp.status_code = 400
+		return resp
 	else:
                 # TODO:
 		# get current classroom of student number
@@ -288,8 +291,9 @@ def take_photo():
 		CameraId = 10
 
 		# send command to camera
+		publish.single(str(CameraId), b'photo', hostname = "localhost")
 
-	return resp
+		return jsonify({'reply': 'request sent'})
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')
