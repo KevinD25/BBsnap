@@ -13,7 +13,8 @@ def on_message(client, userdata, msg):
     print("message:")
     print(str(msg.topic)+" "+str(msg.payload))
     if msg.payload == b'photo':
-        subprocess.Popen('./takePicture.py', shell=True)
+        print("taking pic")
+        #subprocess.Popen('./takePicture.py', shell=True)
     elif msg.payload == b'toggle':
         toggle_disable()
 
