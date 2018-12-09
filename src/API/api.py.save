@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 import os
@@ -242,54 +242,12 @@ def create_photo():
 	return jsonify({'message': 'New photo added!'})
 
 @app.route('/photo/<photo_id>', methods=['DELETE'])
-def delete_photo(photo_id):
-	foto = Foto.query.filter_by(id = photo_id).first()
+def delete_photo():
+	return ''
 
-	if not foto:
-		return jsonify({'message' : 'no photo found'})
-
-	directory =  PHOTO_ROOT + str(foto.cameraid) + "/" + foto.naam
-
-	if os.path.exists(directory):
-		os.remove(directory)
-	else:
-		return jsonify({'message' : 'no photo path found'})
-
-	db.session.delete(foto)
-	db.session.commit()
-
-	return jsonify({'message' : 'foto deleted'})
-
-@app.route('/photo/getphoto/<camera_id>/<photo_naam>', methods=['GET'])
-def get_image(camera_id, photo_naam):
-	directory = PHOTO_ROOT + camera_id + "/"
-	return send_from_directory(directory, photo_naam , as_attachment=True)
-
-
-@app.route('/takephoto/', methods=['POST'])
-def take_photo():
-	studnr = None
-	if (request.is_json):
-		studnr = request.json['studnr']
-	else:
-		studnr = request.values['studnr']
-
-	if studnr is None:
-		resp = jsonify({'error': 'no student number'})
-	else:
-                # TODO:
-		# get current classroom of student number
-		# dummy:
-		LokaalId = 1
-
-		# TODO:
-		# get camera at classroom
-		# dummy:
-		CameraId = 10
-
-		# send command to camera
-
-	return resp
+@app.route('/photo/getphoto/<camera_id>/<photo_name>', methods=['GET'])
+def get_image(camera_id, photo_name):
+	return ''
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')
