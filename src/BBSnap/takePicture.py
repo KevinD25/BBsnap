@@ -2,8 +2,7 @@
 
 import camera
 import connection
-
-UNIT_ID = 10    # device ID to be used in database calls
+from BBS_Config import *
 
 def disabled():
     return false
