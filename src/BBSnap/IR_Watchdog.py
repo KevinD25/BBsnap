@@ -2,12 +2,9 @@
 
 import pigpio
 import math
-import os
 import time
-import camera
-import connection
+import subprocess
 
-UNIT_ID = 10    # device ID to be used in database calls
 LED_PIN = 17    # pin of the enable/disable led, also stores enable/disable state
 INPUT = 18      # pin of IR receiver
 
@@ -33,38 +30,18 @@ def measure_W_length(gpio):
     avg = avg / len(deltaBuffer)
     return avg
 
-def disabled():
-    return false
-
 def take_picture():
     print("taking picture")
-    if ( disabled() ):
-        # blink disable led
-        for i in range(10):
-            pi.write(LED_PIN, not pi.read(LED_PIN))
-            time.sleep(0.25)
-            continue # skip to next while
-    else:
-        # actually take picture
-        filename = cam.take_pic()
-        conn.upload_file(filename, UNIT_ID)
+    subprocess.Popen('./takePicture.py', shell=True)
 
+def toggle_disable():
+    print("toggled disable test")
 
 if __name__ == "__main__":
-    cam = camera.Cam()
     pi = pigpio.pi()
     pi.set_mode(INPUT, pigpio.INPUT)
-    pi.set_mode(LED_PIN, pigpio.OUTPUT)
-    pi.write(LED_PIN, 0)
-    conn = connection.Connection()
 
-    ####### test for full transmission part
-    filename = cam.take_pic()
-    conn.upload_file(filename, UNIT_ID)
-    while (False):
-    #######
-    #
-    #while (False):
+    while (True):
         # wait for activity
         if pi.wait_for_edge(INPUT, pigpio.RISING_EDGE, 10):
             length = measure_W_length(INPUT)
@@ -74,10 +51,7 @@ if __name__ == "__main__":
                 take_picture();
             #close enough to 1200ms
             elif ((length > 1000) and (length < 1500)):
-                #toggle disable
-                print("disable/enable")
-                # toggle led
-                pi.write(LED_PIN, not pi.read(LED_PIN))
+                toggle_disable
             #else signal is unimportant, do nothing
             time.sleep(1)
         else:
