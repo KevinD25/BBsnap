@@ -238,6 +238,30 @@ def create_photo():
 def delete_photo():
 	return ''
 
+@app.route('/takephoto/', methods=['POST'])
+def take_photo():
+	studnr = None
+	if (request.is_json):
+		studnr = request.json['studnr']
+	else:
+		studnr = request.values['studnr']
+
+	if studnr is None:
+		resp = jsonify({'error': 'no student number'})
+	else:
+                # TODO:
+		# get current classroom of student number
+		# dummy:
+		LokaalId = 1
+
+		# TODO:
+		# get camera at classroom
+		# dummy:
+		CameraId = 10
+
+		# send command to camera
+
+	return resp
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')
