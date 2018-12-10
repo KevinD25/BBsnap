@@ -1,12 +1,15 @@
 #!/usr/bin/python3
 from flask import Flask, request, jsonify, send_from_directory, send_file
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import os
 
 PHOTO_ROOT = "./images/"
 
 app = Flask(__name__)
+
+CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://iot:jorenjamar@localhost/IOT'
 db = SQLAlchemy(app)
