@@ -30,7 +30,7 @@ import java.net.URL
 class PictureActivity : AppCompatActivity() {
 
     private lateinit var result: String
-    private lateinit  var json: JsonObject
+    private lateinit var json: JsonObject
     private lateinit var dataFile : DataFile
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,8 +47,8 @@ class PictureActivity : AppCompatActivity() {
         val pictureList : MutableList<String> = mutableListOf()
         pictureList.add(0, "item1")
         pictureList.add(1, "item2")
-        pictureList.add(1, "item3")
-        pictureList.add(1, "item4")
+        pictureList.add(2, "item3")
+        pictureList.add(3, "item4")
 
 
         val adapter = MyAdapter(this, pictureList)
@@ -129,24 +129,6 @@ class PictureActivity : AppCompatActivity() {
         val intent = Intent(this, PictureviewActivity::class.java)
         startActivity(intent)
 
-    }
-
-    fun fillObject(){
-        var lijst : DataFile
-        var foto : Foto
-        var camera : Camera
-        var les : Les
-        var klas : Klas
-        var vak : Vak
-        var richting : Richting
-        var prof : Prof
-
-
-        if (dataFile == null) {
-
-        }else{
-            
-        }
     }
 
     fun callAPI(){  //Asynchronous

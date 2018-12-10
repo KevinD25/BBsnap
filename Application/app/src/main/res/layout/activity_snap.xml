@@ -33,6 +33,7 @@
             android:background="@drawable/customsnapbutton"
             android:elevation="10dp"
             android:gravity="center"
+            android:onClick="sendSnapCommand"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
