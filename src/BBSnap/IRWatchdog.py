@@ -2,14 +2,17 @@
 
 import pigpio
 import math
-import os
 import time
-import camera
-import connection
+import subprocess
+from BBS_Config import *
 
-UNIT_ID = 10    # device ID to be used in database calls
-LED_PIN = 17    # pin of the enable/disable led, also stores enable/disable state
-INPUT = 18      # pin of IR receiver
+def toggle_disable():
+    if(os.path.isfile('./DISABLE')):
+        print("is a file")
+        os.remove('./DISABLE')
+    else:
+        print("is not file")
+        open('./DISABLE', 'w').close()
 
 # measure wavelength of square signal on pin gpio
 # input: gpio   number of input pin
@@ -33,46 +36,25 @@ def measure_W_length(gpio):
     avg = avg / len(deltaBuffer)
     return avg
 
-
+def take_picture():
+    print("taking picture")
+    subprocess.Popen('./takePicture.py', shell=True)
 
 if __name__ == "__main__":
-    cam = camera.Cam()
     pi = pigpio.pi()
     pi.set_mode(INPUT, pigpio.INPUT)
-    pi.set_mode(LED_PIN, pigpio.OUTPUT)
-    pi.write(LED_PIN, 0)
-    conn = connection.Connection()
 
-    ####### test for full transmission part
-    filename = cam.take_pic()
-    conn.upload_file(filename, UNIT_ID)
-    while (false):
-    #######
-    #
-    #while (False):
+    while (True):
         # wait for activity
         if pi.wait_for_edge(INPUT, pigpio.RISING_EDGE, 10):
             length = measure_W_length(INPUT)
 
             #if average wavelength is close enough to 3700ms
             if ((length > 3100) and (length < 4100)):
-                print("taking picture")
-                if( pi.read(LED_PIN) ):
-                    # if disble is true:
-                    # blink disable led
-                    for i in range(10):
-                        pi.write(LED_PIN, not pi.read(LED_PIN))
-                        time.sleep(0.25)
-                    continue # skip to next while
-                # actually take picture
-                filename = cam.take_pic()
-                conn.upload_file(filename, UNIT_ID)
+                take_picture()
             #close enough to 1200ms
             elif ((length > 1000) and (length < 1500)):
-            #toggle disable
-                print("disable/enable")
-                # toggle led
-                pi.write(LED_PIN, not pi.read(LED_PIN))
+                toggle_disable()
             #else signal is unimportant, do nothing
             time.sleep(1)
         else:
