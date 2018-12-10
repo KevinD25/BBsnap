@@ -178,7 +178,7 @@ def test():
 
 	return jsonify({'fotos' : output})
 
-@app.route('/photo', methods=['GET'])
+@app.route('/photoInfo', methods=['GET'])
 def get_all_photosInfo():
 	fotos = Foto.query.all()
 
@@ -189,7 +189,7 @@ def get_all_photosInfo():
 
 	return jsonify({'fotos' : output})
 
-@app.route('/photo/<photo_id>', methods=['GET'])
+@app.route('/photoInfo/<photo_id>', methods=['GET'])
 def get_photoInfo(photo_id):
 	foto = Foto.query.filter_by(id = photo_id).first()
 
@@ -265,10 +265,66 @@ def get_image(camera_id, photo_naam):
 	directory = PHOTO_ROOT + camera_id + "/" + photo_naam
 	return send_file(directory)
 
-@app.route('/photo/downloadphoto/<camera_id>/<photo_naam>', methods=['GET'])
-def get_image_download(camera_id, photo_naam):
-        directory = PHOTO_ROOT + camera_id + "/"
-        return send_from_directory(directory, photo_naam, as_attachment=True)
+@app.route('/photo/getphoto/<camera_id>/<photo_naam>/download', methods = ['GET'])
+def get_test_file(  GNU nano 2.7.4                                File: api.py                                 Modified
+
+                return jsonify({'message' : 'no photo found'})
+
+        directory =  PHOTO_ROOT + str(foto.cameraid) + "/" + foto.naam
+
+        if os.path.exists(directory):
+                os.remove(directory)
+        else:
+                return jsonify({'message' : 'no photo path found'})
+
+        db.session.delete(foto)
+        db.session.commit()
+
+        return jsonify({'message' : 'foto deleted'})
+
+@app.route('/photo/getphoto/<camera_id>/<photo_naam>', methods=['GET'])
+def get_image(camera_id, photo_naam):
+        directory = PHOTO_ROOT + camera_id + "/" + photo_naam
+        return send_file(directory)
+
+@app.route('/photo/getphoto/<camera_id>/<photo_naam>/download', methods = ['GET'])
+def get_test_file():
+        return send_file(PHOTO_ROOT + "10/181203-141646.jpg")
+
+
+if __name__ == '__main__':
+        app.run(host='0.0.0.0')
+
+# tutorial die kan bekeken worden: https://www.youtube.com/watch?v=WxGBoY5iNXY
+# sqlalchemy tutorial: https://www.youtube.com/watch?v=Tu4vRU4lt6k
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+):
+	return send_file(PHOTO_ROOT + "10/181203-141646.jpg")
+
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')
