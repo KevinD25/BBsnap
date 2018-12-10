@@ -27,10 +27,11 @@ import org.jetbrains.anko.uiThread
 import java.net.URL
 
 
-abstract class PictureActivity : AppCompatActivity() {
+class PictureActivity : AppCompatActivity() {
 
     private lateinit var result: String
     private lateinit  var json: JsonObject
+    private lateinit var dataFile : DataFile
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -140,6 +141,12 @@ abstract class PictureActivity : AppCompatActivity() {
         var richting : Richting
         var prof : Prof
 
+
+        if (dataFile == null) {
+
+        }else{
+            
+        }
     }
 
     fun callAPI(){  //Asynchronous
@@ -159,10 +166,10 @@ abstract class PictureActivity : AppCompatActivity() {
                 json = parser.parse(stringBuilder) as JsonObject
 
                 val gson = GsonBuilder().create()
-                val dataFile = gson.fromJson(result, DataFile::class.java)
+                dataFile = gson.fromJson(result, DataFile::class.java)
                 Log.d("JSONDATA", json.toString())
                 println(dataFile.toString())
-
+                println(dataFile.fotos[0].camera.ip)
             }
         }
 
