@@ -153,6 +153,7 @@ class Camera(db.Model):
 	ip = db.Column('ip', db.Unicode)
 	lokaal = db.relationship('Lokaal', back_populates = 'cameras')
 	fotos = db.relationship('Foto', back_populates = 'camera', lazy='joined')
+	enabled = db.Column('enabled', db.Boolean)
 
 	def toDict(self, skipLokaal = False):
 		ret = {}
@@ -162,6 +163,7 @@ class Camera(db.Model):
 		else:
 			ret['lokaalid'] = self.lokaalid
 		ret['ip'] = self.ip
+		ret['enabled'] = self.enabled
 		return ret
 
 @app.route('/test')
@@ -307,6 +309,18 @@ def take_photo():
 @app.route('/disablephoto/<camera_id>', methods=['POST'])
 def disable_photo(camera_id):
 	return jsonify ({'message': 'camera disabled'})
+
+@app.route('/camera/<camera_id>/enabled', methods=['GET'])
+def status_camera(camera_id):
+	camera = Camera.query.filter_by(id = camera_id).first()
+
+	if not camera:
+		return jsonify({'message' : 'no camera found'})
+
+	output = camera.enabled
+
+	return jsonify({'enabled' : output})
+
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')
