@@ -13,9 +13,9 @@ class Cam :
         self.camera.start_preview()
         time.sleep(3)
         name = time.strftime("%y%m%d-%H%M%S.jpg");
-        self.camera.capture('./img/' + filename)
+        self.camera.capture('./img/' + name)
         self.camera.stop_preview()
-        return filename
+        return name
 
 if( __name__ == "__main__"):
     cam = Cam()
