@@ -29,9 +29,9 @@ import java.net.URL
 
 class PictureActivity : AppCompatActivity() {
 
-    private lateinit var result: String
-    private lateinit var json: JsonObject
-    private lateinit var dataFile : DataFile
+
+    val repo = Repository()
+    lateinit var fotos : ArrayList<Foto>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,18 +40,18 @@ class PictureActivity : AppCompatActivity() {
                 ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
 
-        // Two ways of calling API
-        callAPI()
-        //run("http://brabo2.ddns.net:555/photoInfo")
+        repo.getInstance()
 
-        val pictureList : MutableList<String> = mutableListOf()
+
+
+        /*val pictureList : MutableList<String> = mutableListOf()
         pictureList.add(0, "item1")
         pictureList.add(1, "item2")
         pictureList.add(2, "item3")
-        pictureList.add(3, "item4")
+        pictureList.add(3, "item4")*/
 
-
-        val adapter = MyAdapter(this, pictureList)
+        //fotos = intent.getArray TODO GET FOTOS FROM INTENT TO PASS TO ADAPTER
+        val adapter = MyAdapter(this, repo.getPhotos())
         ListviewPictures.adapter = adapter
 
     }
@@ -115,7 +115,6 @@ class PictureActivity : AppCompatActivity() {
         val layoutfile : View = inflater.inflate(R.layout.detailpopup,null)
         val view2 = layoutfile
         createPopUp(view2)
-        callAPI()
 
     }
 
@@ -131,29 +130,9 @@ class PictureActivity : AppCompatActivity() {
 
     }
 
-    fun callAPI(){  //Asynchronous
-
-        //result = URL("http://brabo2.ddns.net:555/photoInfo").readText()
 
 
-        doAsync{
-            result = URL("http://brabo2.ddns.net:555/photo").readText()
-
-            uiThread{
-                Log.d("Request", result)
-                longToast("Request performed")
-
-                val parser: Parser = Parser()
-                val stringBuilder: StringBuilder = StringBuilder(result)
-                json = parser.parse(stringBuilder) as JsonObject
-
-                val gson = GsonBuilder().create()
-                dataFile = gson.fromJson(result, DataFile::class.java)
-                Log.d("JSONDATA", json.toString())
-                println(dataFile.toString())
-                println(dataFile.fotos[0].camera.ip)
-            }
-        }
+    fun populateList(){
 
     }
 }
