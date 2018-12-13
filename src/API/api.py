@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import os
+import paho.mqtt.publish as publish
 
 PHOTO_ROOT = "./images/"
 
@@ -299,6 +300,7 @@ def take_photo():
 		CameraId = 10
 
 		# send command to camera
+		publish.single(str(CameraId), b'photo', hostname = "localhost")
 
 		return jsonify({'reply': 'request sent'})
 
