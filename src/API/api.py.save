@@ -1,12 +1,15 @@
 #!/usr/bin/python3
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory, send_file
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import os
 
 PHOTO_ROOT = "./images/"
 
 app = Flask(__name__)
+
+CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://iot:jorenjamar@localhost/IOT'
 db = SQLAlchemy(app)
@@ -114,7 +117,7 @@ class Prof(db.Model):
 class Richting(db.Model):
 	__tablename__ = 'Richting'
 	id = db.Column('id', db.Integer, primary_key = True)
-	naam = db.Column('naam', db.Unicode)
+console.log("de data is: " + this.state.items);	naam = db.Column('naam', db.Unicode)
 	klassen = db.relationship('Klas', back_populates='richting', lazy = 'joined')
 
 	def toDict(self):
@@ -178,7 +181,7 @@ def test():
 
 	return jsonify({'fotos' : output})
 
-@app.route('/photoInfo', methods=['GET'])
+@app.route('/photo', methods=['GET'])
 def get_all_photosInfo():
 	fotos = Foto.query.all()
 
@@ -189,7 +192,7 @@ def get_all_photosInfo():
 
 	return jsonify({'fotos' : output})
 
-@app.route('/photoInfo/<photo_id>', methods=['GET'])
+@app.route('/photo/<photo_id>', methods=['GET'])
 def get_photoInfo(photo_id):
 	foto = Foto.query.filter_by(id = photo_id).first()
 
@@ -242,12 +245,60 @@ def create_photo():
 	return jsonify({'message': 'New photo added!'})
 
 @app.route('/photo/<photo_id>', methods=['DELETE'])
-def delete_photo():
-	return ''
+def delete_photo(photo_id):
+	foto = Foto.query.filter_by(id = photo_id).first()
 
-@app.route('/photo/getphoto/<camera_id>/<photo_name>', methods=['GET'])
-def get_image(camera_id, photo_name):
-	return ''
+	if not foto:
+		return jsonify({'message' : 'no photo found'})
+
+	directory =  PHOTO_ROOT + str(foto.cameraid) + "/" + foto.naam
+
+	if os.path.exists(directory):
+		os.remove(directory)
+	else:
+		return jsonify({'message' : 'no photo path found'})
+
+	db.session.delete(foto)
+	db.session.commit()
+
+	return jsonify({'message' : 'foto deleted'})
+
+@app.route('/photo/getphoto/<camera_id>/<photo_naam>', methods=['GET'])
+def get_image(camera_id, photo_naam):
+	directory = PHOTO_ROOT + camera_id + "/" + photo_naam
+	return send_file(directory)
+
+@app.route('/photo/downloadphoto/<camera_id>/<photo_naam>', methods=['GET'])
+def get_image_download(camera_id, photo_naam):
+        directory = PHOTO_ROOT + camera_id + "/"
+        return send_from_directory(directory, photo_naam, as_attachment=True)
+
+@app.route('/takephoto/', methods=['POST'])
+def take_photo():
+	studnr = None
+	if (request.is_json):
+		studnr = request.json['studnr']
+	else:
+		studnr = request.values['studnr']
+
+	if studnr is None:
+		resp = jsonify({'error': 'no student number'})
+		resp.status_code = 400
+		return resp
+	else:
+                # TODO:
+		# get current classroom of student number
+		# dummy:
+		LokaalId = 1
+
+		# TODO:
+		# get camera at classroom
+		# dummy:
+		CameraId = 10
+
+		# send command to camera
+
+		return jsonify({'reply': 'request sent'})
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')

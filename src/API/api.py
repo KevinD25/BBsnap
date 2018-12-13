@@ -1,3 +1,4 @@
+
 #!/usr/bin/python3
 from flask import Flask, request, jsonify, send_from_directory, send_file
 from flask_sqlalchemy import SQLAlchemy
@@ -275,6 +276,7 @@ def get_image_download(camera_id, photo_naam):
 
 @app.route('/takephoto/', methods=['POST'])
 def take_photo():
+	print(str(request))
 	studnr = None
 	if (request.is_json):
 		studnr = request.json['studnr']
@@ -299,6 +301,10 @@ def take_photo():
 		# send command to camera
 
 		return jsonify({'reply': 'request sent'})
+
+@app.route('/disablephoto/<camera_id>', methods=['POST'])
+def disable_photo(camera_id):
+	return jsonify ({'message': 'camera disabled'})
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')
