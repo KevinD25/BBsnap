@@ -13,20 +13,20 @@ import be.eaict.blackboardsnapshotapp.Objects.Foto
 import be.eaict.blackboardsnapshotapp.R
 
 class MyAdapter(private val context: Context,
-                private val dataSource: DataFile/*private val dataSource: MutableList<String>*/) : BaseAdapter() {
-    private val data: List<Foto> = dataSource.fotos
+                private val dataSource: List<Foto>/*private val dataSource: MutableList<String>*/) : BaseAdapter() {
+
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
 
     //1
     override fun getCount(): Int {
-        return data.size
+        return dataSource.size
     }
 
     //2
     override fun getItem(position: Int): Any {
-        return data[position]
+        return dataSource[position]
     }
 
     //3
@@ -43,9 +43,9 @@ class MyAdapter(private val context: Context,
         val TimeTextView = rowView.findViewById(R.id.txtUur) as TextView
         val PictureImage: ImageView = rowView.findViewById(R.id.imagePicture) as ImageView
 
-        val len: Int = data.get(position).naam.length
-        val datum: String = data.get(position).naam.substring(0, 5)
-        val tijd: String = data.get(position).naam.substring(7, len - 4)
+        val len: Int = dataSource.get(position).naam.length
+        val datum: String = dataSource.get(position).naam.substring(0, 6)
+        val tijd: String = dataSource.get(position).naam.substring(7, len - 4)
 
 
         DateTextView.text = datum

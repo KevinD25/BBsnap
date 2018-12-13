@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
 import android.support.v7.app.AppCompatActivity
 import android.transition.Slide
 import android.transition.TransitionManager
@@ -29,9 +30,8 @@ import java.net.URL
 
 class PictureActivity : AppCompatActivity() {
 
-
-    val repo = Repository()
     lateinit var fotos : ArrayList<Foto>
+    lateinit var data: DataFile
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,19 +39,10 @@ class PictureActivity : AppCompatActivity() {
         this.setRequestedOrientation(
                 ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
+        data = Repository.getInstance().photos
+        fotos = data.fotos
 
-        repo.getInstance()
-
-
-
-        /*val pictureList : MutableList<String> = mutableListOf()
-        pictureList.add(0, "item1")
-        pictureList.add(1, "item2")
-        pictureList.add(2, "item3")
-        pictureList.add(3, "item4")*/
-
-        //fotos = intent.getArray TODO GET FOTOS FROM INTENT TO PASS TO ADAPTER
-        val adapter = MyAdapter(this, repo.getPhotos())
+        val adapter = MyAdapter(this, fotos)
         ListviewPictures.adapter = adapter
 
     }
@@ -130,9 +121,4 @@ class PictureActivity : AppCompatActivity() {
 
     }
 
-
-
-    fun populateList(){
-
-    }
 }
