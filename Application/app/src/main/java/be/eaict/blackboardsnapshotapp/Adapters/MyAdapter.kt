@@ -11,6 +11,7 @@ import android.widget.TextView
 import be.eaict.blackboardsnapshotapp.Objects.DataFile
 import be.eaict.blackboardsnapshotapp.Objects.Foto
 import be.eaict.blackboardsnapshotapp.R
+import com.bumptech.glide.Glide
 
 class MyAdapter(private val context: Context,
                 private val dataSource: List<Foto>/*private val dataSource: MutableList<String>*/) : BaseAdapter() {
@@ -46,13 +47,16 @@ class MyAdapter(private val context: Context,
         val len: Int = dataSource.get(position).naam.length
         val datum: String = dataSource.get(position).naam.substring(0, 6)
         val tijd: String = dataSource.get(position).naam.substring(7, len - 4)
-
+        val cameraID = dataSource.get(position).camera.id
+        val photoName = dataSource.get(position).naam
 
         DateTextView.text = datum
         TimeTextView.text = tijd
         val foto = BitmapFactory.decodeResource(context.resources,
-                R.mipmap.joren)
+                R.mipmap.placeholder)
         PictureImage.setImageBitmap(foto)
+
+        Glide.with(context).load("http://brabo2.ddns.net:555/photo/getphoto/" + cameraID + "/" + photoName).into(PictureImage)
         //TODO GET ACTUAL FOTO FROM SERVER USING NAME AS PARAMETER IN CALL. JOREN FIXT INFO SHIT (GETPHOTO)
 
 

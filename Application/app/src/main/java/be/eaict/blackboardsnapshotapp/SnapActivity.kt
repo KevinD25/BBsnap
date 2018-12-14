@@ -12,7 +12,9 @@ import be.eaict.blackboardsnapshotapp.Objects.API
 import be.eaict.blackboardsnapshotapp.Objects.DataFile
 import be.eaict.blackboardsnapshotapp.Objects.Foto
 import be.eaict.blackboardsnapshotapp.Objects.Repository
+import be.eaict.blackboardsnapshotapp.R.id.ListviewPictures
 import com.github.kittinunf.fuel.httpPost
+import kotlinx.android.synthetic.main.activity_picture.*
 import kotlinx.android.synthetic.main.activity_snap.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -35,6 +37,15 @@ class SnapActivity : AppCompatActivity() {
     fun OpenPictures(view: View) {
         val intent = Intent(this, PictureActivity::class.java)
         startActivity(intent)
+    }
+
+
+    fun fillImages(){
+
+        for(i in 0 .. ListviewPictures.count){
+            ListviewPictures.getChildAt(i)
+        }
+
     }
 
 

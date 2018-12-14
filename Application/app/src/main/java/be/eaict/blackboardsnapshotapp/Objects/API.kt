@@ -1,5 +1,6 @@
 package be.eaict.blackboardsnapshotapp.Objects
 
+import android.media.Image
 import android.os.Handler
 import android.util.Log
 import android.view.View
@@ -41,6 +42,8 @@ class API {
             }
         }
     }
+
+
 
 
     fun sendSnapCommand(){
