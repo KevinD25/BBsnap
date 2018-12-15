@@ -201,25 +201,25 @@ class PictureActivity : AppCompatActivity() {
             val directory = File(storageDirectory + "/DCIM/BBsnap")
             directory.mkdirs()
             val file = File(directory, photoName)
-                val stream: OutputStream = FileOutputStream(file)
-                //var drawable = Glide.with(context).load("http://brabo2.ddns.net:555/photo/getphoto/" + cameraID + "/" + photoName).submit()
-                // var bitmap = (drawable as BitmapDrawable).bitmap
-                val me = this
-                doAsync {
-                    val input: InputStream = URL(downloadPage).openStream()
-                    var bitmap: Bitmap = BitmapFactory.decodeStream(input)
+            val stream: OutputStream = FileOutputStream(file)
+            //var drawable = Glide.with(context).load("http://brabo2.ddns.net:555/photo/getphoto/" + cameraID + "/" + photoName).submit()
+            // var bitmap = (drawable as BitmapDrawable).bitmap
+            val me = this
+            doAsync {
+                val input: InputStream = URL(downloadPage).openStream()
+                var bitmap: Bitmap = BitmapFactory.decodeStream(input)
 
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-                    stream.flush()
-                    stream.close()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                stream.flush()
+                stream.close()
 
-                }
+            }
 
         } else {
             Toast.makeText(this, "Unable to access the storage", Toast.LENGTH_SHORT).show()
         }
     }
-    
+
     private fun checkWriteAccess() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             /**
