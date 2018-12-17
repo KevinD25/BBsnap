@@ -3,23 +3,15 @@ package be.eaict.blackboardsnapshotapp
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.DownloadManager
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.os.Environment.*
-import android.support.annotation.UiThread
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -28,31 +20,27 @@ import android.transition.TransitionManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.webkit.DownloadListener
-import android.webkit.MimeTypeMap
-import android.webkit.URLUtil
-import android.widget.LinearLayout
-import android.widget.ListView
-import android.widget.PopupWindow
-import android.widget.Toast
+import android.view.WindowManager
+import android.widget.*
 import be.eaict.blackboardsnapshotapp.Adapters.MyAdapter
-import be.eaict.blackboardsnapshotapp.Objects.*
-import com.bumptech.glide.Glide
-import com.github.kittinunf.fuel.Fuel
-import com.squareup.picasso.Picasso
-import dmax.dialog.SpotsDialog
+import be.eaict.blackboardsnapshotapp.Objects.DataFile
+import be.eaict.blackboardsnapshotapp.Objects.Foto
+import be.eaict.blackboardsnapshotapp.Objects.Repository
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.customview.getCustomView
 import kotlinx.android.synthetic.main.activity_picture.*
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okio.Okio
+import kotlinx.android.synthetic.main.customlistlayout.*
+import kotlinx.android.synthetic.main.detailpopup.*
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
-import java.io.*
-import java.lang.Exception
+import org.w3c.dom.Text
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 import java.net.URL
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class PictureActivity : AppCompatActivity() {
@@ -62,8 +50,9 @@ class PictureActivity : AppCompatActivity() {
     lateinit var context: Context
     lateinit var activity: Activity
     private lateinit var downloadPage: String
-    lateinit var downloadListener: DownloadListener
     var writeAccess = false
+    lateinit var customView : View
+    var optionList: ArrayList<String> = arrayListOf()
 
     /** Permission Request Code */
     private val PERMISSION_REQUEST_CODE = 1234
@@ -85,9 +74,65 @@ class PictureActivity : AppCompatActivity() {
         ListviewPictures.adapter = adapter
 
         checkWriteAccess()
+
+        spinnerSetup()
+
     }
 
-    fun createPopUp(view: View) {
+    fun spinnerSetup(){
+        val startInput = arrayOf<String>("Klas", "Lokaal", "Vak")
+        val spinner = findViewById(R.id.filterMain) as Spinner
+        var adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, startInput)
+        spinner.adapter = adapter
+
+        filterMain.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
+                onChangeChoice()
+            }
+        }
+    }
+
+    fun onChangeChoice(){
+        val choice : String = filterMain.selectedItem.toString()
+        var add : Boolean = false
+
+        optionList.clear()
+
+        when(choice){
+            "Klas" -> for(item in fotos){
+                add = true
+                for(listItem in optionList){
+                    if(listItem == item.les.klas.naam) add = false
+                }
+                if(add) optionList.add(item.les.klas.naam)
+            }
+            "Lokaal" ->    for(item in fotos){
+                add = true
+                for(listItem in optionList){
+                    if(listItem == item.les.lokaal.naam) add = false
+                }
+                if(add) optionList.add(item.les.lokaal.naam)
+            }
+            "Vak" -> for(item in fotos){
+                add = true
+                for(listItem in optionList){
+                    if(listItem == item.les.vak.naam) add = false
+                }
+                if(add) optionList.add(item.les.vak.naam)
+            }
+        }
+
+        val spinner = findViewById(R.id.filterSub) as Spinner
+        var adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, optionList)
+        spinner.adapter = adapter
+    }
+
+
+    fun createPopUp(view: View, position:Int) {
 
 
         // Initialize a new instance of detailpopup window
@@ -117,9 +162,38 @@ class PictureActivity : AppCompatActivity() {
 
         }
 
+        customView = popupWindow.contentView ?: return
 
 
+        val txtvak: TextView = customView.findViewById(R.id.txtVak)
+        val txtprof: TextView = customView.findViewById(R.id.txtProf)
+        val txtlokaal : TextView = customView.findViewById(R.id.txtLokaal)
+        val txtklas: TextView = customView.findViewById(R.id.txtKlas)
+        val txtdatum : TextView  = customView.findViewById(R.id.txtDatumPop)
+        val txttijd : TextView = customView.findViewById(R.id.txtUurPop)
 
+        val vak = fotos.get(position).les.vak.naam
+        val prof= fotos.get(position).les.vak.prof.naam
+        val lokaal = fotos.get(position).les.lokaal.naam
+        val klas = fotos.get(position).les.klas.naam
+        val len = fotos.get(position).naam.length
+        var datum = fotos.get(position).naam.substring(0, 6)
+        var tijd = fotos.get(position).naam.substring(7, len - 4)
+        val year = datum.substring(0,2)
+        val month  = datum.substring(2,4)
+        val day = datum.substring(4,6)
+        val hour = tijd.substring(0,2)
+        val minutes = tijd.substring(2,4)
+        datum = day + "/" + month + "/" + year
+        tijd = hour + ":" + minutes
+
+
+        txtvak.setText(vak)
+        txtprof.setText(prof)
+        txtlokaal.setText(lokaal)
+        txtklas.setText(klas)
+        txtdatum.setText(datum)
+        txttijd.setText(tijd)
 
 
         popupWindow.isFocusable = true
@@ -141,24 +215,25 @@ class PictureActivity : AppCompatActivity() {
         )
     }
 
-    fun onClickInfo(view: View) {
+    fun onClickInfo(v: View) {
+        val parentRow = v.parent as View
+        val listView = parentRow.parent as ListView
+        val position = listView.getPositionForView(parentRow)
+
         val inflater: LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val layoutfile: View = inflater.inflate(R.layout.detailpopup, null)
         val view2 = layoutfile
-        createPopUp(view2)
 
+        createPopUp(view2, position)
     }
 
     fun onClickImage(view: View) {
-        /*val inflater:LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val layoutfile : View = inflater.inflate(R.layout.imagepopup,null)
-        val view2 : View = layoutfile
-
-        createPopUp(view, view2)*/
-
+        val parentRow = view.parent as View
+        val listView = parentRow.parent as ListView
+        val position = listView.getPositionForView(parentRow)
         val intent = Intent(this, PictureviewActivity::class.java)
+        intent.putExtra("position", position)
         startActivity(intent)
-
     }
 
     fun onClickDownload(v: View) {
@@ -189,11 +264,9 @@ class PictureActivity : AppCompatActivity() {
             saveImageToStorage(cameraID, photoName)
             Toast.makeText(this, "Image saved!", Toast.LENGTH_SHORT).show()
         }
-
     }
 
     fun saveImageToStorage(cameraID: Int, photoName: String) {
-
 
         val externalStorageState = Environment.getExternalStorageState()
         if (externalStorageState.equals(Environment.MEDIA_MOUNTED)) {

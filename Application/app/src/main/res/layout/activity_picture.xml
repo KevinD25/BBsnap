@@ -9,16 +9,52 @@
     android:id="@+id/root_layout">
 
 
-    <ListView
-        android:id="@+id/ListviewPictures"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="100"
+            android:layout_marginTop="10dp">
+
+            <Spinner
+                android:id="@+id/filterMain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="45"
+                android:entries="@array/filter_list"/>
+
+            <Spinner
+                android:id="@+id/filterSub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="45" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="96dp"
+                android:layout_height="match_parent"
+                android:layout_weight="10"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/filter" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/ListviewPictures"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

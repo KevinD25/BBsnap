@@ -44,9 +44,16 @@ class MyAdapter(private val context: Context,
         val TimeTextView = rowView.findViewById(R.id.txtUur) as TextView
         val PictureImage: ImageView = rowView.findViewById(R.id.imagePicture) as ImageView
 
-        val len: Int = dataSource.get(position).naam.length
-        val datum: String = dataSource.get(position).naam.substring(0, 6)
-        val tijd: String = dataSource.get(position).naam.substring(7, len - 4)
+        val len = dataSource.get(position).naam.length
+        var datum = dataSource.get(position).naam.substring(0, 6)
+        var tijd = dataSource.get(position).naam.substring(7, len - 4)
+        val year = datum.substring(0,2)
+        val month  = datum.substring(2,4)
+        val day = datum.substring(4,6)
+        val hour = tijd.substring(0,2)
+        val minutes = tijd.substring(2,4)
+        datum = day + "/" + month + "/" + year
+        tijd = hour + ":" + minutes
         val cameraID = dataSource.get(position).camera.id
         val photoName = dataSource.get(position).naam
 
@@ -57,7 +64,6 @@ class MyAdapter(private val context: Context,
         PictureImage.setImageBitmap(foto)
 
         Glide.with(context).load("http://brabo2.ddns.net:555/photo/getphoto/" + cameraID + "/" + photoName).into(PictureImage)
-        //TODO GET ACTUAL FOTO FROM SERVER USING NAME AS PARAMETER IN CALL. JOREN FIXT INFO SHIT (GETPHOTO)
 
 
         /* val type = Typeface.createFromAsset(assets, "fonts/SigmarOne.ttf")

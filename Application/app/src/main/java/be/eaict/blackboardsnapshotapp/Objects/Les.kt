@@ -4,7 +4,7 @@ data class Les(
         val eindtijd: String,
         val id: Int,
         val klas: Klas,
-        val lokaalid: Int,
+        val lokaal : Lokaal,
         val starttijd: String,
         val vak: Vak
 )
