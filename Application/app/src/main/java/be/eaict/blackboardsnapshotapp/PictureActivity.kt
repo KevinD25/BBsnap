@@ -131,6 +131,9 @@ class PictureActivity : AppCompatActivity() {
         spinner.adapter = adapter
     }
 
+    fun onFilterChange(){
+        //TODO  Call adapter | Pass parameter to adapter | Parameter = string -> All = alle foto's (on create); Check in list, filteren op basis van bestaande klassen, lessen, etc...  
+    }
 
     fun createPopUp(view: View, position:Int) {
 
