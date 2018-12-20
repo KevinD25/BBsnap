@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">BlackboardSnapshotApp</string>
+    <string name="app_name">BB Snap</string>
+    <string-array name="filter_list">
+        <item>Klas</item>
+        <item>Lokaal</item>
+        <item>Vak</item>
+    </string-array>
 </resources>
