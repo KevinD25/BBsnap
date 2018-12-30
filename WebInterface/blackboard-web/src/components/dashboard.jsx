@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Photo from "./photo";
+import FotoInfo from "./fotoInfo";
 
 class Dashboard extends Component {
   constructor(props) {

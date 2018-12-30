@@ -1,5 +1,19 @@
 import React, { Component } from "react";
 
+async function takePhoto() {
+  console.log("post naar server");
+  fetch("http://brabo2.ddns.net:555/takephoto/", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      studnr: "0945786"
+    })
+  });
+}
+
 class SideBar extends Component {
   render() {
     return (
@@ -82,7 +96,7 @@ class SideBar extends Component {
               </div>
             </li>
           </ul>
-          <div className="button">
+          <div className="button" onClick={takePhoto}>
             <button className="snapbutton btn-secondary btn">SNAP</button>
           </div>
         </div>
