@@ -6,7 +6,16 @@ class Photo extends Component {
     fotolink:
       "http://brabo2.ddns.net:555/photo/getphoto/10/" + this.props.photo,
     fotonaam: this.props.photo,
-    show: false
+    show: false,
+    key: this.props.key,
+    vak: this.props.vak,
+    klas: this.props.klas,
+    richting: this.props.richting,
+    lokaal: this.props.lokaal,
+    gebouw: this.props.gebouw,
+    prof: this.props.prof,
+    begintijd: this.props.begintijd,
+    eindtijd: this.props.eindtijd
   };
 
   showModal = () => {
@@ -27,9 +36,20 @@ class Photo extends Component {
         />
         <p>{this.state.fotonaam}</p>
         <input type="button" onClick={this.showModal} value="Show Info" />
-        <FotoInfo show={this.state.show} onClose={this.showModal}>
-          <p>klas: 3EA1</p> <p>les: InfoSec</p> <p>prof: TDAMS</p>
-        </FotoInfo>
+        {}
+        <FotoInfo
+          show={this.state.show}
+          onClose={this.showModal}
+          fotoNaam={this.state.fotonaam}
+          vak={this.state.vak}
+          klas={this.state.klas}
+          richting={this.state.richting}
+          lokaal={this.state.lokaal}
+          gebouw={this.state.gebouw}
+          prof={this.state.prof}
+          begintijd={this.state.begintijd}
+          eindtijd={this.state.eindtijd}
+        />
       </div>
     );
   }

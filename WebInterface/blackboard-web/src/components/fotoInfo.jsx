@@ -28,7 +28,9 @@ const footerStyle = {
 
 class FotoInfo extends Component {
   state = {
-    fotonaam: this.props.photo
+    fotonaam: this.props.fotoNaam,
+    fotolink:
+      "http://brabo2.ddns.net:555/photo/getphoto/10/" + this.props.fotoNaam
   };
   onClose = e => {
     this.props.onClose && this.props.onClose(e);
@@ -42,17 +44,37 @@ class FotoInfo extends Component {
     return (
       <div style={backdropStyle}>
         <div style={modalStyle}>
-          {this.props.children}
+          <img
+            class="mr-3"
+            src={this.state.fotolink}
+            alt="lelijk heufd"
+            height="240px"
+          />
 
-          <div style={footerStyle}>
-            <button
-              onClick={e => {
-                this.onClose(e);
-              }}
-            >
-              close
-            </button>
-          </div>
+          <p>naam: {this.props.fotoNaam}</p>
+          <p>klas: {this.props.klas}</p>
+          <p>richting: {this.props.richting}</p>
+          <p>vak: {this.props.vak}</p>
+          <p>begintijd: {this.props.begintijd}</p>
+          <p>eindtijd: {this.props.eindtijd}</p>
+          <p>prof: {this.props.prof}</p>
+          <p>lokaal: {this.props.lokaal}</p>
+          <p>gebouw: {this.props.gebouw}</p>
+
+          <button
+            onClick={e => {
+              this.onClose(e);
+            }}
+          >
+            download
+          </button>
+          <button
+            onClick={e => {
+              this.onClose(e);
+            }}
+          >
+            close
+          </button>
         </div>
       </div>
     );
