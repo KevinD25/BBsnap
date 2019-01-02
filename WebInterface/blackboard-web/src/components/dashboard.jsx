@@ -8,7 +8,11 @@ class Dashboard extends Component {
     this.state = {
       error: null,
       isLoaded: false,
-      items: []
+      items: [],
+      klas: "3GDM1",
+      prof: "keuze",
+      lokaal: "keuze",
+      vak: "keuze"
     };
   }
 
@@ -57,22 +61,48 @@ class Dashboard extends Component {
             </div>
           </div>
           <div className="photos">
-            {items.map(item => (
-              <div className="photo">
-                <Photo
-                  key={item.id}
-                  photo={item.naam}
-                  vak={item.les.vak.naam}
-                  klas={item.les.klas.naam}
-                  richting={item.les.klas.richting.naam}
-                  lokaal={item.les.lokaal.naam}
-                  gebouw={item.les.lokaal.gebouw}
-                  prof={item.les.vak.prof.naam}
-                  begintijd={item.les.starttijd}
-                  eindtijd={item.les.eindtijd}
-                />
-              </div>
-            ))}
+            {items
+              .filter(item => {
+                var klasBool = true;
+                var profBool = true;
+                var vakBool = true;
+                var lokaalBool = true;
+
+                if (this.state.klas != "keuze") {
+                  klasBool = item.les.klas.naam == this.state.klas;
+                }
+                if (this.state.prof != "keuze") {
+                  profBool = item.les.vak.prof.naam == this.state.prof;
+                }
+                if (this.state.vak != "keuze") {
+                  vakBool = item.les.vak.naam == this.state.vak;
+                }
+                if (this.state.lokaal != "keuze") {
+                  lokaalBool = item.les.lokaal.naam == this.state.lokaal;
+                }
+
+                if (klasBool && profBool && vakBool && lokaalBool) {
+                  return true;
+                } else {
+                  return false;
+                }
+              })
+              .map(item => (
+                <div className="photo">
+                  <Photo
+                    key={item.id}
+                    photo={item.naam}
+                    vak={item.les.vak.naam}
+                    klas={item.les.klas.naam}
+                    richting={item.les.klas.richting.naam}
+                    lokaal={item.les.lokaal.naam}
+                    gebouw={item.les.lokaal.gebouw}
+                    prof={item.les.vak.prof.naam}
+                    begintijd={item.les.starttijd}
+                    eindtijd={item.les.eindtijd}
+                  />
+                </div>
+              ))}
           </div>
         </main>
       );
