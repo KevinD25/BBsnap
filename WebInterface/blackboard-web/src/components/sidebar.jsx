@@ -15,31 +15,20 @@ async function takePhoto() {
 }
 
 class SideBar extends Component {
-  state = {
-    klas: "keuze",
-    prof: "keuze",
-    les: "keuze",
-    lokaal: "keuze"
-  };
-
   handleKlas = e => {
-    this.setState({ klas: e.target.value });
-    console.log(this.state.klas);
+    this.props.onSelectKlas(e.target.value);
   };
 
   handleProf = e => {
-    this.setState({ prof: e.target.value });
-    console.log(this.state.prof);
+    this.props.onSelectProf(e.target.value);
   };
 
   handleLes = e => {
-    this.setState({ les: e.target.value });
-    console.log(this.state.les);
+    this.props.onSelectLes(e.target.value);
   };
 
   handleLokaal = e => {
-    this.setState({ lokaal: e.target.value });
-    console.log(this.state.lokaal);
+    this.props.onSelectLokaal(e.target.value);
   };
 
   render() {
@@ -56,7 +45,7 @@ class SideBar extends Component {
               <div className="dropdown">
                 <select
                   className="btn btn-secondary dropdown-toggle dropdowns"
-                  value={this.state.klas}
+                  //value={this.state.klas}
                   onChange={this.handleKlas}
                 >
                   <option value="keuze">maak een keuze</option>
@@ -89,7 +78,7 @@ class SideBar extends Component {
               <div className="dropdown">
                 <select
                   className="btn btn-secondary dropdown-toggle dropdowns"
-                  defaultValue={this.state.klas}
+                  //defaultValue={this.state.klas}
                   onChange={this.handleProf}
                 >
                   <option value="keuze">maak een keuze</option>
@@ -107,7 +96,7 @@ class SideBar extends Component {
               <div className="dropdown">
                 <select
                   className="btn btn-secondary dropdown-toggle dropdowns"
-                  defaultValue={this.state.klas}
+                  //defaultValue={this.state.klas}
                   onChange={this.handleLes}
                 >
                   <option value="keuze">maak een keuze</option>
@@ -127,7 +116,7 @@ class SideBar extends Component {
               <div className="dropdown">
                 <select
                   className="btn btn-secondary dropdown-toggle dropdowns"
-                  defaultValue={this.state.klas}
+                  //defaultValue={this.state.klas}
                   onChange={this.handleLokaal}
                 >
                   <option value="keuze">maak een keuze</option>
@@ -140,7 +129,6 @@ class SideBar extends Component {
           <div className="button" onClick={takePhoto}>
             <button className="snapbutton btn-secondary btn">SNAP</button>
           </div>
-          <p>you selected {this.state.klas}</p>
         </div>
       </nav>
     );

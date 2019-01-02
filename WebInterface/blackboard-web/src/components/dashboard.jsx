@@ -8,11 +8,7 @@ class Dashboard extends Component {
     this.state = {
       error: null,
       isLoaded: false,
-      items: [],
-      klas: "3GDM1",
-      prof: "keuze",
-      lokaal: "keuze",
-      vak: "keuze"
+      items: []
     };
   }
 
@@ -68,17 +64,17 @@ class Dashboard extends Component {
                 var vakBool = true;
                 var lokaalBool = true;
 
-                if (this.state.klas != "keuze") {
-                  klasBool = item.les.klas.naam == this.state.klas;
+                if (this.props.klas != "keuze") {
+                  klasBool = item.les.klas.naam == this.props.klas;
                 }
-                if (this.state.prof != "keuze") {
-                  profBool = item.les.vak.prof.naam == this.state.prof;
+                if (this.props.prof != "keuze") {
+                  profBool = item.les.vak.prof.naam == this.props.prof;
                 }
-                if (this.state.vak != "keuze") {
-                  vakBool = item.les.vak.naam == this.state.vak;
+                if (this.props.les != "keuze") {
+                  vakBool = item.les.vak.naam == this.props.les;
                 }
-                if (this.state.lokaal != "keuze") {
-                  lokaalBool = item.les.lokaal.naam == this.state.lokaal;
+                if (this.props.lokaal != "keuze") {
+                  lokaalBool = item.les.lokaal.naam == this.props.lokaal;
                 }
 
                 if (klasBool && profBool && vakBool && lokaalBool) {
