@@ -15,6 +15,18 @@ async function takePhoto() {
 }
 
 class SideBar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+      isLoaded: false,
+      klassen: [],
+      proffen: [],
+      vakken: [],
+      lokalen: []
+    };
+  }
+
   handleKlas = e => {
     this.props.onSelectKlas(e.target.value);
   };
@@ -31,7 +43,84 @@ class SideBar extends Component {
     this.props.onSelectLokaal(e.target.value);
   };
 
+  componentDidMount() {
+    fetch("http://brabo2.ddns.net:555/klas")
+      .then(res => res.json())
+      .then(
+        result => {
+          this.setState({
+            isLoaded: true,
+            klassen: result.klassen
+          });
+          console.log("de data is: " + this.state.klassen);
+        },
+        error => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+          console.log("error gebeurd gvdqdsfqeflqskjfmqze");
+        }
+      );
+    fetch("http://brabo2.ddns.net:555/prof")
+      .then(res => res.json())
+      .then(
+        result => {
+          this.setState({
+            isLoaded: true,
+            proffen: result.proffen
+          });
+          console.log("de data is: " + this.state.proffen);
+        },
+        error => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+          console.log("error gebeurd gvdqdsfqeflqskjfmqze");
+        }
+      );
+    fetch("http://brabo2.ddns.net:555/vak")
+      .then(res => res.json())
+      .then(
+        result => {
+          this.setState({
+            isLoaded: true,
+            vakken: result.vakken
+          });
+          console.log("de data is: " + this.state.vakken);
+        },
+        error => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+          console.log("error gebeurd gvdqdsfqeflqskjfmqze");
+        }
+      );
+    fetch("http://brabo2.ddns.net:555/lokaal")
+      .then(res => res.json())
+      .then(
+        result => {
+          this.setState({
+            isLoaded: true,
+            lokalen: result.lokalen
+          });
+          console.log("de data is: " + this.state.lokalen);
+        },
+        error => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+          console.log("error gebeurd gvdqdsfqeflqskjfmqze");
+        }
+      );
+  }
+
   render() {
+    const { klassen, proffen, vakken, lokalen, isLoaded, error } = this.state;
+
     return (
       <nav className="col-md-2 d-none d-md-block bg-light sidebar">
         <div className="sidebar-sticky">
@@ -49,8 +138,9 @@ class SideBar extends Component {
                   onChange={this.handleKlas}
                 >
                   <option value="keuze">maak een keuze</option>
-                  <option value="3EA1">3EA1</option>
-                  <option value="3GDM1">3GDM1</option>
+                  {klassen.map(klas => (
+                    <option value={klas.naam}>{klas.naam}</option>
+                  ))}
                 </select>
               </div>
             </li>
@@ -82,8 +172,9 @@ class SideBar extends Component {
                   onChange={this.handleProf}
                 >
                   <option value="keuze">maak een keuze</option>
-                  <option value="Tim Dams">Tim Dams</option>
-                  <option value="Rick and Morty">Rick & Morty</option>
+                  {proffen.map(prof => (
+                    <option value={prof.naam}>{prof.naam}</option>
+                  ))}
                 </select>
               </div>
             </li>
@@ -100,10 +191,9 @@ class SideBar extends Component {
                   onChange={this.handleLes}
                 >
                   <option value="keuze">maak een keuze</option>
-                  <option value="Information Security">
-                    Information Security
-                  </option>
-                  <option value="Tekenshit">Tekenshit</option>
+                  {vakken.map(vak => (
+                    <option value={vak.naam}>{vak.naam}</option>
+                  ))}
                 </select>
               </div>
             </li>
@@ -120,8 +210,9 @@ class SideBar extends Component {
                   onChange={this.handleLokaal}
                 >
                   <option value="keuze">maak een keuze</option>
-                  <option value="00.02">00.02</option>
-                  <option value="01.02">01.02</option>
+                  {lokalen.map(lokaal => (
+                    <option value={lokaal.naam}>{lokaal.naam}</option>
+                  ))}
                 </select>
               </div>
             </li>
