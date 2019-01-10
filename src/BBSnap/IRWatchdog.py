@@ -50,12 +50,12 @@ if __name__ == "__main__":
             print("rising edge")
             length = measure_W_length(INPUT)
             print(length) 
-            #if average wavelength is close enough to 3700ms
-            if ((length > 3100) and (length < 4100)):
+            #if average wavelength is close enough to 2800ms
+            if ((length > 2500) and (length < 3000)):
                 print("detected take_picture on IR")
                 take_picture()
-            #close enough to 1200ms
-            elif ((length > 1000) and (length < 1500)):
+            #close enough to 660ms
+            elif ((length > 600) and (length < 700)):
                 print("detected disable on IR")
                 toggle_disable()
             #else signal is unimportant, do nothing

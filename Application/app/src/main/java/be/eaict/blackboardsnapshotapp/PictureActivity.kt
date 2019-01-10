@@ -61,8 +61,11 @@ class PictureActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_picture)
-        this.setRequestedOrientation(
-                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         /** Application Context and Main Activity */
         context = applicationContext
@@ -70,18 +73,17 @@ class PictureActivity : AppCompatActivity() {
 
         data = Repository.getInstance().photos
         fotos = data.fotos
-
+        Collections.reverse(fotos)
         val adapter = MyAdapter(this, fotos)
         ListviewPictures.adapter = adapter
 
         checkWriteAccess()
 
         spinnerSetup()
-
     }
 
     fun spinnerSetup(){
-        val startInput = arrayOf<String>("All", "Klas", "Lokaal", "Vak")
+        val startInput = arrayOf<String>("All", "Klas", "Lokaal", "Vak", "Prof")
         val spinner = findViewById(R.id.filterMain) as Spinner
         var adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, startInput)
         spinner.adapter = adapter
@@ -136,6 +138,13 @@ class PictureActivity : AppCompatActivity() {
                 }
                 if(add) optionList.add(item.les.vak.naam)
             }
+            "Prof" -> for(item in fotos) {
+                add = true
+                for (listItem in optionList) {
+                    if (listItem == item.les.vak.prof.naam) add = false
+                }
+                if (add) optionList.add(item.les.vak.prof.naam)
+            }
         }
 
         val spinner = findViewById(R.id.filterSub) as Spinner
@@ -172,8 +181,15 @@ class PictureActivity : AppCompatActivity() {
                 if(choice2.equals(item.les.vak.naam)) add = true
                 if(add) filteredList.add(item)
             }
+            "Prof" -> for(item in fotos){
+                add = false
+                if(choice2.equals(item.les.vak.prof.naam)) add = true
+                if(add) filteredList.add(item)
+            }
         }
 
+
+        //Collections.reverse(filteredList)
         val adapter = MyAdapter(this, filteredList)
         ListviewPictures.adapter = adapter
     }
