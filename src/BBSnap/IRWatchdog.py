@@ -2,16 +2,21 @@
 
 import pigpio
 import math
-import os
-from datetime import datetime
 import time
-from camera import Cam
+import subprocess
+from BBS_Config import *
 
-cam = Cam()
-
-
+def toggle_disable():
+    if(os.path.isfile('./DISABLE')):
+        print("is a file")
+        os.remove('./DISABLE')
+    else:
+        print("is not file")
+        open('./DISABLE', 'w').close()
 
 # measure wavelength of square signal on pin gpio
+# input: gpio   number of input pin
+# returns: average wavelength in ms
 def measure_W_length(gpio):
     tickBuffer = []
     def count_edge(gpio, level, tick):
@@ -31,11 +36,13 @@ def measure_W_length(gpio):
     avg = avg / len(deltaBuffer)
     return avg
 
-if __name__ == "__main__":
+def take_picture():
+    print("taking picture")
+    subprocess.Popen('./takePicture.py', shell=True)
 
+if __name__ == "__main__":
     pi = pigpio.pi()
-    INPUT = 18
-    pi.set_mode(INPUT, pigpio.INPUT);
+    pi.set_mode(INPUT, pigpio.INPUT)
 
     while (True):
         # wait for activity
@@ -44,14 +51,13 @@ if __name__ == "__main__":
 
             #if average wavelength is close enough to 3700ms
             if ((length > 3100) and (length < 4100)):
-                #take photo
-                print("take photo")
+                take_picture()
             #close enough to 1200ms
             elif ((length > 1000) and (length < 1500)):
-            #toggle disable
-                print("disable/enable")
+                toggle_disable()
             #else signal is unimportant, do nothing
             time.sleep(1)
         else:
             print("waiting")
+    #end of while
 
