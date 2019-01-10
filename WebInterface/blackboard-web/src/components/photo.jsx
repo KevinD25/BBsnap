@@ -4,10 +4,13 @@ import FotoInfo from "./fotoInfo";
 class Photo extends Component {
   state = {
     fotolink:
-      "http://brabo2.ddns.net:555/photo/getphoto/10/" + this.props.photo,
+      "http://brabo2.ddns.net:555/photo/getphoto/" +
+      this.props.camera +
+      "/" +
+      this.props.photo,
     fotonaam: this.props.photo,
     show: false,
-    key: this.props.key,
+    id: this.props.id,
     vak: this.props.vak,
     klas: this.props.klas,
     richting: this.props.richting,
@@ -15,7 +18,8 @@ class Photo extends Component {
     gebouw: this.props.gebouw,
     prof: this.props.prof,
     begintijd: this.props.begintijd,
-    eindtijd: this.props.eindtijd
+    eindtijd: this.props.eindtijd,
+    camera: this.props.camera
   };
 
   showModal = () => {
@@ -38,6 +42,7 @@ class Photo extends Component {
         <input type="button" onClick={this.showModal} value="Show Info" />
         {}
         <FotoInfo
+          id={this.state.id}
           show={this.state.show}
           onClose={this.showModal}
           fotoNaam={this.state.fotonaam}
@@ -49,6 +54,7 @@ class Photo extends Component {
           prof={this.state.prof}
           begintijd={this.state.begintijd}
           eindtijd={this.state.eindtijd}
+          camera={this.state.camera}
         />
       </div>
     );

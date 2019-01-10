@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import DownloadLink from "react-download-link";
 
 const backdropStyle = {
   position: "fixed",
@@ -31,12 +30,29 @@ class FotoInfo extends Component {
   state = {
     fotonaam: this.props.fotoNaam,
     fotolink:
-      "http://brabo2.ddns.net:555/photo/getphoto/10/" + this.props.fotoNaam
+      "http://brabo2.ddns.net:555/photo/getphoto/" +
+      this.props.camera +
+      "/" +
+      this.props.fotoNaam
   };
   onClose = e => {
     this.props.onClose && this.props.onClose(e);
   };
-  onDownload = e => {};
+
+  onDelete() {
+    const requestOptions = {
+      method: "DELETE"
+    };
+    console.log("begin");
+    fetch("http://brabo2.ddns.net:555/photo/" + this.props.id, requestOptions)
+      .then(response => {
+        console.log(this.props.key);
+        return response.json();
+      })
+      .then(result => {
+        // do what you want with the response here
+      });
+  }
 
   render() {
     if (!this.props.show) {
@@ -68,28 +84,15 @@ class FotoInfo extends Component {
               this.onClose(e);
             }}
           >
-            download
-          </button>
-          <button
-            onClick={e => {
-              this.onClose(e);
-            }}
-          >
             close
           </button>
           <button
             onClick={e => {
-              this.onClose(e);
+              this.onDelete();
             }}
           >
             delete
           </button>
-          <DownloadLink
-            filename="myfoto.jpg"
-            exportFile={() => <img src={this.statefotolink} />}
-          >
-            Save to disk
-          </DownloadLink>
         </div>
       </div>
     );

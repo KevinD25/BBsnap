@@ -86,7 +86,7 @@ class Dashboard extends Component {
               .map(item => (
                 <div className="photo">
                   <Photo
-                    key={item.id}
+                    id={item.id}
                     photo={item.naam}
                     vak={item.les.vak.naam}
                     klas={item.les.klas.naam}
@@ -96,6 +96,7 @@ class Dashboard extends Component {
                     prof={item.les.vak.prof.naam}
                     begintijd={item.les.starttijd}
                     eindtijd={item.les.eindtijd}
+                    camera={item.camera.id}
                   />
                 </div>
               ))}
