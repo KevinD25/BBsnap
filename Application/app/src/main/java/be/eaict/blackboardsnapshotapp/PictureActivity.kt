@@ -45,7 +45,7 @@ import kotlin.collections.ArrayList
 
 class PictureActivity : AppCompatActivity() {
 
-    lateinit var fotos: ArrayList<Foto>
+    var fotos: ArrayList<Foto> = arrayListOf()
     lateinit var data: DataFile
     lateinit var context: Context
     lateinit var activity: Activity
@@ -62,6 +62,7 @@ class PictureActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_picture)
         this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
     }
 
     override fun onStart() {
@@ -70,10 +71,26 @@ class PictureActivity : AppCompatActivity() {
         /** Application Context and Main Activity */
         context = applicationContext
         activity = this
+        initiate()
 
+    }
+
+
+    override fun onRestart() {
+        super.onRestart()
+        initiate()
+    }
+
+    private fun initiate(){
         data = Repository.getInstance().photos
-        fotos = data.fotos
-        Collections.reverse(fotos)
+
+        fotos.clear()
+        for(item in data.fotos){
+            fotos.add(item)
+        }
+        if(fotos[0].equals(data.fotos[0])){
+            Collections.reverse(fotos)
+        }
         val adapter = MyAdapter(this, fotos)
         ListviewPictures.adapter = adapter
 
@@ -403,6 +420,11 @@ class PictureActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 }
 
