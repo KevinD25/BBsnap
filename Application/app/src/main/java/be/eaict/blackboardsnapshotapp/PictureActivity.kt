@@ -53,6 +53,7 @@ class PictureActivity : AppCompatActivity() {
     var writeAccess = false
     lateinit var customView : View
     var optionList: ArrayList<String> = arrayListOf()
+    var filteredList : ArrayList<Foto> = arrayListOf()
 
     /** Permission Request Code */
     private val PERMISSION_REQUEST_CODE = 1234
@@ -60,8 +61,11 @@ class PictureActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_picture)
-        this.setRequestedOrientation(
-                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         /** Application Context and Main Activity */
         context = applicationContext
@@ -69,18 +73,17 @@ class PictureActivity : AppCompatActivity() {
 
         data = Repository.getInstance().photos
         fotos = data.fotos
-
+        Collections.reverse(fotos)
         val adapter = MyAdapter(this, fotos)
         ListviewPictures.adapter = adapter
 
         checkWriteAccess()
 
         spinnerSetup()
-
     }
 
     fun spinnerSetup(){
-        val startInput = arrayOf<String>("Klas", "Lokaal", "Vak")
+        val startInput = arrayOf<String>("All", "Klas", "Lokaal", "Vak", "Prof")
         val spinner = findViewById(R.id.filterMain) as Spinner
         var adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, startInput)
         spinner.adapter = adapter
@@ -94,6 +97,16 @@ class PictureActivity : AppCompatActivity() {
                 onChangeChoice()
             }
         }
+
+        filterSub.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
+                onFilterChange()
+            }
+        }
     }
 
     fun onChangeChoice(){
@@ -103,6 +116,7 @@ class PictureActivity : AppCompatActivity() {
         optionList.clear()
 
         when(choice){
+            "All" -> optionList.add("...")
             "Klas" -> for(item in fotos){
                 add = true
                 for(listItem in optionList){
@@ -124,6 +138,13 @@ class PictureActivity : AppCompatActivity() {
                 }
                 if(add) optionList.add(item.les.vak.naam)
             }
+            "Prof" -> for(item in fotos) {
+                add = true
+                for (listItem in optionList) {
+                    if (listItem == item.les.vak.prof.naam) add = false
+                }
+                if (add) optionList.add(item.les.vak.prof.naam)
+            }
         }
 
         val spinner = findViewById(R.id.filterSub) as Spinner
@@ -131,6 +152,47 @@ class PictureActivity : AppCompatActivity() {
         spinner.adapter = adapter
     }
 
+    fun onFilterChange(){
+        //TODO  Call adapter | Pass parameter to adapter | Parameter = string ->
+        // All = alle foto's (on create); Check in list, filteren op basis van bestaande klassen, lessen, etc...
+        val choice1 : String = filterMain.selectedItem.toString()
+        val choice2 : String = filterSub.selectedItem.toString()
+        var add : Boolean = false
+
+        filteredList.clear()
+
+
+        when(choice1) {
+            "All" -> for(item in fotos){
+                filteredList.add(item)
+            }
+            "Klas" -> for(item in fotos){
+                add = false
+                if(choice2.equals(item.les.klas.naam)) add = true
+                if(add) filteredList.add(item)
+            }
+            "Lokaal" ->    for(item in fotos){
+                add = false
+                if(choice2.equals(item.les.lokaal.naam)) add = true
+                if(add) filteredList.add(item)
+            }
+            "Vak" -> for(item in fotos){
+                add = false
+                if(choice2.equals(item.les.vak.naam)) add = true
+                if(add) filteredList.add(item)
+            }
+            "Prof" -> for(item in fotos){
+                add = false
+                if(choice2.equals(item.les.vak.prof.naam)) add = true
+                if(add) filteredList.add(item)
+            }
+        }
+
+
+        //Collections.reverse(filteredList)
+        val adapter = MyAdapter(this, filteredList)
+        ListviewPictures.adapter = adapter
+    }
 
     fun createPopUp(view: View, position:Int) {
 
