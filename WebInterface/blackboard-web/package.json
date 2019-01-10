@@ -7,6 +7,7 @@
     "react": "^16.7.0",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.7.0",
+    "react-download-link": "^2.2.0",
     "react-scripts": "2.0.4"
   },
   "scripts": {

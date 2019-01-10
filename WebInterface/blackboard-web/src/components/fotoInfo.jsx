@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import DownloadLink from "react-download-link";
 
 const backdropStyle = {
   position: "fixed",
@@ -15,7 +16,7 @@ const modalStyle = {
   borderRadius: 5,
   maxWidth: 500,
   minHeight: 300,
-  top: 40,
+  top: 0,
   margin: "0 auto",
   padding: 30,
   position: "relative"
@@ -35,6 +36,7 @@ class FotoInfo extends Component {
   onClose = e => {
     this.props.onClose && this.props.onClose(e);
   };
+  onDownload = e => {};
 
   render() {
     if (!this.props.show) {
@@ -82,6 +84,12 @@ class FotoInfo extends Component {
           >
             delete
           </button>
+          <DownloadLink
+            filename="myfoto.jpg"
+            exportFile={() => <img src={this.statefotolink} />}
+          >
+            Save to disk
+          </DownloadLink>
         </div>
       </div>
     );
