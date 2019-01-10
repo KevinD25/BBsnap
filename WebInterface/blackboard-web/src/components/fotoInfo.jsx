@@ -75,6 +75,13 @@ class FotoInfo extends Component {
           >
             close
           </button>
+          <button
+            onClick={e => {
+              this.onClose(e);
+            }}
+          >
+            delete
+          </button>
         </div>
       </div>
     );
