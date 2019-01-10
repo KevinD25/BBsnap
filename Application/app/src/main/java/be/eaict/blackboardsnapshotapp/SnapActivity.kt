@@ -20,6 +20,8 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.json.JSONObject
 import java.io.Serializable
+import java.util.*
+import kotlin.concurrent.schedule
 
 
 class SnapActivity : AppCompatActivity() {
@@ -39,18 +41,12 @@ class SnapActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-
-    fun fillImages(){
-
-        for(i in 0 .. ListviewPictures.count){
-            ListviewPictures.getChildAt(i)
-        }
-
-    }
-
-
     fun sendSnapCommand(view: View) {
         api.sendSnapCommand()
+
+        Timer("APICall", false).schedule(4000) {
+            api.callAPI()
+        }
     }
 
 
