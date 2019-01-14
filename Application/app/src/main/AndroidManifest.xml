@@ -17,13 +17,14 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".MainActivity">
+        </activity>
+        <activity android:name=".SnapActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SnapActivity" />
         <activity android:name=".PictureActivity"/>
         <activity android:name=".PictureviewActivity"></activity>
     </application>
