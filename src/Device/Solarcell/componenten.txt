@@ -1,0 +1,25 @@
+- 1 x diode  reverse voltage 35 v 1n4001
+- 1 x voltageregulator max 17 v - 8.4 v --> lm317
+- 1 x voltageregulator 8.4 v - 5 v --> lm 7805
+- 2 x lithium-ion battery + pack
+	
+
+Vout = 8.9V
+R1 = 420
+R2 = 1372.8 V
+R1.((Vout/1.25)-1) = 240.((8.9/1.25)-1) = 1468.8
+
+nodige componenten:
+
+resistors:
+240 ohm
+1500 ohm
+
+capacitors:
+0.1F
+1uF
+0.33uf
+0.1uf
+
+transistor
+BC549
