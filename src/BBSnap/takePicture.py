@@ -5,7 +5,7 @@ import connection
 from BBS_Config import *
 
 def disabled():
-    return false
+    return False
 
 if( __name__ == "__main__"):
     cam = camera.Cam()

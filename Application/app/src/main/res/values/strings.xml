@@ -4,5 +4,6 @@
         <item>Klas</item>
         <item>Lokaal</item>
         <item>Vak</item>
+        <item>Prof</item>
     </string-array>
 </resources>
