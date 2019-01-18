@@ -321,6 +321,50 @@ def status_camera(camera_id):
 
 	return jsonify({'enabled' : output})
 
+@app.route('/klas', methods=['GET'])
+def getKlassen():
+	klassen = Klas.query.all()
+
+	output = []
+
+	for klas in klassen:
+		output.append(klas.toDict())
+
+	return jsonify({'klassen' : output})
+
+@app.route('/prof', methods=['GET'])
+def getProffen():
+        proffen = Prof.query.all()
+
+        output = []
+
+        for prof in proffen:
+                output.append(prof.toDict())
+
+        return jsonify({'proffen' : output})
+
+@app.route('/vak', methods=['GET'])
+def getVakken():
+        vakken = Vak.query.all()
+
+        output = []
+
+        for vak in vakken:
+                output.append(vak.toDict())
+
+        return jsonify({'vakken' : output})
+
+@app.route('/lokaal', methods=['GET'])
+def getLokalen():
+        lokalen = Lokaal.query.all()
+
+        output = []
+
+        for lokaal in lokalen:
+                output.append(lokaal.toDict())
+
+        return jsonify({'lokalen' : output})
+
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')
