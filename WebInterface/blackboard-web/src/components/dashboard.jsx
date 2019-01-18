@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Photo from "./photo";
-import FotoInfo from "./fotoInfo";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -33,6 +32,10 @@ class Dashboard extends Component {
       );
   }
 
+  loadFoto = e => {
+    this.forceUpdate();
+  };
+
   render() {
     const { error, isLoaded, items } = this.state;
 
@@ -42,19 +45,9 @@ class Dashboard extends Component {
       return <div>Loading...</div>;
     } else {
       return (
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Dashboard</h1>
-            <div class="btn-toolbar mb-2 mb-md-0">
-              <div class="btn-group mr-2">
-                <button class="btn btn-sm btn-outline-secondary">Share</button>
-                <button class="btn btn-sm btn-outline-secondary">Export</button>
-              </div>
-              <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                <span data-feather="calendar" />
-                This week
-              </button>
-            </div>
+        <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
+          <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 className="h2">Dashboard</h1>
           </div>
           <div className="photos">
             {items
@@ -64,17 +57,17 @@ class Dashboard extends Component {
                 var vakBool = true;
                 var lokaalBool = true;
 
-                if (this.props.klas != "keuze") {
-                  klasBool = item.les.klas.naam == this.props.klas;
+                if (this.props.klas !== "keuze") {
+                  klasBool = item.les.klas.naam === this.props.klas;
                 }
-                if (this.props.prof != "keuze") {
-                  profBool = item.les.vak.prof.naam == this.props.prof;
+                if (this.props.prof !== "keuze") {
+                  profBool = item.les.vak.prof.naam === this.props.prof;
                 }
-                if (this.props.les != "keuze") {
-                  vakBool = item.les.vak.naam == this.props.les;
+                if (this.props.les !== "keuze") {
+                  vakBool = item.les.vak.naam === this.props.les;
                 }
-                if (this.props.lokaal != "keuze") {
-                  lokaalBool = item.les.lokaal.naam == this.props.lokaal;
+                if (this.props.lokaal !== "keuze") {
+                  lokaalBool = item.les.lokaal.naam === this.props.lokaal;
                 }
 
                 if (klasBool && profBool && vakBool && lokaalBool) {
@@ -84,9 +77,9 @@ class Dashboard extends Component {
                 }
               })
               .map(item => (
-                <div className="photo">
+                <div className="photo" key={item.id}>
                   <Photo
-                    key={item.id}
+                    id={item.id}
                     photo={item.naam}
                     vak={item.les.vak.naam}
                     klas={item.les.klas.naam}
@@ -96,6 +89,8 @@ class Dashboard extends Component {
                     prof={item.les.vak.prof.naam}
                     begintijd={item.les.starttijd}
                     eindtijd={item.les.eindtijd}
+                    camera={item.camera.id}
+                    key={item.id}
                   />
                 </div>
               ))}

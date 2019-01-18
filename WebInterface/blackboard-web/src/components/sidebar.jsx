@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Popup from "reactjs-popup";
 
 async function takePhoto() {
   console.log("post naar server");
@@ -119,16 +120,14 @@ class SideBar extends Component {
   }
 
   render() {
-    const { klassen, proffen, vakken, lokalen, isLoaded, error } = this.state;
+    const { klassen, proffen, vakken, lokalen } = this.state;
 
     return (
       <nav className="col-md-2 d-none d-md-block bg-light sidebar">
         <div className="sidebar-sticky">
           <ul className="nav flex-column">
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                Klas
-              </a>
+              <p className="nav-link">Klas</p>
             </li>
             <li>
               <div className="dropdown">
@@ -137,32 +136,40 @@ class SideBar extends Component {
                   //value={this.state.klas}
                   onChange={this.handleKlas}
                 >
-                  <option value="keuze">maak een keuze</option>
+                  <option value="keuze" key="keuze">
+                    maak een keuze
+                  </option>
                   {klassen.map(klas => (
-                    <option value={klas.naam}>{klas.naam}</option>
+                    <option value={klas.naam} key={klas.id}>
+                      {klas.naam}
+                    </option>
                   ))}
                 </select>
               </div>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                Datum
-              </a>
+              <p className="nav-link">Datum</p>
             </li>
             <li>
               <div className="dropdown">
                 <select className="btn btn-secondary dropdown-toggle dropdowns">
-                  <option value="volvo">Volvo</option>
-                  <option value="saab">Saab</option>
-                  <option value="mercedes">Mercedes</option>
-                  <option value="audi">Audi</option>
+                  <option value="volvo" key="volvo">
+                    Volvo
+                  </option>
+                  <option value="saab" key="saab">
+                    Saab
+                  </option>
+                  <option value="mercedes" key="mercedes">
+                    Mercedes
+                  </option>
+                  <option value="audi" key="audi">
+                    Audi
+                  </option>
                 </select>
               </div>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                Prof
-              </a>
+              <p className="nav-link">Prof</p>
             </li>
             <li>
               <div className="dropdown">
@@ -171,17 +178,19 @@ class SideBar extends Component {
                   //defaultValue={this.state.klas}
                   onChange={this.handleProf}
                 >
-                  <option value="keuze">maak een keuze</option>
+                  <option value="keuze" key="keuze">
+                    maak een keuze
+                  </option>
                   {proffen.map(prof => (
-                    <option value={prof.naam}>{prof.naam}</option>
+                    <option value={prof.naam} key={prof.id}>
+                      {prof.naam}
+                    </option>
                   ))}
                 </select>
               </div>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                Les
-              </a>
+              <p className="nav-link">Les</p>
             </li>
             <li>
               <div className="dropdown">
@@ -190,17 +199,19 @@ class SideBar extends Component {
                   //defaultValue={this.state.klas}
                   onChange={this.handleLes}
                 >
-                  <option value="keuze">maak een keuze</option>
+                  <option value="keuze" key="keuze">
+                    maak een keuze
+                  </option>
                   {vakken.map(vak => (
-                    <option value={vak.naam}>{vak.naam}</option>
+                    <option value={vak.naam} key={vak.id}>
+                      {vak.naam}
+                    </option>
                   ))}
                 </select>
               </div>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                Lokaal
-              </a>
+              <p className="nav-link">Lokaal</p>
             </li>
             <li className="dropdownList">
               <div className="dropdown">
@@ -209,16 +220,29 @@ class SideBar extends Component {
                   //defaultValue={this.state.klas}
                   onChange={this.handleLokaal}
                 >
-                  <option value="keuze">maak een keuze</option>
+                  <option value="keuze" key="keuze">
+                    maak een keuze
+                  </option>
                   {lokalen.map(lokaal => (
-                    <option value={lokaal.naam}>{lokaal.naam}</option>
+                    <option value={lokaal.naam} key={lokaal.id}>
+                      {lokaal.naam}
+                    </option>
                   ))}
                 </select>
               </div>
             </li>
           </ul>
           <div className="button" onClick={takePhoto}>
-            <button className="snapbutton btn-secondary btn">SNAP</button>
+            <Popup
+              trigger={
+                <button className="snapbutton btn-secondary btn">
+                  Take Picture
+                </button>
+              }
+              position="center"
+            >
+              <div>Picture Taken</div>
+            </Popup>
           </div>
         </div>
       </nav>
