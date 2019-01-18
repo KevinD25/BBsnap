@@ -321,6 +321,18 @@ def status_camera(camera_id):
 
 	return jsonify({'enabled' : output})
 
+@app.route('/init', methods=['GET'])
+def get_init():
+	config = {}
+	camera = Camera()
+
+	db.session.add(camera)
+	db.session.commit()
+
+	config["id"] = camera.id
+	config["ssid"] = "testssid"
+	config["cert"] = "testcert"
+	return jsonify(config)
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')
