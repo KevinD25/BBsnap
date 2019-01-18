@@ -14,7 +14,7 @@ def on_message(client, userdata, msg):
     print(str(msg.topic)+" "+str(msg.payload))
     if msg.payload == b'photo':
         print("taking pic")
-        #subprocess.Popen('./takePicture.py', shell=True)
+        subprocess.Popen('./takePicture.py', shell=True)
     elif msg.payload == b'toggle':
         toggle_disable()
 
@@ -30,6 +30,7 @@ if __name__ == '__main__':
     client = mqtt.Client(str(UNIT_ID))
     client.on_connect = on_connect
     client.on_message = on_message
+    print("connecting to " + MQTT_BROKER + " on port " + str(BROKER_PORT))
     client.connect(MQTT_BROKER, BROKER_PORT, 60)
 
     client.loop_forever()

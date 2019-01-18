@@ -49,11 +49,11 @@ if __name__ == "__main__":
         if pi.wait_for_edge(INPUT, pigpio.RISING_EDGE, 10):
             length = measure_W_length(INPUT)
 
-            #if average wavelength is close enough to 3700ms
-            if ((length > 3100) and (length < 4100)):
+            #if average wavelength is close enough to 2800ms
+            if ((length > 2500) and (length < 3000)):
                 take_picture()
-            #close enough to 1200ms
-            elif ((length > 1000) and (length < 1500)):
+            #close enough to 660ms
+            elif ((length > 600) and (length < 700)):
                 toggle_disable()
             #else signal is unimportant, do nothing
             time.sleep(1)

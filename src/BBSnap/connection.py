@@ -6,7 +6,8 @@ class Connection:
 
     def upload_file(self, filename, id):
         files = {'file': (filename, open('./img/' + filename, 'rb'))}
-        req = requests.post(POST_URL, files=files, data={'id': id})
+        req = requests.post(URL, files=files, data={'id': id})
+        print("sent POST")
 
 if (__name__ == "__main__"):
     c = Connection()
