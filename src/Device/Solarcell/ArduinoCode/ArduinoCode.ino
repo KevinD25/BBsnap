@@ -42,7 +42,7 @@ void loop()
 {
  CurrentMeasurement();
  
-  AvarageFilter();
+  AverageFilter();
   
   sensorValue = analogRead(BatteryIn);
   batvoltage = sensorValue * (5.0 / 1023.0);//correctie
@@ -93,7 +93,7 @@ void CurrentMeasurement()
  Serial.println(Amps,3); // the '3' after voltage allows you to display 3 digits after decimal point
 }
 
-void AvarageFilter()
+void AverageFilter()
 {
   total = total - readings[readIndex];
   // read from the sensor:
