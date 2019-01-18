@@ -8,7 +8,7 @@ import be.eaict.blackboardsnapshotapp.Objects.Foto
 import be.eaict.blackboardsnapshotapp.Objects.Repository
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_pictureview.*
-import java.util.ArrayList
+import java.util.*
 
 class PictureviewActivity : AppCompatActivity() {
 
@@ -23,12 +23,15 @@ class PictureviewActivity : AppCompatActivity() {
         updateImage()
     }
 
-    fun updateImage(){
-        val position = intent.getIntExtra("position", 0)
+    private fun updateImage(){
+        /*val position = intent.getIntExtra("position", 0)
         data = Repository.getInstance().photos
         fotos = data.fotos
         val cameraID = fotos.get(position).camera.id
-        val photoName = fotos.get(position).naam
+        val photoName = fotos.get(position).naam*/
+
+        val cameraID = intent.getIntExtra("cameraID", 0)
+        val photoName = intent.getStringExtra("photoName")
         Glide.with(this).load("http://brabo2.ddns.net:555/photo/getphoto/" + cameraID + "/" + photoName).into(BigImageView)
     }
 

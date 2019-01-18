@@ -23,6 +23,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import be.eaict.blackboardsnapshotapp.Adapters.MyAdapter
+import be.eaict.blackboardsnapshotapp.Objects.API
 import be.eaict.blackboardsnapshotapp.Objects.DataFile
 import be.eaict.blackboardsnapshotapp.Objects.Foto
 import be.eaict.blackboardsnapshotapp.Objects.Repository
@@ -46,6 +47,7 @@ import kotlin.collections.ArrayList
 class PictureActivity : AppCompatActivity() {
 
     var fotos: ArrayList<Foto> = arrayListOf()
+    var tempFotos: ArrayList<Foto> = arrayListOf()
     lateinit var data: DataFile
     lateinit var context: Context
     lateinit var activity: Activity
@@ -54,6 +56,7 @@ class PictureActivity : AppCompatActivity() {
     lateinit var customView : View
     var optionList: ArrayList<String> = arrayListOf()
     var filteredList : ArrayList<Foto> = arrayListOf()
+    private val api = API()
 
     /** Permission Request Code */
     private val PERMISSION_REQUEST_CODE = 1234
@@ -62,7 +65,6 @@ class PictureActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_picture)
         this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-
     }
 
     override fun onStart() {
@@ -75,15 +77,14 @@ class PictureActivity : AppCompatActivity() {
 
     }
 
-
     override fun onRestart() {
         super.onRestart()
         initiate()
     }
 
     private fun initiate(){
+        api.callAPI()
         data = Repository.getInstance().photos
-
         fotos.clear()
         for(item in data.fotos){
             fotos.add(item)
@@ -91,7 +92,8 @@ class PictureActivity : AppCompatActivity() {
         if(fotos[0].equals(data.fotos[0])){
             Collections.reverse(fotos)
         }
-        val adapter = MyAdapter(this, fotos)
+        tempFotos = fotos
+        val adapter = MyAdapter(this, tempFotos)
         ListviewPictures.adapter = adapter
 
         checkWriteAccess()
@@ -170,14 +172,11 @@ class PictureActivity : AppCompatActivity() {
     }
 
     fun onFilterChange(){
-        //TODO  Call adapter | Pass parameter to adapter | Parameter = string ->
-        // All = alle foto's (on create); Check in list, filteren op basis van bestaande klassen, lessen, etc...
         val choice1 : String = filterMain.selectedItem.toString()
         val choice2 : String = filterSub.selectedItem.toString()
         var add : Boolean = false
 
         filteredList.clear()
-
 
         when(choice1) {
             "All" -> for(item in fotos){
@@ -205,9 +204,9 @@ class PictureActivity : AppCompatActivity() {
             }
         }
 
-
+        tempFotos = filteredList
         //Collections.reverse(filteredList)
-        val adapter = MyAdapter(this, filteredList)
+        val adapter = MyAdapter(this, tempFotos)
         ListviewPictures.adapter = adapter
     }
 
@@ -311,7 +310,10 @@ class PictureActivity : AppCompatActivity() {
         val listView = parentRow.parent as ListView
         val position = listView.getPositionForView(parentRow)
         val intent = Intent(this, PictureviewActivity::class.java)
-        intent.putExtra("position", position)
+        val cameraID = tempFotos.get(position).camera.id
+        val photoName = tempFotos.get(position).naam
+        intent.putExtra("cameraID", cameraID)
+        intent.putExtra("photoName", photoName)
         startActivity(intent)
     }
 
