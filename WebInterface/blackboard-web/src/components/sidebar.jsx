@@ -126,9 +126,7 @@ class SideBar extends Component {
         <div className="sidebar-sticky">
           <ul className="nav flex-column">
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                Klas
-              </a>
+              <p className="nav-link">Klas</p>
             </li>
             <li>
               <div className="dropdown">
@@ -149,9 +147,7 @@ class SideBar extends Component {
               </div>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                Datum
-              </a>
+              <p className="nav-link">Datum</p>
             </li>
             <li>
               <div className="dropdown">
@@ -172,9 +168,7 @@ class SideBar extends Component {
               </div>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                Prof
-              </a>
+              <p className="nav-link">Prof</p>
             </li>
             <li>
               <div className="dropdown">
@@ -195,9 +189,7 @@ class SideBar extends Component {
               </div>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                Les
-              </a>
+              <p className="nav-link">Les</p>
             </li>
             <li>
               <div className="dropdown">
@@ -218,9 +210,7 @@ class SideBar extends Component {
               </div>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                Lokaal
-              </a>
+              <p className="nav-link">Lokaal</p>
             </li>
             <li className="dropdownList">
               <div className="dropdown">
