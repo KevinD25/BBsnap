@@ -35,7 +35,7 @@ class Photo extends Component {
         <img
           className="mr-3"
           src={this.state.fotolink}
-          alt="lelijk heufd"
+          alt={this.state.fotonaam}
           height="240px"
         />
         <p>{this.state.fotonaam}</p>

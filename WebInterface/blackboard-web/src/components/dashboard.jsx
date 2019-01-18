@@ -32,6 +32,10 @@ class Dashboard extends Component {
       );
   }
 
+  loadFoto = e => {
+    this.forceUpdate();
+  };
+
   render() {
     const { error, isLoaded, items } = this.state;
 

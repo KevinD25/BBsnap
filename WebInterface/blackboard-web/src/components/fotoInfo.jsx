@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Popup from "reactjs-popup";
 
 const backdropStyle = {
   position: "fixed",
@@ -81,13 +82,18 @@ class FotoInfo extends Component {
           >
             close
           </button>
-          <button
-            onClick={e => {
-              this.onDelete();
-            }}
-          >
-            delete
-          </button>
+          <Popup trigger={<button> delete</button>} position="center">
+            <div>Are you sure you want to delete this picture?</div>
+            <div>
+              <button
+                onClick={e => {
+                  this.onDelete();
+                }}
+              >
+                yes
+              </button>
+            </div>
+          </Popup>
         </div>
       </div>
     );

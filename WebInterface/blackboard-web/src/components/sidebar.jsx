@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Popup from "reactjs-popup";
 
 async function takePhoto() {
   console.log("post naar server");
@@ -232,7 +233,16 @@ class SideBar extends Component {
             </li>
           </ul>
           <div className="button" onClick={takePhoto}>
-            <button className="snapbutton btn-secondary btn">SNAP</button>
+            <Popup
+              trigger={
+                <button className="snapbutton btn-secondary btn">
+                  Take Picture
+                </button>
+              }
+              position="center"
+            >
+              <div>Picture Taken</div>
+            </Popup>
           </div>
         </div>
       </nav>
