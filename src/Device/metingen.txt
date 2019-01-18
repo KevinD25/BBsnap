@@ -1,0 +1,9 @@
+270 = 9.19v
+220  = 8.9v
+180 = 8.7
+150 = 8.5v
+130 = 8.39v
+120 = 8.34v
+
+arduino current measurement can only measure 0-5v --> geen negatieve waardes
+http://forum.arduino.cc/index.php?action=dlattach;topic=394041.0;attach=163255
