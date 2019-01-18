@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import NavBar from "./components/navbar";
-import Photo from "./components/photo";
 import SideBar from "./components/sidebar";
 import Dashboard from "./components/dashboard";
 
@@ -32,11 +30,11 @@ class App extends Component {
 
   render() {
     return (
-      <body>
+      <React.Fragment>
         <NavBar />
 
-        <div class="container-fluid">
-          <div class="row">
+        <div className="container-fluid">
+          <div className="row">
             <SideBar
               onSelectKlas={this.selectKlas}
               onSelectProf={this.selectProf}
@@ -51,7 +49,7 @@ class App extends Component {
             />
           </div>
         </div>
-      </body>
+      </React.Fragment>
     );
   }
 }

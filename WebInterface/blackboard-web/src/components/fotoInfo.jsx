@@ -21,11 +21,6 @@ const modalStyle = {
   position: "relative"
 };
 
-const footerStyle = {
-  position: "absolute",
-  bottom: 20
-};
-
 class FotoInfo extends Component {
   state = {
     fotonaam: this.props.fotoNaam,
@@ -63,7 +58,7 @@ class FotoInfo extends Component {
       <div style={backdropStyle}>
         <div style={modalStyle}>
           <img
-            class="mr-3"
+            className="mr-3"
             src={this.state.fotolink}
             alt="lelijk heufd"
             height="240px"

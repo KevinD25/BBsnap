@@ -33,7 +33,7 @@ class Photo extends Component {
     return (
       <div>
         <img
-          class="mr-3"
+          className="mr-3"
           src={this.state.fotolink}
           alt="lelijk heufd"
           height="240px"

@@ -47,14 +47,14 @@ class NavBar extends Component {
             <a className="nav-link" href="#">
               <button
                 onClick={disableCamera}
-                class="btn btn-outline-success my-2 my-sm-0"
+                className="btn btn-outline-success my-2 my-sm-0"
                 type="submit"
               >
                 {this.state.enabled === true && "Disable"}
                 {this.state.enabled === false && "Enable"}
               </button>
               <button
-                class="btn btn-outline-success my-2 my-sm-0"
+                className="btn btn-outline-success my-2 my-sm-0"
                 type="submit"
               >
                 Sign out
