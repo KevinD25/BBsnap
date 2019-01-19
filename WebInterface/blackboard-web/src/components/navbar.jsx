@@ -35,6 +35,11 @@ class NavBar extends Component {
       );
   }
 
+  disableCamera2 = () => {
+    disableCamera();
+    this.setState({ enabled: !this.state.enabled });
+  };
+
   render() {
     return (
       <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
@@ -46,7 +51,7 @@ class NavBar extends Component {
           <li className="nav-item text-nowrap">
             <a className="nav-link" href="#">
               <button
-                onClick={disableCamera}
+                onClick={this.disableCamera2}
                 className="btn btn-outline-success my-2 my-sm-0"
                 type="submit"
               >

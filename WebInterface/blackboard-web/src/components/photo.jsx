@@ -55,6 +55,7 @@ class Photo extends Component {
           begintijd={this.state.begintijd}
           eindtijd={this.state.eindtijd}
           camera={this.state.camera}
+          loadFoto={this.props.loadFoto}
         />
       </div>
     );
