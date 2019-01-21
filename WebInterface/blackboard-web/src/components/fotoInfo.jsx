@@ -82,12 +82,13 @@ class FotoInfo extends Component {
           >
             close
           </button>
-          <Popup trigger={<button> delete</button>} position="center">
+          <Popup trigger={<button> delete</button>} position="right center">
             <div>Are you sure you want to delete this picture?</div>
             <div>
               <button
                 onClick={e => {
                   this.onDelete();
+                  this.props.loadFoto();
                 }}
               >
                 yes

@@ -148,27 +148,6 @@ class SideBar extends Component {
               </div>
             </li>
             <li className="nav-item">
-              <p className="nav-link">Datum</p>
-            </li>
-            <li>
-              <div className="dropdown">
-                <select className="btn btn-secondary dropdown-toggle dropdowns">
-                  <option value="volvo" key="volvo">
-                    Volvo
-                  </option>
-                  <option value="saab" key="saab">
-                    Saab
-                  </option>
-                  <option value="mercedes" key="mercedes">
-                    Mercedes
-                  </option>
-                  <option value="audi" key="audi">
-                    Audi
-                  </option>
-                </select>
-              </div>
-            </li>
-            <li className="nav-item">
               <p className="nav-link">Prof</p>
             </li>
             <li>
