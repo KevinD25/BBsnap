@@ -321,6 +321,87 @@ def status_camera(camera_id):
 
 	return jsonify({'enabled' : output})
 
+@app.route('/init', methods=['GET'])
+def get_init():
+	config = {}
+	camera = Camera()
+
+	db.session.add(camera)
+	db.session.commit()
+
+	config["id"] = camera.id
+	config["ssid"] = "testssid"
+	config["cert"] = "testcert"
+	config["mqttbroker"] = "brabo2.ddns.net"
+	config["brokerport"] = 1883
+
+	return jsonify(config)
+
+@app.route('/klas', methods=['GET'])
+def getKlassen():
+	klassen = Klas.query.all()
+
+	output = []
+
+	for klas in klassen:
+		output.append(klas.toDict())
+
+	return jsonify({'klassen' : output})
+
+@app.route('/prof', methods=['GET'])
+def getProffen():
+        proffen = Prof.query.all()
+
+        output = []
+
+        for prof in proffen:
+                output.append(prof.toDict())
+
+        return jsonify({'proffen' : output})
+
+@app.route('/vak', methods=['GET'])
+def getVakken():
+        vakken = Vak.query.all()
+
+        output = []
+
+        for vak in vakken:
+                output.append(vak.toDict())
+
+        return jsonify({'vakken' : output})
+
+@app.route('/lokaal', methods=['GET'])
+def getLokalen():
+        lokalen = Lokaal.query.all()
+
+        output = []
+
+        for lokaal in lokalen:
+                output.append(lokaal.toDict())
+
+        return jsonify({'lokalen' : output})
+
+@app.route('/couple', methods=['POST'])
+def coupleCamera():
+	if (not request.is_json):
+		resp = jsonify({'error': 'expected json'})
+		resp.status_code = 400
+		return resp
+	else:
+		cameraId = request.json['cameraId']
+		lokaalId = request.json['lokaalId']
+		camera = Camera.query.filter_by(id = cameraId).first()
+		camera.lokaalid = lokaalId
+		db.session.commit()
+		return camera.toDict()
+
+@app.route('/camera/unassigned', methods=['GET'])
+def getUnassignedCameras():
+	cameras = Camera.query.filter_by(lokaalid = None)
+	output = []
+	for camera in cameras:
+		output.append(camera.toDict())
+	return jsonify(output)
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')
