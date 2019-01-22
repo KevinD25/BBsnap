@@ -19,7 +19,8 @@ class Addroom extends Component {
   state = {
     lokalen: [],
     inputvalue: "keuze",
-    output: ""
+    output: "",
+    heeftAlLokaal: "loading..."
   };
 
   componentDidMount() {
@@ -41,8 +42,7 @@ class Addroom extends Component {
           console.log("error gebeurd gvdqdsfqeflqskjfmqze");
         }
       );
-    console.log("camerabeeld:");
-    console.log(this.props.camera.lokaal);
+    this.getCameraNu();
   }
 
   render() {
@@ -50,7 +50,12 @@ class Addroom extends Component {
     return (
       <React.Fragment>
         <h2>Camera {this.props.camera.id}</h2>
-        <p>Geef het juiste lokaal voor deze camera op in de dropdown</p>
+        <p>
+          <b>
+            Het lokaal dat deze camera al heeft is: {this.state.heeftAlLokaal}
+          </b>
+        </p>
+        <p>Geef het nieuwe lokaal voor deze camera op in de dropdown</p>
         <div className="dropdown">
           <select
             className="btn btn-secondary dropdown-toggle dropdowns"
@@ -98,6 +103,18 @@ class Addroom extends Component {
       postRoom(this.props.camera.id, this.state.inputvalue);
       this.setState({
         output: "changes saved"
+      });
+    }
+  };
+
+  getCameraNu = e => {
+    if (this.props.camera.lokaal) {
+      this.setState({
+        heeftAlLokaal: this.props.camera.lokaal.naam
+      });
+    } else {
+      this.setState({
+        heeftAlLokaal: "nog geen lokaal"
       });
     }
   };
