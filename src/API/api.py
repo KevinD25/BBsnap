@@ -149,8 +149,8 @@ class Vak(db.Model):
 class Camera(db.Model):
 	__tablename__ = 'Camera'
 	id = db.Column('id', db.Integer, primary_key=True)
-	lokaalid = db.Column('lokaalid', db.Integer, db.ForeignKey('Lokaal.id'))
-	ip = db.Column('ip', db.Unicode)
+	lokaalid = db.Column('lokaalid', db.Integer, db.ForeignKey('Lokaal.id'), nullable=True)
+	ip = db.Column('ip', db.Unicode, nullable = True)
 	lokaal = db.relationship('Lokaal', back_populates = 'cameras')
 	fotos = db.relationship('Foto', back_populates = 'camera', lazy='joined')
 	enabled = db.Column('enabled', db.Boolean)
@@ -159,7 +159,8 @@ class Camera(db.Model):
 		ret = {}
 		ret['id'] = self.id
 		if (skipLokaal == False):
-			ret['lokaal'] = self.lokaal.toDict()
+			if (self.lokaal):
+				ret['lokaal'] = self.lokaal.toDict()
 		else:
 			ret['lokaalid'] = self.lokaalid
 		ret['ip'] = self.ip
@@ -302,13 +303,24 @@ def take_photo():
 		CameraId = 10
 
 		# send command to camera
-		publish.single(str(CameraId), b'photo', hostname = "localhost")
-
-		return jsonify({'reply': 'request sent'})
+		camera = Camera.query.filter_by(id = CameraId).first()
+		if(camera.enabled):
+			publish.single(str(CameraId), b'photo', hostname = "localhost")
+			return jsonify({'reply': 'request sent'})
+		else:
+			resp = jsonify({'error': 'Disabled'})
+			resp.status_code = 200
+			return 
 
 @app.route('/disablephoto/<camera_id>', methods=['POST'])
 def disable_photo(camera_id):
-	return jsonify ({'message': 'camera disabled'})
+	camera = Camera.query.filter_by(id = camera_id).first()
+	camera.enabled = not camera.enabled
+	db.session.add(camera)
+	db.session.commit()
+	return jsonify ({'message': 'camera toggled',
+	    'enabled': camera.enabled})
+
 
 @app.route('/camera/<camera_id>/enabled', methods=['GET'])
 def status_camera(camera_id):
@@ -325,7 +337,7 @@ def status_camera(camera_id):
 def get_init():
 	config = {}
 	camera = Camera()
-
+	camera.enabled = True
 	db.session.add(camera)
 	db.session.commit()
 
@@ -377,6 +389,20 @@ def getLokalen():
                 output.append(lokaal.toDict())
 
         return jsonify({'lokalen' : output})
+
+@app.route('/camera', methods=['GET'])
+def getCameras():
+	cameras = Camera.query.all()
+	print(cameras)
+	output = []
+
+	for camera in cameras:
+		print(camera.toDict())
+		output.append(camera.toDict())
+
+
+	return jsonify({'cameras' : output})
+
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')
