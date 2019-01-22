@@ -1,5 +1,20 @@
 import React, { Component } from "react";
 
+async function postRoom(cameraid, lokaalid) {
+  console.log("post naar server");
+  fetch("http://brabo2.ddns.net:555/couple", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      cameraId: cameraid,
+      lokaalId: lokaalid
+    })
+  });
+}
+
 class Addroom extends Component {
   state = {
     lokalen: [],
@@ -26,13 +41,15 @@ class Addroom extends Component {
           console.log("error gebeurd gvdqdsfqeflqskjfmqze");
         }
       );
+    console.log("camerabeeld:");
+    console.log(this.props.camera.lokaal);
   }
 
   render() {
     const { lokalen } = this.state;
     return (
       <React.Fragment>
-        <h1>{this.props.ip}</h1>
+        <h2>Camera {this.props.camera.id}</h2>
         <p>Geef het juiste lokaal voor deze camera op in de dropdown</p>
         <div className="dropdown">
           <select
@@ -44,7 +61,11 @@ class Addroom extends Component {
               maak een keuze
             </option>
             {lokalen.map(lokaal => (
-              <option value={lokaal.id} key={lokaal.id}>
+              <option
+                value={lokaal.id}
+                key={lokaal.id}
+                select={this.props.camera.lokaal ? true : false}
+              >
                 {lokaal.naam}
               </option>
             ))}
@@ -74,6 +95,7 @@ class Addroom extends Component {
         output: "geef een geldige waarde"
       });
     } else {
+      postRoom(this.props.camera.id, this.state.inputvalue);
       this.setState({
         output: "changes saved"
       });
