@@ -2,7 +2,13 @@
 import paho.mqtt.client as mqtt
 import subprocess
 import os
-from BBS_Config import *
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+UNIT_ID = int(config['BASE']['ID'])
+MQTT_BROKER = config['HARDWARE']['MQTT_BROKER']
+BROKER_PORT = config['HARDWARE']['BROKER_PORT']
 
 def on_connect(client, userdata, flags, rc):
     print("connected with code " + str(rc))

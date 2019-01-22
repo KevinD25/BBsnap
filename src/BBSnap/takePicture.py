@@ -2,7 +2,11 @@
 
 import camera
 import connection
-from BBS_Config import *
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+UNIT_ID = int(config['BASE']['ID'])
 
 def disabled():
     return False
