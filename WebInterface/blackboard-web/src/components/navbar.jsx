@@ -14,17 +14,12 @@ async function disableCamera(cameraid) {
   });
 }
 
-function login() {
-  auth.login();
-}
 
-function logout(){
-  auth.logout();
-}
 
 class NavBar extends Component {
   state = {
     enabled: true,
+    loggedin: false,
     lokalen: [],
     camera: "10"
   };
@@ -32,6 +27,7 @@ class NavBar extends Component {
 
   componentDidMount() {
     this.getStatusCamera();
+    //this.getLoggedIn();
     fetch("http://brabo2.ddns.net:555/camera")
       .then(res => res.json())
       .then(
@@ -52,6 +48,34 @@ class NavBar extends Component {
       );
   }
 
+  getLoggedIn = () => {
+    
+    if(true){
+      this.setState({
+        loggedin: true
+      });
+    }
+    else{
+      this.setState({
+        loggedin: false
+      });
+    }
+    console.log(this.state.loggedin)
+}
+
+Login = () =>{
+  console.log("LOGIN BOOLEAN")
+  console.log(this.state.loggedin)
+    if(this.state.loggedin){
+      auth.logout();
+      this.getLoggedIn();
+    }else{
+      auth.login();
+      this.getLoggedIn();
+    }
+}
+
+
   getStatusCamera = () => {
     fetch("http://brabo2.ddns.net:555/camera/" + this.state.camera + "/enabled")
       .then(res => res.json())
@@ -66,7 +90,7 @@ class NavBar extends Component {
           this.setState({
             error
           });
-          console.log("error gebeurd gvdqdsfqeflqskjfmqze");
+          console.log("error gebeurd");
         }
       );
   };
@@ -80,7 +104,6 @@ class NavBar extends Component {
     this.setState({
       camera: e.target.value
     });
-    console.log("gvd werk is kut react ik ga u ophangen met u kanker taal");
     console.log(this.state.camera);
     this.getStatusCamera();
   };
@@ -118,10 +141,12 @@ class NavBar extends Component {
               </button>
               <button
                 className="btn btn-outline-success my-2 my-sm-0"
+                id="loginbutton"
                 type="submit"
-                onClick ="login()"
+                onClick ={this.Login}
               >
-                Sign out
+              {this.state.loggedin === true && "Log out"}
+              {this.state.loggedin === false && "Log In"}
               </button>
             </a>
           </li>

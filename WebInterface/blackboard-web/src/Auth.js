@@ -9,7 +9,7 @@ export default class Auth {
   auth0 = new auth0.WebAuth({
     domain: "kevindavis.eu.auth0.com",
     clientID: "I3Kn0Zec1B1Qnn2MsqJ8ZpuFyHN7Vj11",
-    redirectUri: "http://localhost:3000/App",
+    redirectUri: "http://localhost:3000/",
     audience: "https://kevindavis.eu.auth0.com/userinfo",
     responseType: "token id_token",
     scope: "openid"
@@ -37,10 +37,10 @@ export default class Auth {
 
     // Remove isLoggedIn flag from localStorage
     localStorage.removeItem("isLoggedIn");
-    window.location.href = "https://kevindavis.eu.auth0.com/v2/logout";
-    window.fetch(
+    //window.location.href = "https://kevindavis.eu.auth0.com/v2/logout";
+   /* window.fetch(
       "https://kevindavis.eu.auth0.com/v2/logout?client_id=9TOJg_8_GmwB3KdbHiFAQtYkZDa0TW_2&returnTo=http://localhost:3000"
-    );
+    );*/
   }
 
   getAccessToken() {
