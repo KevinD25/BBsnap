@@ -3,6 +3,10 @@ import "./App.css";
 import NavBar from "./components/navbar";
 import SideBar from "./components/sidebar";
 import Dashboard from "./components/dashboard";
+import Home from "./components/home";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import Addpage from "./components/addpage";
+import NotFound from "./components/notfound";
 
 class App extends Component {
   state = {
@@ -30,26 +34,13 @@ class App extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <NavBar />
-
-        <div className="container-fluid">
-          <div className="row">
-            <SideBar
-              onSelectKlas={this.selectKlas}
-              onSelectProf={this.selectProf}
-              onSelectLes={this.selectLes}
-              onSelectLokaal={this.selectLokaal}
-            />
-            <Dashboard
-              klas={this.state.klas}
-              prof={this.state.prof}
-              les={this.state.les}
-              lokaal={this.state.lokaal}
-            />
-          </div>
-        </div>
-      </React.Fragment>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/" component={Home} exact />
+          <Route path="/add" component={Addpage} />
+          <Route component={NotFound} />
+        </Switch>
+      </BrowserRouter>
     );
   }
 }

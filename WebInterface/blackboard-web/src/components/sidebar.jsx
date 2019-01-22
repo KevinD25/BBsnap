@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Popup from "reactjs-popup";
+import { NavLink } from "react-router-dom";
 
 async function takePhoto(studentennr) {
   console.log("post naar server");
@@ -239,6 +240,7 @@ class SideBar extends Component {
             value={this.state.studnr}
             onChange={this.updateInputValue}
           />
+          <NavLink to="/add">Add new camera</NavLink>
         </div>
       </nav>
     );
