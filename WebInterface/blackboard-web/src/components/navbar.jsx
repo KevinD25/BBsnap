@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-async function disableCamera() {
+async function disableCamera(cameraid) {
   console.log("post naar server");
-  fetch("http://brabo2.ddns.net:555/disablephoto/10", {
+  fetch("http://brabo2.ddns.net:555/disablephoto/" + cameraid, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -14,26 +14,12 @@ async function disableCamera() {
 class NavBar extends Component {
   state = {
     enabled: true,
-    lokalen: []
+    lokalen: [],
+    camera: "10"
   };
 
   componentDidMount() {
-    fetch("http://brabo2.ddns.net:555/camera/10/enabled")
-      .then(res => res.json())
-      .then(
-        result => {
-          this.setState({
-            enabled: result.enabled
-          });
-          console.log("de status van de camera is: " + this.state.enabled);
-        },
-        error => {
-          this.setState({
-            error
-          });
-          console.log("error gebeurd gvdqdsfqeflqskjfmqze");
-        }
-      );
+    this.getStatusCamera();
     fetch("http://brabo2.ddns.net:555/camera")
       .then(res => res.json())
       .then(
@@ -54,9 +40,37 @@ class NavBar extends Component {
       );
   }
 
+  getStatusCamera = () => {
+    fetch("http://brabo2.ddns.net:555/camera/" + this.state.camera + "/enabled")
+      .then(res => res.json())
+      .then(
+        result => {
+          this.setState({
+            enabled: result.enabled
+          });
+          console.log("de status van de camera is: " + this.state.enabled);
+        },
+        error => {
+          this.setState({
+            error
+          });
+          console.log("error gebeurd gvdqdsfqeflqskjfmqze");
+        }
+      );
+  };
+
   disableCamera2 = () => {
-    disableCamera();
-    this.setState({ enabled: !this.state.enabled });
+    disableCamera(this.state.camera);
+    this.getStatusCamera();
+  };
+
+  handleLokaal = e => {
+    this.setState({
+      camera: e.target.value
+    });
+    console.log("gvd werk is kut react ik ga u ophangen met u kanker taal");
+    console.log(this.state.camera);
+    this.getStatusCamera();
   };
 
   render() {
@@ -69,13 +83,15 @@ class NavBar extends Component {
         <select
           className="btn btn-secondary dropdown-toggle dropdowns"
           //value={this.state.klas}
-          onChange={this.handleKlas}
+          onChange={this.handleLokaal}
         >
-          {lokalen.map(lokaal => (
-            <option value={lokaal.enabled} key={lokaal.id}>
-              {lokaal.lokaal.naam}
-            </option>
-          ))}
+          {lokalen
+            .filter(lokaal => lokaal.lokaal)
+            .map(lokaal => (
+              <option value={lokaal.id} key={lokaal.id}>
+                {lokaal.lokaal.naam}
+              </option>
+            ))}
         </select>
         <ul className="navbar-nav px-3">
           <li className="nav-item text-nowrap">
@@ -85,8 +101,8 @@ class NavBar extends Component {
                 className="btn btn-outline-success my-2 my-sm-0"
                 type="submit"
               >
-                {this.state.enabled === true && "Disable"}
-                {this.state.enabled === false && "Enable"}
+                {this.state.enabled === true && "Disabled"}
+                {this.state.enabled === false && "Enabled"}
               </button>
               <button
                 className="btn btn-outline-success my-2 my-sm-0"
