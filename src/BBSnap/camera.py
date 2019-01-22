@@ -11,11 +11,11 @@ class Cam :
     # returns: file name
     def take_pic(self):
         self.camera.start_preview()
-        time.sleep(3)
+        time.sleep(2)
         name = time.strftime("%y%m%d-%H%M%S.jpg");
-        self.camera.capture('./img/' + filename)
+        self.camera.capture('./img/' + name)
         self.camera.stop_preview()
-        return filename
+        return name
 
 if( __name__ == "__main__"):
     cam = Cam()
