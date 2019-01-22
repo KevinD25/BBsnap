@@ -332,8 +332,8 @@ def get_init():
 	config["id"] = camera.id
 	config["ssid"] = "testssid"
 	config["cert"] = "testcert"
-        config["mqttbroker"] = "brabo2.ddns.net"
-        config["brokerport"] = 1883
+	config["mqttbroker"] = "brabo2.ddns.net"
+	config["brokerport"] = 1883
 
 	return jsonify(config)
 
@@ -398,11 +398,10 @@ def coupleCamera():
 @app.route('/camera/unassigned', methods=['GET'])
 def getUnassignedCameras():
 	cameras = Camera.query.filter_by(lokaalid = None)
-	
 	output = []
-        for camera in cameras:
-                output.append(camera.toDict())
-        return jsonify(output)
+	for camera in cameras:
+		output.append(camera.toDict())
+	return jsonify(output)
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')
