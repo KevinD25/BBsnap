@@ -332,6 +332,9 @@ def get_init():
 	config["id"] = camera.id
 	config["ssid"] = "testssid"
 	config["cert"] = "testcert"
+        config["mqttbroker"] = "brabo2.ddns.net"
+        config["brokerport"] = 1883
+
 	return jsonify(config)
 
 @app.route('/klas', methods=['GET'])
