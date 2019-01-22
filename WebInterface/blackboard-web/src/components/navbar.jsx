@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import auth from "../Auth"
+import Auth from "../Auth"
+
+const auth = new Auth();
 
 async function disableCamera(cameraid) {
   console.log("post naar server");
