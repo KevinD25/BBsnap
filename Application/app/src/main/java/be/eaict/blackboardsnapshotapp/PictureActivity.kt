@@ -76,7 +76,8 @@ class PictureActivity : AppCompatActivity() {
         initiate()
 
         pullToRefresh.setOnRefreshListener{
-            
+            initiate()
+            pullToRefresh.isRefreshing = false
         }
 
     }
