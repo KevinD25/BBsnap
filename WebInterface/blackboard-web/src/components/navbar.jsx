@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import auth from "../Auth"
 
 async function disableCamera(cameraid) {
   console.log("post naar server");
@@ -11,12 +12,21 @@ async function disableCamera(cameraid) {
   });
 }
 
+function login() {
+  auth.login();
+}
+
+function logout(){
+  auth.logout();
+}
+
 class NavBar extends Component {
   state = {
     enabled: true,
     lokalen: [],
     camera: "10"
   };
+  
 
   componentDidMount() {
     this.getStatusCamera();
@@ -107,6 +117,7 @@ class NavBar extends Component {
               <button
                 className="btn btn-outline-success my-2 my-sm-0"
                 type="submit"
+                onClick ="login()"
               >
                 Sign out
               </button>
