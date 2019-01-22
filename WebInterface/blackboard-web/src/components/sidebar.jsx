@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Popup from "reactjs-popup";
 
-async function takePhoto() {
+async function takePhoto(studentennr) {
   console.log("post naar server");
   fetch("http://brabo2.ddns.net:555/takephoto/", {
     method: "POST",
@@ -10,7 +10,7 @@ async function takePhoto() {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      studnr: "0945786"
+      studnr: studentennr
     })
   });
 }
@@ -24,9 +24,17 @@ class SideBar extends Component {
       klassen: [],
       proffen: [],
       vakken: [],
-      lokalen: []
+      lokalen: [],
+      studnr: "s094049"
     };
   }
+
+  updateInputValue = evt => {
+    this.setState({
+      studnr: evt.target.value
+    });
+    console.log(this.state.studnr);
+  };
 
   handleKlas = e => {
     this.props.onSelectKlas(e.target.value);
@@ -211,7 +219,7 @@ class SideBar extends Component {
               </div>
             </li>
           </ul>
-          <div className="button" onClick={takePhoto}>
+          <div className="button" onClick={() => takePhoto(this.state.studnr)}>
             <Popup
               trigger={
                 <button className="snapbutton btn-secondary btn">
@@ -223,6 +231,14 @@ class SideBar extends Component {
               <div>Picture Taken</div>
             </Popup>
           </div>
+          <label for="exampleForm2">Studentnummer</label>
+          <input
+            type="text"
+            id="exampleForm2"
+            class="form-control"
+            value={this.state.studnr}
+            onChange={this.updateInputValue}
+          />
         </div>
       </nav>
     );
