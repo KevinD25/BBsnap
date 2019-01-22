@@ -17,7 +17,7 @@ class API {
     private lateinit var result: String
     private lateinit var json: JsonObject
     private lateinit var dataFile : DataFile
-    private var userID: Int = 0
+    //private var userID: Int = 0
     private var photoTaken: Boolean = false
 
 
@@ -46,12 +46,12 @@ class API {
 
 
 
-    fun sendSnapCommand(){
-        userID = 1
+    fun sendSnapCommand(userid : String){
+        //userID = 1
         photoTaken = false
 
         val json = JSONObject()
-        json.put("studnr", userID)
+        json.put("studnr", userid)
         val jsonbody = json.toString()
 
         val me = this

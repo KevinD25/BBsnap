@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import Auth from "../Auth";
+
+const auth = new Auth();
 
 async function disableCamera() {
   console.log("post naar server");
@@ -9,6 +12,11 @@ async function disableCamera() {
       "Content-Type": "application/json"
     }
   });
+}
+
+function checkLog() {
+  auth.logout();
+  auth.login();
 }
 
 class NavBar extends Component {
@@ -61,6 +69,8 @@ class NavBar extends Component {
               <button
                 className="btn btn-outline-success my-2 my-sm-0"
                 type="submit"
+                id="logButton"
+                onClick={checkLog}
               >
                 Sign out
               </button>

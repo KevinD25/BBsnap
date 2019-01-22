@@ -3,6 +3,9 @@ import "./App.css";
 import NavBar from "./components/navbar";
 import SideBar from "./components/sidebar";
 import Dashboard from "./components/dashboard";
+import Auth from "./Auth";
+
+const auth = new Auth();
 
 class App extends Component {
   state = {
@@ -28,7 +31,12 @@ class App extends Component {
     this.setState({ lokaal: waarde });
   };
 
+  componentDidMount() {
+    auth.handleAuthentication();
+  }
+
   render() {
+    auth.isAuthenticated();
     return (
       <React.Fragment>
         <NavBar />
