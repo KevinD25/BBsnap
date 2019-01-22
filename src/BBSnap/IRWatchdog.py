@@ -4,7 +4,11 @@ import pigpio
 import math
 import time
 import subprocess
-from BBS_Config import *
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+INPUT = int(config['HARDWARE']['INPUT'])
 
 def toggle_disable():
     if(os.path.isfile('./DISABLE')):
