@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import Auth from "../Auth";
+
+const auth = new Auth();
 
 async function disableCamera() {
   console.log("post naar server");
@@ -9,6 +12,11 @@ async function disableCamera() {
       "Content-Type": "application/json"
     }
   });
+}
+
+function checkLog() {
+  auth.logout();
+  auth.login();
 }
 
 class NavBar extends Component {
@@ -35,6 +43,11 @@ class NavBar extends Component {
       );
   }
 
+  disableCamera2 = () => {
+    disableCamera();
+    this.setState({ enabled: !this.state.enabled });
+  };
+
   render() {
     return (
       <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
@@ -46,16 +59,18 @@ class NavBar extends Component {
           <li className="nav-item text-nowrap">
             <a className="nav-link" href="#">
               <button
-                onClick={disableCamera}
-                class="btn btn-outline-success my-2 my-sm-0"
+                onClick={this.disableCamera2}
+                className="btn btn-outline-success my-2 my-sm-0"
                 type="submit"
               >
                 {this.state.enabled === true && "Disable"}
                 {this.state.enabled === false && "Enable"}
               </button>
               <button
-                class="btn btn-outline-success my-2 my-sm-0"
+                className="btn btn-outline-success my-2 my-sm-0"
                 type="submit"
+                id="logButton"
+                onClick={checkLog}
               >
                 Sign out
               </button>

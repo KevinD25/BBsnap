@@ -3,23 +3,11 @@ package be.eaict.blackboardsnapshotapp
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
-import android.os.Handler
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import be.eaict.blackboardsnapshotapp.Objects.API
-import be.eaict.blackboardsnapshotapp.Objects.DataFile
-import be.eaict.blackboardsnapshotapp.Objects.Foto
-import be.eaict.blackboardsnapshotapp.Objects.Repository
-import be.eaict.blackboardsnapshotapp.R.id.ListviewPictures
-import com.github.kittinunf.fuel.httpPost
-import kotlinx.android.synthetic.main.activity_picture.*
 import kotlinx.android.synthetic.main.activity_snap.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
-import org.json.JSONObject
-import java.io.Serializable
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -36,17 +24,43 @@ class SnapActivity : AppCompatActivity() {
         api.callAPI()
     }
 
+    override fun onStart() {
+        super.onStart()
+        etxtStudNr.setText("")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        etxtStudNr.setText("")
+    }
+
     fun OpenPictures(view: View) {
         val intent = Intent(this, PictureActivity::class.java)
         startActivity(intent)
     }
 
     fun sendSnapCommand(view: View) {
-        api.sendSnapCommand()
+        val studnr = etxtStudNr.text.trim().toString().toLowerCase()
+        var num = studnr.substring(3, studnr.length)
+        num.toIntOrNull()
+        if (studnr.isNotEmpty() &&
+                studnr.length == 7 &&
+                studnr.substring(0, 3) == "s09" &&
+                !num.isNullOrBlank()) {
 
-        Timer("APICall", false).schedule(4000) {
-            api.callAPI()
+            api.sendSnapCommand(studnr)
+
+            Timer("APICall", false).schedule(4000) {
+                api.callAPI()
+
+            }
+
+            etxtStudNr.setText("")
         }
+        else{
+            Toast.makeText(this, "Vul een correct studenten nummer in... \n (Format - S091234", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
 
