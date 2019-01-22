@@ -11,12 +11,7 @@ config.read('config.ini')
 INPUT = int(config['HARDWARE']['INPUT'])
 
 def toggle_disable():
-    if(os.path.isfile('./DISABLE')):
-        print("is a file")
-        os.remove('./DISABLE')
-    else:
-        print("is not file")
-        open('./DISABLE', 'w').close()
+    print("toggle_Disable")
 
 # measure wavelength of square signal on pin gpio
 # input: gpio   number of input pin
