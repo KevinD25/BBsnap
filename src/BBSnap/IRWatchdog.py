@@ -47,13 +47,16 @@ if __name__ == "__main__":
     while (True):
         # wait for activity
         if pi.wait_for_edge(INPUT, pigpio.RISING_EDGE, 10):
+            print("rising edge")
             length = measure_W_length(INPUT)
-
+            print(length) 
             #if average wavelength is close enough to 2800ms
             if ((length > 2500) and (length < 3000)):
+                print("detected take_picture on IR")
                 take_picture()
             #close enough to 660ms
             elif ((length > 600) and (length < 700)):
+                print("detected disable on IR")
                 toggle_disable()
             #else signal is unimportant, do nothing
             time.sleep(1)
