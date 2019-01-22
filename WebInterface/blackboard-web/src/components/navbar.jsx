@@ -13,7 +13,8 @@ async function disableCamera() {
 
 class NavBar extends Component {
   state = {
-    enabled: true
+    enabled: true,
+    lokalen: []
   };
 
   componentDidMount() {
@@ -33,6 +34,24 @@ class NavBar extends Component {
           console.log("error gebeurd gvdqdsfqeflqskjfmqze");
         }
       );
+    fetch("http://brabo2.ddns.net:555/camera")
+      .then(res => res.json())
+      .then(
+        result => {
+          this.setState({
+            isLoaded: true,
+            lokalen: result.cameras
+          });
+          console.log("de data is: " + this.state.lokalen);
+        },
+        error => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+          console.log("error gebeurd gvdqdsfqeflqskjfmqze");
+        }
+      );
   }
 
   disableCamera2 = () => {
@@ -41,12 +60,23 @@ class NavBar extends Component {
   };
 
   render() {
+    const { lokalen } = this.state;
     return (
       <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
         <a className="navbar-brand col-sm-3 col-md-2 mr-0" href="#">
           Blackboard Snapshot
         </a>
-
+        <select
+          className="btn btn-secondary dropdown-toggle dropdowns"
+          //value={this.state.klas}
+          onChange={this.handleKlas}
+        >
+          {lokalen.map(lokaal => (
+            <option value={lokaal.enabled} key={lokaal.id}>
+              {lokaal.lokaal.naam}
+            </option>
+          ))}
+        </select>
         <ul className="navbar-nav px-3">
           <li className="nav-item text-nowrap">
             <a className="nav-link" href="#">
