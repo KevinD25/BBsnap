@@ -75,6 +75,10 @@ class PictureActivity : AppCompatActivity() {
         activity = this
         initiate()
 
+        pullToRefresh.setOnRefreshListener{
+            
+        }
+
     }
 
     override fun onRestart() {
