@@ -381,6 +381,17 @@ def getLokalen():
 
         return jsonify({'lokalen' : output})
 
+@app.route('/couple', methods=['POST'])
+def coupleCamera():
+	if (not request.is_json):
+		resp = jsonify({'error': 'expected json'})
+		resp.status_code = 400
+		return resp
+	else:
+		cameraId = request.json['cameraId']
+		lokaalId = request.json['lokaalId']
+		
+
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')
 
