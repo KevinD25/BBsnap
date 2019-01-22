@@ -390,7 +390,19 @@ def coupleCamera():
 	else:
 		cameraId = request.json['cameraId']
 		lokaalId = request.json['lokaalId']
-		
+		camera = Camera.query.filter_by(id = cameraId).first()
+		camera.lokaalid = lokaalId
+		db.session.commit()
+		return camera.toDict()
+
+@app.route('/camera/unassigned', methods=['GET'])
+def getUnassignedCameras():
+	cameras = Camera.query.filter_by(lokaalid = None)
+	
+	output = []
+        for camera in cameras:
+                output.append(camera.toDict())
+        return jsonify(output)
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')
