@@ -41,26 +41,36 @@ class SnapActivity : AppCompatActivity() {
 
     fun sendSnapCommand(view: View) {
         val studnr = etxtStudNr.text.trim().toString().toLowerCase()
-        var num = studnr.substring(3, studnr.length)
-        num.toIntOrNull()
-        if (studnr.isNotEmpty() &&
-                studnr.length == 7 &&
-                studnr.substring(0, 3) == "s09" &&
-                !num.isNullOrBlank()) {
 
-            api.sendSnapCommand(studnr)
+        if (studnr.isNotEmpty() && studnr.length == 7) {
+            var num = studnr.substring(3, studnr.length)
+            num.toIntOrNull()
 
-            Timer("APICall", false).schedule(4000) {
-                api.callAPI()
+            if (studnr.substring(0, 3) == "s09" &&
+                    !num.isNullOrBlank()) {
 
+                api.sendSnapCommand(studnr)
+
+                Timer("APICall", false).schedule(4000) {
+                    api.callAPI()
+
+                }
+
+                Toast.makeText(this, "Foto genomen... \n Even geduld aub...", Toast.LENGTH_SHORT).show()
+
+                etxtStudNr.setText("")
+            } else {
+                reset()
             }
-
-            etxtStudNr.setText("")
         }
-        else{
-            Toast.makeText(this, "Vul een correct studenten nummer in... \n (Format - S091234", Toast.LENGTH_SHORT).show()
+        else {
+            reset()
         }
+    }
 
+    private fun reset(){
+        Toast.makeText(this, "Vul een correct studenten nummer in... \n (Format - S091234", Toast.LENGTH_SHORT).show()
+        etxtStudNr.setText("")
     }
 
 
