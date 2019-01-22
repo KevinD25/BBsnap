@@ -3,7 +3,9 @@ import React, { Component } from "react";
 class NotFound extends Component {
   state = {};
   render() {
-    return <h1>ERROR 404</h1>;
+    return (
+      <img src="https://ak7.picdn.net/shutterstock/videos/7384327/thumb/2.jpg?ip=x480" />
+    );
   }
 }
 
