@@ -13,21 +13,17 @@ int readIndex = 0;              // the index of the current reading
 int total = 0;                  // the running total
 int average = 0;                // the average
 
-/*
-//Variable voor uitlezen van current batterijen
+//Variable voor uitlezen van spanning batterijen
 const int BatteryIn = A1;
 int sensorValue=0;
 float batvoltage =0;
-*/
 
 //SollarCelByPas
 const int bypasspin = 2;
 double nominalVoltage = 3.7;
 bool bypassing = false;
 
-//spanning over weerstand
-const int weerstand = 10;
-const int weerstandSpanning = A1;
+const int output = A2;
 int outputvalue=0;
 float outputvoltage =0;
 void setup() 
@@ -48,6 +44,10 @@ void loop()
  
   AverageFilter();
   
+  sensorValue = analogRead(BatteryIn);
+  batvoltage = sensorValue * (5.0 / 1023.0);//correctie
+    Serial.print("bat voltage ");
+  Serial.println(batvoltage);
 
   batvoltage = batvoltage -0.20; 
   Serial.print("bat voltage ");
@@ -59,19 +59,25 @@ void loop()
   Serial.println(outputvoltage);
  
   
- 
+  if (batvoltage > 3.7)
+  {
+    bypassing = true;
+  }
+  else if (batvoltage < 3.5 && bypassing)
+  {
+    bypassing = false;
+  }
+
+  if (bypassing)
+  {
+    digitalWrite(bypasspin,true);
+  }
+  delay(1000);
 }
 
-void currentMeasurement()
-{
-  sensorValue = analogRead(weerstandSpanning);
-  batvoltage = sensorValue * (5.0 / 1023.0);//correctie
-  Serial.print("bat voltage ");
-  Serial.println(batvoltage);
 
-}
 
-void CurrentrichtingMeasurement()
+void CurrentMeasurement()
 {
  RawValue = analogRead(CurrentIn);
  Voltage = (RawValue / 1024.0) * 5000; // Gets you mV
