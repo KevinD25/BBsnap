@@ -418,7 +418,7 @@ def coupleCamera():
 		camera = Camera.query.filter_by(id = cameraId).first()
 		camera.lokaalid = lokaalId
 		db.session.commit()
-		return camera.toDict()
+		return jsonify(camera.toDict())
 
 @app.route('/camera/unassigned', methods=['GET'])
 def getUnassignedCameras():
