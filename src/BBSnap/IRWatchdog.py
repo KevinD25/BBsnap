@@ -12,6 +12,7 @@ INPUT = int(config['HARDWARE']['INPUT'])
 
 def toggle_disable():
     print("toggle_Disable")
+    subprocess.Popen('python3 ./disable.py', shell=True)
 
 # measure wavelength of square signal on pin gpio
 # input: gpio   number of input pin
@@ -53,10 +54,12 @@ if __name__ == "__main__":
             if ((length > 2500) and (length < 3000)):
                 print("detected take_picture on IR")
                 take_picture()
+                time.sleep(2) # sleep as "debounce"
             #close enough to 660ms
             elif ((length > 600) and (length < 700)):
                 print("detected disable on IR")
                 toggle_disable()
+                time.sleep(2) # sleep as "debounce"
             #else signal is unimportant, do nothing
             time.sleep(1)
         else:
