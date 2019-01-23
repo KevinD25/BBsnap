@@ -240,7 +240,7 @@ class SideBar extends Component {
             value={this.state.studnr}
             onChange={this.updateInputValue}
           />
-          <NavLink to="/add">Add new camera</NavLink>
+          <NavLink to="/add">Configure cameras</NavLink>
         </div>
       </nav>
     );
