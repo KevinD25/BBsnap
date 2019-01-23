@@ -1,9 +1,10 @@
 [Unit]
 Description="IR detector for BBS"
+Requires=bbsconfig.service
 
 [Service]
 WorkingDirectory=/home/pi/IoT_1819/src/BBSnap/
-ExecStart=/home/pi/IoT_1819/src/BBSnap/IRWatchdog.py
+ExecStart=/usr/bin/python3 /home/pi/IoT_1819/src/BBSnap/IRWatchdog.py
 Restart=always
 RestartSec=3
 User=pi
