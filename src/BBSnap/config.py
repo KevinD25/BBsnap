@@ -5,6 +5,7 @@ import requests
 import os
 import sys
 import shlex
+import subprocess
 
 CONFIG = "config.ini"
 SERVER = "http://brabo2.ddns.net:555/init"
@@ -35,9 +36,12 @@ while(not os.path.isfile(CONFIG)):
             }
 
         ssid = shlex.quote(config['BASE']['ssid'])
+        print(ssid)
         psk = shlex.quote(config['BASE']['psk'])
-        command = f"nmcli device wifi rescan && nmcli device wifi connect {ssid} {psk}"
-        subprocess.Popen(
+        print(psk)
+        command = f"nmcli device wifi rescan && sleep 5 && nmcli device wifi connect {ssid} password {psk}"
+        print(command)
+        subprocess.run(command, shell=True)
         with open(CONFIG, "w") as configfile:
             config.write(configfile)
     except KeyError as ke:
