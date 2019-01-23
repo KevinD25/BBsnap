@@ -294,7 +294,12 @@ def take_photo():
 	else:
 		# get current classroom of student number
 		# dummy:
-                LokaalId = studnr
+                if (studnr == "s091234"):
+			LokaalId = 1
+		else if (studnr == "s099876"):
+			LokaalId = 2
+		else:
+			LokaalId = studnr
 
 		# TODO:
 		# get camera at classroom
