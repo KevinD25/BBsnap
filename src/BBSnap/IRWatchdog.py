@@ -16,7 +16,7 @@ def toggle_disable():
 
 # measure wavelength of square signal on pin gpio
 # input: gpio   number of input pin
-# returns: average wavelength in ms
+# returns: average wavelength in µs
 def measure_W_length(gpio):
     tickBuffer = []
     def count_edge(gpio, level, tick):
@@ -50,12 +50,12 @@ if __name__ == "__main__":
             print("rising edge")
             length = measure_W_length(INPUT)
             print(length) 
-            #if average wavelength is close enough to 2800ms
+            #if average wavelength is close enough to 2800µs
             if ((length > 2500) and (length < 3000)):
                 print("detected take_picture on IR")
                 take_picture()
                 time.sleep(2) # sleep as "debounce"
-            #close enough to 660ms
+            #close enough to 660µs
             elif ((length > 600) and (length < 700)):
                 print("detected disable on IR")
                 toggle_disable()
