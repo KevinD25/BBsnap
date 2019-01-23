@@ -95,7 +95,7 @@ class Addroom extends Component {
   };
 
   safe = e => {
-    if (this.state.inputvalue == "keuze") {
+    if (this.state.inputvalue === "keuze") {
       this.setState({
         output: "geef een geldige waarde"
       });

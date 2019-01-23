@@ -38,7 +38,7 @@ export default class Auth {
     // Remove isLoggedIn flag from localStorage
     localStorage.removeItem("isLoggedIn");
     //window.location.href = "https://kevindavis.eu.auth0.com/v2/logout";
-   /* window.fetch(
+    /* window.fetch(
       "https://kevindavis.eu.auth0.com/v2/logout?client_id=9TOJg_8_GmwB3KdbHiFAQtYkZDa0TW_2&returnTo=http://localhost:3000"
     );*/
   }
@@ -76,7 +76,7 @@ export default class Auth {
     });
   }
 
-  handleAuthentication() {
+  /* handleAuthentication() {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
@@ -84,6 +84,20 @@ export default class Auth {
         console.log(err);
         //alert(`Error: ${err.error}. Check the console for further details.`);
         this.login();
+      }
+    });
+  }*/
+
+  handleAuthentication() {
+    this.auth0.parseHash((err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        let expiresAt = JSON.stringify(
+          authResult.expiresIn * 1000 + new Date().getTime()
+        );
+        localStorage.setItem("isLoggedIn", true);
+        localStorage.setItem("access_token", authResult.accessToken);
+        localStorage.setItem("id_token", authResult.idToken);
+        localStorage.setItem("expires_at", expiresAt);
       }
     });
   }

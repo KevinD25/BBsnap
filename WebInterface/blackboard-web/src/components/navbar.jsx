@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Auth from "../Auth"
+import Auth from "../Auth";
 
 const auth = new Auth();
 
@@ -14,8 +14,6 @@ async function disableCamera(cameraid) {
   });
 }
 
-
-
 class NavBar extends Component {
   state = {
     enabled: true,
@@ -23,9 +21,10 @@ class NavBar extends Component {
     lokalen: [],
     camera: "10"
   };
-  
 
   componentDidMount() {
+    const auth = new Auth();
+    auth.handleAuthentication();
     this.getStatusCamera();
     //this.getLoggedIn();
     fetch("http://brabo2.ddns.net:555/camera")
@@ -49,32 +48,29 @@ class NavBar extends Component {
   }
 
   getLoggedIn = () => {
-    
-    if(true){
+    if (true) {
       this.setState({
         loggedin: true
       });
-    }
-    else{
+    } else {
       this.setState({
         loggedin: false
       });
     }
-    console.log(this.state.loggedin)
-}
+    console.log(this.state.loggedin);
+  };
 
-Login = () =>{
-  console.log("LOGIN BOOLEAN")
-  console.log(this.state.loggedin)
-    if(this.state.loggedin){
+  Login = () => {
+    console.log("LOGIN BOOLEAN");
+    console.log(this.state.loggedin);
+    if (this.state.loggedin) {
       auth.logout();
       this.getLoggedIn();
-    }else{
+    } else {
       auth.login();
       this.getLoggedIn();
     }
-}
-
+  };
 
   getStatusCamera = () => {
     fetch("http://brabo2.ddns.net:555/camera/" + this.state.camera + "/enabled")
@@ -128,6 +124,7 @@ Login = () =>{
               </option>
             ))}
         </select>
+        )
         <ul className="navbar-nav px-3">
           <li className="nav-item text-nowrap">
             <a className="nav-link" href="#">
@@ -143,10 +140,10 @@ Login = () =>{
                 className="btn btn-outline-success my-2 my-sm-0"
                 id="loginbutton"
                 type="submit"
-                onClick ={this.Login}
+                onClick={this.Login}
               >
-              {this.state.loggedin === true && "Log out"}
-              {this.state.loggedin === false && "Log In"}
+                {this.state.loggedin === true && "Log out"}
+                {this.state.loggedin === false && "Log In"}
               </button>
             </a>
           </li>
