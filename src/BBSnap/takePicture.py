@@ -2,18 +2,17 @@
 
 import camera
 import connection
-from BBS_Config import *
+import configparser
 
-def disabled():
-    return False
+config = configparser.ConfigParser()
+config.read('config.ini')
+UNIT_ID = int(config['BASE']['ID'])
 
 if( __name__ == "__main__"):
     cam = camera.Cam()
     conn = connection.Connection()
 
     print("taking picture")
-    if ( disabled() ):
-        print("disabled")
     else:
         # actually take picture
         filename = cam.take_pic()

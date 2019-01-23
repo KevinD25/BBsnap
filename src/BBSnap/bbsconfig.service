@@ -1,14 +1,13 @@
 [Unit]
-Description="IR detector for mqtt"
-Requires=bbsconfig.service
+Description="fetches configuration data"
 After=network-online.target
 Wants=network-online.target
 
 [Service]
+Type=oneshot
+RemainAfterExit=yes
 WorkingDirectory=/home/pi/IoT_1819/src/BBSnap/
-ExecStart=/usr/bin/python3 /home/pi/IoT_1819/src/BBSnap/mqttWatchdog.py
-Restart=always
-RestartSec=3
+ExecStart=/usr/bin/python3 /home/pi/IoT_1819/src/BBSnap/config.py
 User=pi
 
 [Install]

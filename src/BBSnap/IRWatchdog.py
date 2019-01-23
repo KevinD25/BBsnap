@@ -4,19 +4,19 @@ import pigpio
 import math
 import time
 import subprocess
-from BBS_Config import *
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+INPUT = int(config['HARDWARE']['INPUT'])
 
 def toggle_disable():
-    if(os.path.isfile('./DISABLE')):
-        print("is a file")
-        os.remove('./DISABLE')
-    else:
-        print("is not file")
-        open('./DISABLE', 'w').close()
+    print("toggle_Disable")
+    subprocess.Popen('python3 ./disable.py', shell=True)
 
 # measure wavelength of square signal on pin gpio
 # input: gpio   number of input pin
-# returns: average wavelength in ms
+# returns: average wavelength in µs
 def measure_W_length(gpio):
     tickBuffer = []
     def count_edge(gpio, level, tick):
@@ -38,7 +38,7 @@ def measure_W_length(gpio):
 
 def take_picture():
     print("taking picture")
-    subprocess.Popen('./takePicture.py', shell=True)
+    subprocess.Popen('python3 ./takePicture.py', shell=True)
 
 if __name__ == "__main__":
     pi = pigpio.pi()
@@ -50,14 +50,16 @@ if __name__ == "__main__":
             print("rising edge")
             length = measure_W_length(INPUT)
             print(length) 
-            #if average wavelength is close enough to 2800ms
+            #if average wavelength is close enough to 2800µs
             if ((length > 2500) and (length < 3000)):
                 print("detected take_picture on IR")
                 take_picture()
-            #close enough to 660ms
+                time.sleep(2) # sleep as "debounce"
+            #close enough to 660µs
             elif ((length > 600) and (length < 700)):
                 print("detected disable on IR")
                 toggle_disable()
+                time.sleep(2) # sleep as "debounce"
             #else signal is unimportant, do nothing
             time.sleep(1)
         else:

@@ -2,7 +2,13 @@
 import paho.mqtt.client as mqtt
 import subprocess
 import os
-from BBS_Config import *
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+UNIT_ID = int(config['BASE']['ID'])
+MQTT_BROKER = config['HARDWARE']['MQTT_BROKER']
+BROKER_PORT = config['HARDWARE']['BROKER_PORT']
 
 def on_connect(client, userdata, flags, rc):
     print("connected with code " + str(rc))
@@ -14,7 +20,7 @@ def on_message(client, userdata, msg):
     print(str(msg.topic)+" "+str(msg.payload))
     if msg.payload == b'photo':
         print("taking pic")
-        subprocess.Popen('./takePicture.py', shell=True)
+        subprocess.Popen('python3 ./takePicture.py', shell=True)
     elif msg.payload == b'toggle':
         toggle_disable()
 

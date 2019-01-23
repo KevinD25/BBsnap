@@ -149,8 +149,8 @@ class Vak(db.Model):
 class Camera(db.Model):
 	__tablename__ = 'Camera'
 	id = db.Column('id', db.Integer, primary_key=True)
-	lokaalid = db.Column('lokaalid', db.Integer, db.ForeignKey('Lokaal.id'))
-	ip = db.Column('ip', db.Unicode)
+	lokaalid = db.Column('lokaalid', db.Integer, db.ForeignKey('Lokaal.id'), nullable=True)
+	ip = db.Column('ip', db.Unicode, nullable = True)
 	lokaal = db.relationship('Lokaal', back_populates = 'cameras')
 	fotos = db.relationship('Foto', back_populates = 'camera', lazy='joined')
 	enabled = db.Column('enabled', db.Boolean)
@@ -159,7 +159,8 @@ class Camera(db.Model):
 		ret = {}
 		ret['id'] = self.id
 		if (skipLokaal == False):
-			ret['lokaal'] = self.lokaal.toDict()
+			if (self.lokaal):
+				ret['lokaal'] = self.lokaal.toDict()
 		else:
 			ret['lokaalid'] = self.lokaalid
 		ret['ip'] = self.ip
@@ -291,24 +292,33 @@ def take_photo():
 		resp.status_code = 400
 		return resp
 	else:
-                # TODO:
 		# get current classroom of student number
 		# dummy:
-		LokaalId = 1
+                LokaalId = studnr
 
 		# TODO:
 		# get camera at classroom
 		# dummy:
-		CameraId = 10
+		Camera = Camera.query.filter_by(lokaalid = LokaalId).first()
 
 		# send command to camera
-		publish.single(str(CameraId), b'photo', hostname = "localhost")
-
-		return jsonify({'reply': 'request sent'})
+		if(camera.enabled):
+			publish.single(str(CameraId), b'photo', hostname = "localhost")
+			return jsonify({'reply': 'request sent'})
+		else:
+			resp = jsonify({'error': 'Disabled'})
+			resp.status_code = 200
+			return 
 
 @app.route('/disablephoto/<camera_id>', methods=['POST'])
 def disable_photo(camera_id):
-	return jsonify ({'message': 'camera disabled'})
+	camera = Camera.query.filter_by(id = camera_id).first()
+	camera.enabled = not camera.enabled
+	db.session.add(camera)
+	db.session.commit()
+	return jsonify ({'message': 'camera toggled',
+	    'enabled': camera.enabled})
+
 
 @app.route('/camera/<camera_id>/enabled', methods=['GET'])
 def status_camera(camera_id):
@@ -325,16 +335,16 @@ def status_camera(camera_id):
 def get_init():
 	config = {}
 	camera = Camera()
-
+	camera.enabled = True
 	db.session.add(camera)
 	db.session.commit()
 
 	config["id"] = camera.id
-	config["ssid"] = "testssid"
+	config["ssid"] = "bbswifi"
+	config["psk"] = "blackboard"
 	config["cert"] = "testcert"
 	config["mqttbroker"] = "brabo2.ddns.net"
 	config["brokerport"] = 1883
-
 	return jsonify(config)
 
 @app.route('/klas', methods=['GET'])
@@ -381,6 +391,19 @@ def getLokalen():
 
         return jsonify({'lokalen' : output})
 
+@app.route('/camera', methods=['GET'])
+def getCameras():
+	cameras = Camera.query.all()
+	print(cameras)
+	output = []
+
+	for camera in cameras:
+		print(camera.toDict())
+		output.append(camera.toDict())
+
+
+	return jsonify({'cameras' : output})
+
 @app.route('/couple', methods=['POST'])
 def coupleCamera():
 	if (not request.is_json):
@@ -393,7 +416,7 @@ def coupleCamera():
 		camera = Camera.query.filter_by(id = cameraId).first()
 		camera.lokaalid = lokaalId
 		db.session.commit()
-		return camera.toDict()
+		return jsonify(camera.toDict())
 
 @app.route('/camera/unassigned', methods=['GET'])
 def getUnassignedCameras():
