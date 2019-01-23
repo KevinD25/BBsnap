@@ -1,10 +1,5 @@
 import React, { Component } from "react";
 import Auth from "../Auth";
-<<<<<<< HEAD
-
-const auth = new Auth();
-=======
->>>>>>> web
 
 const auth = new Auth();
 
@@ -150,12 +145,7 @@ class NavBar extends Component {
                 className="btn btn-outline-success my-2 my-sm-0"
                 id="loginbutton"
                 type="submit"
-<<<<<<< HEAD
-                id="logButton"
-                onClick={checkLog}
-=======
                 onClick={this.Login}
->>>>>>> web
               >
                 {this.state.loggedin === true && "Log out"}
                 {this.state.loggedin === false && "Log In"}

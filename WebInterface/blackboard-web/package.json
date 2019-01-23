@@ -4,10 +4,7 @@
   "private": true,
   "dependencies": {
     "auth0-js": "^9.9.0",
-<<<<<<< HEAD
     "auth0-lock": "^11.13.0",
-=======
->>>>>>> web
     "bootstrap": "^4.1.1",
     "image-downloader": "^3.4.2",
     "react": "^16.7.0",
