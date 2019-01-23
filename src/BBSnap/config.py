@@ -44,6 +44,7 @@ while(not os.path.isfile(CONFIG)):
         subprocess.run(command, shell=True)
         with open(CONFIG, "w") as configfile:
             config.write(configfile)
+        subprocess.run('python3 ./takePicture.py', shell=True)
     except KeyError as ke:
         print(ke);
         raise ke
