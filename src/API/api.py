@@ -292,18 +292,16 @@ def take_photo():
 		resp.status_code = 400
 		return resp
 	else:
-                # TODO:
 		# get current classroom of student number
 		# dummy:
-		LokaalId = 1
+                LokaalId = studnr
 
 		# TODO:
 		# get camera at classroom
 		# dummy:
-		CameraId = 10
+		Camera = Camera.query.filter_by(lokaalid = LokaalId).first()
 
 		# send command to camera
-		camera = Camera.query.filter_by(id = CameraId).first()
 		if(camera.enabled):
 			publish.single(str(CameraId), b'photo', hostname = "localhost")
 			return jsonify({'reply': 'request sent'})
