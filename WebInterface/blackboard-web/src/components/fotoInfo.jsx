@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Popup from "reactjs-popup";
 
 const backdropStyle = {
   position: "fixed",
@@ -15,26 +16,39 @@ const modalStyle = {
   borderRadius: 5,
   maxWidth: 500,
   minHeight: 300,
-  top: 40,
+  top: 0,
   margin: "0 auto",
   padding: 30,
   position: "relative"
-};
-
-const footerStyle = {
-  position: "absolute",
-  bottom: 20
 };
 
 class FotoInfo extends Component {
   state = {
     fotonaam: this.props.fotoNaam,
     fotolink:
-      "http://brabo2.ddns.net:555/photo/getphoto/10/" + this.props.fotoNaam
+      "http://brabo2.ddns.net:555/photo/getphoto/" +
+      this.props.camera +
+      "/" +
+      this.props.fotoNaam
   };
   onClose = e => {
     this.props.onClose && this.props.onClose(e);
   };
+
+  onDelete() {
+    const requestOptions = {
+      method: "DELETE"
+    };
+    console.log("begin");
+    fetch("http://brabo2.ddns.net:555/photo/" + this.props.id, requestOptions)
+      .then(response => {
+        console.log(this.props.key);
+        return response.json();
+      })
+      .then(result => {
+        // do what you want with the response here
+      });
+  }
 
   render() {
     if (!this.props.show) {
@@ -45,7 +59,7 @@ class FotoInfo extends Component {
       <div style={backdropStyle}>
         <div style={modalStyle}>
           <img
-            class="mr-3"
+            className="mr-3"
             src={this.state.fotolink}
             alt="lelijk heufd"
             height="240px"
@@ -66,15 +80,21 @@ class FotoInfo extends Component {
               this.onClose(e);
             }}
           >
-            download
-          </button>
-          <button
-            onClick={e => {
-              this.onClose(e);
-            }}
-          >
             close
           </button>
+          <Popup trigger={<button> delete</button>} position="right center">
+            <div>Are you sure you want to delete this picture?</div>
+            <div>
+              <button
+                onClick={e => {
+                  this.onDelete();
+                  this.props.loadFoto();
+                }}
+              >
+                yes
+              </button>
+            </div>
+          </Popup>
         </div>
       </div>
     );
