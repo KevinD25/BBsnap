@@ -37,7 +37,7 @@ def measure_W_length(gpio):
 
 def take_picture():
     print("taking picture")
-    subprocess.Popen('./takePicture.py', shell=True)
+    subprocess.Popen('python3 ./takePicture.py', shell=True)
 
 if __name__ == "__main__":
     pi = pigpio.pi()

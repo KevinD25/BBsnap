@@ -9,7 +9,9 @@ CONFIG = "config.ini"
 SERVER = "http://brabo2.ddns.net:555/init"
 
 #keep trying untill config is written
+print("starting config")
 while(not os.path.isfile(CONFIG)):
+    print("no config file found")
     try:
         config = configparser.ConfigParser()
         req = requests.get(SERVER)
@@ -34,5 +36,5 @@ while(not os.path.isfile(CONFIG)):
     except KeyError as ke:
         print(ke);
         raise ke
-sys.exit
+sys.exit(0)
 

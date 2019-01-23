@@ -20,7 +20,7 @@ def on_message(client, userdata, msg):
     print(str(msg.topic)+" "+str(msg.payload))
     if msg.payload == b'photo':
         print("taking pic")
-        subprocess.Popen('./takePicture.py', shell=True)
+        subprocess.Popen('python3 ./takePicture.py', shell=True)
     elif msg.payload == b'toggle':
         toggle_disable()
 
