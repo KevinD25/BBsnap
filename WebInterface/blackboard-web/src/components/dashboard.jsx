@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Photo from "./photo";
+import Auth from "../Auth";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -12,6 +13,8 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    const auth = new Auth();
+    auth.handleAuthentication();
     fetch("http://brabo2.ddns.net:555/photo")
       .then(res => res.json())
       .then(
