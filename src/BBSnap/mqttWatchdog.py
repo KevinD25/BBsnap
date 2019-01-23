@@ -7,8 +7,8 @@ import configparser
 config = configparser.ConfigParser()
 config.read('config.ini')
 UNIT_ID = int(config['BASE']['ID'])
-MQTT_BROKER = config['HARDWARE']['MQTT_BROKER']
-BROKER_PORT = config['HARDWARE']['BROKER_PORT']
+MQTT_BROKER = config['BASE']['MQTT_BROKER']
+BROKER_PORT = int(config['BASE']['BROKER_PORT'])
 
 def on_connect(client, userdata, flags, rc):
     print("connected with code " + str(rc))
