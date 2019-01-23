@@ -33,6 +33,8 @@ def measure_W_length(gpio):
     for i in range(0, len(tickBuffer) - 1):
         deltaBuffer.append(tickBuffer[i+1] - tickBuffer[i])
     avg = sum(deltaBuffer)
+    if (len(deltaBuffer) == 0):
+        return 0
     avg = avg / len(deltaBuffer)
     return avg
 
@@ -50,13 +52,13 @@ if __name__ == "__main__":
             print("rising edge")
             length = measure_W_length(INPUT)
             print(length) 
-            #if average wavelength is close enough to 2800ms
-            if ((length > 2500) and (length < 3000)):
+            #if average wavelength is close enough to 3800ms
+            if ((length > 3500) and (length < 4000)):
                 print("detected take_picture on IR")
                 take_picture()
                 time.sleep(2) # sleep as "debounce"
             #close enough to 660ms
-            elif ((length > 600) and (length < 700)):
+            elif ((length > 4000) and (length < 5000)):
                 print("detected disable on IR")
                 toggle_disable()
                 time.sleep(2) # sleep as "debounce"

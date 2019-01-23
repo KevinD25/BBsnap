@@ -3,7 +3,7 @@ import configparser
 
 config = configparser.ConfigParser()
 config.read('config.ini')
-URL = int(config['BASE']['URL'])
+URL = config['BASE']['URL']
 
 class Connection:
     #URL = "http://localhost:5000/photo"
