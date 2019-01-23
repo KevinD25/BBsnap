@@ -347,7 +347,6 @@ def get_init():
 	config["cert"] = "testcert"
 	config["mqttbroker"] = "brabo2.ddns.net"
 	config["brokerport"] = 1883
-	config["psk"] = "ratwifi";
 	return jsonify(config)
 
 @app.route('/klas', methods=['GET'])
