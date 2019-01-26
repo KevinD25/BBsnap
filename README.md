@@ -2,7 +2,7 @@
 
 ## Groepsleden
 
-Joren Jamar - Dashboard app + Docenten Interface
+Joren Jamar - Backend + Docenten Interface
 
 Kevin Davis - Dashboard app + Docenten Interface
 
